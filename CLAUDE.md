@@ -136,7 +136,7 @@ Site/
 - **Spotify**: Paste track/album URL, auto-converts to embed
 - **YouForm**: Form ID `muqaomml` embedded in contact modal
 - **Cal.com**: Inline embed with week view layout
-- **Lemon Squeezy**: `lemonSqueezyUrl` field for checkout links
+- **Lemon Squeezy**: `lemonSqueezyUrl` field triggers overlay checkout (JS SDK)
 
 ## Common Commands
 
