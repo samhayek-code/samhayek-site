@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { ArchiveItem, typeColors } from '@/lib/types'
 import { urlFor } from '@/lib/sanity'
@@ -8,21 +8,40 @@ import { urlFor } from '@/lib/sanity'
 interface CardProps {
   item: ArchiveItem
   onClick: (item: ArchiveItem) => void
+  isFocused?: boolean
+  onHoverSound?: () => void
 }
 
-export default function Card({ item, onClick }: CardProps) {
+export default function Card({ item, onClick, isFocused = false, onHoverSound }: CardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const colors = typeColors[item.type] || typeColors.Everything
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  // Scroll focused card into view
+  useEffect(() => {
+    if (isFocused && cardRef.current) {
+      cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }, [isFocused])
+
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+    onHoverSound?.()
+  }
+
+  const isActive = isHovered || isFocused
 
   return (
     <div
-      onMouseEnter={() => setIsHovered(true)}
+      ref={cardRef}
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onClick(item)}
       className="card-hover relative overflow-hidden rounded-lg cursor-pointer flex flex-col aspect-square"
       style={{
         background: '#0a0a0a',
-        border: `1px solid ${isHovered ? '#222' : '#151515'}`,
+        border: `1px solid ${isActive ? '#222' : '#151515'}`,
+        boxShadow: isFocused ? '0 0 0 2px rgba(255,255,255,0.3)' : 'none',
       }}
     >
       {/* Background image - spans entire card */}
@@ -34,8 +53,8 @@ export default function Card({ item, onClick }: CardProps) {
             fill
             className="object-cover transition-all duration-300 ease-out"
             style={{
-              opacity: isHovered ? 0.85 : 0.4,
-              filter: isHovered ? 'blur(0px)' : 'blur(2px)',
+              opacity: isActive ? 0.85 : 0.4,
+              filter: isActive ? 'blur(0px)' : 'blur(2px)',
             }}
           />
         </div>
@@ -45,7 +64,7 @@ export default function Card({ item, onClick }: CardProps) {
       <div
         className="absolute inset-0 z-[1] transition-all duration-300 ease-out"
         style={{
-          background: isHovered
+          background: isActive
             ? 'linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.1) 40%, rgba(10,10,10,0.5) 100%)'
             : 'linear-gradient(to bottom, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.4) 40%, rgba(10,10,10,0.7) 100%)',
         }}
@@ -55,7 +74,7 @@ export default function Card({ item, onClick }: CardProps) {
       <div
         className="absolute inset-0 z-[2] transition-all duration-400 pointer-events-none"
         style={{
-          background: isHovered
+          background: isActive
             ? `radial-gradient(ellipse at 50% 0%, ${colors.bg}, transparent 70%)`
             : 'transparent',
         }}
@@ -108,9 +127,9 @@ export default function Card({ item, onClick }: CardProps) {
         <button
           className="px-3.5 py-2 rounded text-xs font-medium font-sans transition-all duration-200"
           style={{
-            background: isHovered ? '#e5e5e5' : 'rgba(0,0,0,0.5)',
-            color: isHovered ? '#0a0a0a' : '#ccc',
-            border: `1px solid ${isHovered ? '#e5e5e5' : 'rgba(255,255,255,0.15)'}`,
+            background: isActive ? '#e5e5e5' : 'rgba(0,0,0,0.5)',
+            color: isActive ? '#0a0a0a' : '#ccc',
+            border: `1px solid ${isActive ? '#e5e5e5' : 'rgba(255,255,255,0.15)'}`,
           }}
         >
           {item.cta}
