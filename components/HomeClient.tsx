@@ -7,30 +7,6 @@ import PageHeader from '@/components/PageHeader'
 import ArchiveGrid from '@/components/ArchiveGrid'
 import Modal from '@/components/Modal'
 
-// Chat items (hardcoded since they're not content-based)
-const chatItems: ArchiveItem[] = [
-  {
-    _id: 'chat-call',
-    title: 'Book a Call',
-    slug: { current: 'book-a-call' },
-    type: 'Chat',
-    label: '30 min',
-    cta: 'Schedule',
-    description: "A 30-minute intro call to discuss your project, goals, and whether we'd be a good fit. No pitch, just conversation.",
-    externalUrl: 'https://cal.com/samhayek', // Update with your actual Calendly/Cal link
-  },
-  {
-    _id: 'chat-form',
-    title: 'Send a Message',
-    slug: { current: 'send-message' },
-    type: 'Chat',
-    label: 'Async',
-    cta: 'Write',
-    description: "Prefer to write? Send me a note with some context about your project. I'll respond within 48 hours.",
-    externalUrl: 'mailto:hello@samhayek.com', // Update with your email
-  },
-]
-
 interface HomeClientProps {
   items: ArchiveItem[]
 }
@@ -53,7 +29,6 @@ export default function HomeClient({ items }: HomeClientProps) {
   // Filter items
   const getFilteredItems = () => {
     if (activeFilter === 'Everything') return items
-    if (activeFilter === 'Chat') return chatItems
     return items.filter(item => item.type === activeFilter)
   }
   

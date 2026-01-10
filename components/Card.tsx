@@ -13,30 +13,53 @@ interface CardProps {
 export default function Card({ item, onClick }: CardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const colors = typeColors[item.type] || typeColors.Everything
-  
+
   return (
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onClick(item)}
-      className="card-hover relative overflow-hidden rounded-lg p-6 cursor-pointer flex flex-col aspect-square"
+      className="card-hover relative overflow-hidden rounded-lg cursor-pointer flex flex-col aspect-square"
       style={{
-        background: isHovered ? '#111' : '#0a0a0a',
+        background: '#0a0a0a',
         border: `1px solid ${isHovered ? '#222' : '#151515'}`,
       }}
     >
-      {/* Hover gradient */}
-      <div 
-        className="absolute inset-0 transition-all duration-400 pointer-events-none"
+      {/* Background image - spans entire card */}
+      {item.coverImage && (
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={urlFor(item.coverImage).width(600).height(600).url()}
+            alt={item.title}
+            fill
+            className="object-cover transition-all duration-300"
+            style={{
+              opacity: isHovered ? 0.4 : 0.25,
+            }}
+          />
+        </div>
+      )}
+
+      {/* Dark overlay for better text readability */}
+      <div
+        className="absolute inset-0 z-[1] transition-opacity duration-300"
         style={{
-          background: isHovered 
+          background: 'linear-gradient(to bottom, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.3) 40%, rgba(10,10,10,0.7) 100%)',
+        }}
+      />
+
+      {/* Hover gradient */}
+      <div
+        className="absolute inset-0 z-[2] transition-all duration-400 pointer-events-none"
+        style={{
+          background: isHovered
             ? `radial-gradient(ellipse at 50% 0%, ${colors.bg}, transparent 70%)`
             : 'transparent',
         }}
       />
-      
+
       {/* Top row */}
-      <div className="relative z-10 flex justify-between items-start">
+      <div className="relative z-10 flex justify-between items-start p-5">
         <div className="flex-1 pr-4">
           <span className="font-sans text-[15px] text-foreground font-medium leading-tight block">
             {item.title}
@@ -47,16 +70,16 @@ export default function Card({ item, onClick }: CardProps) {
             </span>
           )}
         </div>
-        
+
         {/* Label pill */}
-        <div 
+        <div
           className="flex items-center gap-1.5 px-2.5 py-1 rounded flex-shrink-0"
           style={{
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid rgba(255,255,255,0.06)',
+            background: 'rgba(0,0,0,0.5)',
+            border: '1px solid rgba(255,255,255,0.1)',
           }}
         >
-          <div 
+          <div
             className="w-1.5 h-1.5 rounded-full"
             style={{ background: colors.dot, opacity: 0.9 }}
           />
@@ -65,47 +88,26 @@ export default function Card({ item, onClick }: CardProps) {
           </span>
         </div>
       </div>
-      
-      {/* Content area */}
-      <div className="relative z-10 flex-1 flex items-center justify-center">
-        {item.coverImage ? (
-          <div className="w-16 h-16 relative rounded overflow-hidden">
-            <Image
-              src={urlFor(item.coverImage).width(128).height(128).url()}
-              alt={item.title}
-              fill
-              className="object-cover"
-              style={{ opacity: isHovered ? 0.8 : 0.6 }}
-            />
-          </div>
-        ) : (
-          <div 
-            className="w-16 h-16 rounded transition-opacity duration-300"
-            style={{
-              background: 'rgba(255,255,255,0.02)',
-              border: '1px solid rgba(255,255,255,0.05)',
-              opacity: isHovered ? 0.8 : 0.4,
-            }}
-          />
-        )}
-      </div>
-      
+
+      {/* Spacer - pushes bottom row down */}
+      <div className="flex-1" />
+
       {/* Bottom row */}
-      <div className="relative z-10 flex justify-between items-end">
+      <div className="relative z-10 flex justify-between items-end p-5">
         {item.price ? (
-          <span className="font-mono text-[13px] text-subtle">
+          <span className="font-mono text-[13px] text-foreground font-medium">
             {item.price}
           </span>
         ) : (
           <span />
         )}
-        
-        <button 
+
+        <button
           className="px-3.5 py-2 rounded text-xs font-medium font-sans transition-all duration-200"
           style={{
-            background: isHovered ? '#e5e5e5' : 'transparent',
-            color: isHovered ? '#0a0a0a' : '#666',
-            border: `1px solid ${isHovered ? '#e5e5e5' : '#333'}`,
+            background: isHovered ? '#e5e5e5' : 'rgba(0,0,0,0.5)',
+            color: isHovered ? '#0a0a0a' : '#ccc',
+            border: `1px solid ${isHovered ? '#e5e5e5' : 'rgba(255,255,255,0.15)'}`,
           }}
         >
           {item.cta}
