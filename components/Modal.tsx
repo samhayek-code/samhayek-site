@@ -114,21 +114,20 @@ export default function Modal({ item, onClose }: ModalProps) {
       const script = document.createElement('script')
       script.src = 'https://app.lemonsqueezy.com/js/lemon.js'
       script.defer = true
+      script.onload = () => {
+        // Initialize Lemon Squeezy after script loads
+        (window as any).createLemonSqueezy?.()
+      }
       document.head.appendChild(script)
+    } else {
+      // Script already exists, refresh listeners
+      (window as any).createLemonSqueezy?.()
     }
   }, [item.lemonSqueezyUrl])
 
   const handleAction = () => {
-    // Handle different CTAs
-    if (item.lemonSqueezyUrl) {
-      // Use Lemon Squeezy overlay if available, fallback to new tab
-      const LemonSqueezy = (window as any).LemonSqueezy
-      if (LemonSqueezy?.Url?.Open) {
-        LemonSqueezy.Url.Open(item.lemonSqueezyUrl)
-      } else {
-        window.open(item.lemonSqueezyUrl, '_blank')
-      }
-    } else if (item.externalUrl) {
+    // Handle non-Lemon Squeezy CTAs (Lemon Squeezy uses anchor with class)
+    if (item.externalUrl) {
       window.open(item.externalUrl, '_blank')
     } else if (item.embedUrl) {
       window.open(item.embedUrl, '_blank')
@@ -278,12 +277,21 @@ export default function Modal({ item, onClose }: ModalProps) {
                 Close
               </button>
               {!isEmbedModal && (
-                <button
-                  onClick={handleAction}
-                  className="px-6 py-3 rounded-md font-sans text-sm font-medium bg-foreground text-background hover:bg-white transition-colors"
-                >
-                  {item.cta}
-                </button>
+                item.lemonSqueezyUrl ? (
+                  <a
+                    href={item.lemonSqueezyUrl}
+                    className="lemonsqueezy-button px-6 py-3 rounded-md font-sans text-sm font-medium bg-foreground text-background hover:bg-white transition-colors"
+                  >
+                    {item.cta}
+                  </a>
+                ) : (
+                  <button
+                    onClick={handleAction}
+                    className="px-6 py-3 rounded-md font-sans text-sm font-medium bg-foreground text-background hover:bg-white transition-colors"
+                  >
+                    {item.cta}
+                  </button>
+                )
               )}
             </div>
           </div>
