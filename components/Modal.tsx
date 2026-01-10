@@ -105,10 +105,29 @@ export default function Modal({ item, onClose }: ModalProps) {
     Cal.ns["30min"]("ui", { hideEventTypeDetails: true, layout: "week_view" })
   }, [isBookingForm])
   
+  // Load Lemon Squeezy script for checkout overlay
+  useEffect(() => {
+    if (!item.lemonSqueezyUrl) return
+
+    const existingScript = document.querySelector('script[src="https://app.lemonsqueezy.com/js/lemon.js"]')
+    if (!existingScript) {
+      const script = document.createElement('script')
+      script.src = 'https://app.lemonsqueezy.com/js/lemon.js'
+      script.defer = true
+      document.head.appendChild(script)
+    }
+  }, [item.lemonSqueezyUrl])
+
   const handleAction = () => {
     // Handle different CTAs
     if (item.lemonSqueezyUrl) {
-      window.open(item.lemonSqueezyUrl, '_blank')
+      // Use Lemon Squeezy overlay if available, fallback to new tab
+      const LemonSqueezy = (window as any).LemonSqueezy
+      if (LemonSqueezy?.Url?.Open) {
+        LemonSqueezy.Url.Open(item.lemonSqueezyUrl)
+      } else {
+        window.open(item.lemonSqueezyUrl, '_blank')
+      }
     } else if (item.externalUrl) {
       window.open(item.externalUrl, '_blank')
     } else if (item.embedUrl) {
