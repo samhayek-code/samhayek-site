@@ -73,7 +73,7 @@ export default function Modal({ item, onClose }: ModalProps) {
         </div>
         
         {/* Content */}
-        <div className="p-8">
+        <div className="p-8 overflow-x-hidden">
           {/* Header */}
           <div className="flex justify-between items-start mb-6">
             <div>
@@ -112,7 +112,7 @@ export default function Modal({ item, onClose }: ModalProps) {
 
           {/* Body (rich text) */}
           {item.body && item.body.length > 0 && (
-            <div className="prose prose-invert prose-sm max-w-none mb-8 text-[#aaa]">
+            <div className="prose prose-invert prose-sm max-w-full w-full mb-8 text-[#aaa] overflow-hidden break-words [&>p]:mb-4 [&>p]:leading-relaxed">
               <PortableText value={item.body} />
             </div>
           )}
