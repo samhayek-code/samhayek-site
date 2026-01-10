@@ -61,18 +61,19 @@ curl -s "https://jpxmevq8.api.sanity.io/v2024-01-01/assets/images/production" \
 Site/
 ├── app/                    # Next.js app router
 │   ├── page.tsx           # Home page (server component)
-│   ├── layout.tsx         # Root layout
+│   ├── layout.tsx         # Root layout + OG meta tags
 │   └── globals.css        # Global styles
 ├── components/
-│   ├── Card.tsx           # Archive card with hover effects
-│   ├── Modal.tsx          # Item detail modal (Spotify, YouForm, gallery)
-│   ├── NavBar.tsx         # Filter navigation
+│   ├── Card.tsx           # Archive card with hover effects + sound
+│   ├── Modal.tsx          # Item detail modal (Spotify, YouForm, Cal.com, gallery)
+│   ├── NavBar.tsx         # Filter navigation (responsive: row on desktop, 3x3 grid on mobile)
 │   ├── PageHeader.tsx     # Hero section
 │   ├── ArchiveGrid.tsx    # Card grid layout
-│   └── HomeClient.tsx     # Client-side home logic
+│   ├── LiveClock.tsx      # Real-time clock component
+│   └── HomeClient.tsx     # Client-side home logic (keyboard nav, sound, state)
 ├── lib/
 │   ├── sanity.ts          # Sanity client + queries
-│   └── types.ts           # TypeScript types + colors
+│   └── types.ts           # TypeScript types + colors + filter categories
 ├── sanity/
 │   └── schemas/
 │       └── archiveItem.ts # CMS schema
@@ -81,6 +82,8 @@ Site/
 │   ├── art/
 │   ├── tools/
 │   └── ...
+├── public/
+│   └── og-image.png       # Social preview image (1200x630)
 ├── sanity.config.ts       # Sanity studio config
 ├── sanity.cli.ts          # Sanity CLI config
 └── tailwind.config.ts     # Tailwind + typography plugin
@@ -93,16 +96,46 @@ Site/
 - Blur removes + brightness increases on hover
 - Smooth 300ms transitions
 - Type-colored accent gradients on hover
+- Hover sound effect (when enabled)
 
 ### Modal
 - Spotify embeds (auto-converts URLs to embed format)
-- YouForm embed for "Send a Message" (slug: `send-message`)
+- YouForm embed for "Send a Message" (slug: `send-message`, form ID: `muqaomml`)
+- Cal.com embed for "Book a Call" (slug: `book-a-call`, link: `samhayek/30min`, week view)
 - Gallery images (only shown if uploaded)
 - Portable text rendering for rich content
+- Hero image hidden for embed modals
+
+### Keyboard Navigation (Desktop Only)
+- Left/Right arrow keys cycle through filter categories
+- Arrow key indicators in footer flash white when pressed
+- Sound plays on navigation (when enabled)
+
+### Sound Effects (Desktop Only)
+- Soft click sound on hover (cards, nav items)
+- Sound on keyboard navigation
+- Toggle button in nav bar (persists to localStorage)
+- Generated via Web Audio API (no audio files)
+
+### Social Links
+- Footer contains X, Instagram, YouTube icons
+- All link to @samhayek_
+
+### Responsive Design
+**Desktop (>= 640px)**:
+- Nav: Logo left, filter row center, clock + sound toggle right
+- Footer: Navigate arrows left, social icons center, copyright right
+
+**Mobile (< 640px)**:
+- Nav: "Sam Hayek" centered on own line, filter buttons in 3x3 grid
+- Footer: Clock left, social icons center, copyright right
+- No sound toggle or keyboard nav indicators
+- Touch-friendly button sizing (py-3)
 
 ### Integrations
 - **Spotify**: Paste track/album URL, auto-converts to embed
 - **YouForm**: Form ID `muqaomml` embedded in contact modal
+- **Cal.com**: Inline embed with week view layout
 - **Lemon Squeezy**: `lemonSqueezyUrl` field for checkout links
 
 ## Common Commands
@@ -146,6 +179,7 @@ NEXT_PUBLIC_SANITY_DATASET=production
 - Border: `#151515` / `#222` (hover)
 - Text: `#e5e5e5`
 - Muted: `#666`
+- Subtle: `#444`
 
 ### Typography
 - Sans: Plus Jakarta Sans
@@ -155,3 +189,11 @@ NEXT_PUBLIC_SANITY_DATASET=production
 - Default: 40% opacity, 2px blur
 - Hover: 85% opacity, no blur
 - Transition: 300ms ease-out
+
+### Nav Button States
+- Default: transparent bg, `#555` text
+- Hover: `rgba(255,255,255,0.04)` bg, `#888` text, colored dot at 40% opacity
+- Active: `rgba(255,255,255,0.1)` bg, `#e5e5e5` text, colored dot at 100%
+
+### Breakpoints
+- Mobile: < 640px (`sm:` prefix for desktop styles)
