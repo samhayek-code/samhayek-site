@@ -26,6 +26,8 @@ export default function Modal({ item, onClose }: ModalProps) {
 
   // Check if this is the contact form card
   const isContactForm = item.slug?.current === 'send-message'
+  const isBookingForm = item.slug?.current === 'book-a-call'
+  const isEmbedModal = isContactForm || isBookingForm
 
   // Close on escape
   useEffect(() => {
@@ -60,6 +62,57 @@ export default function Modal({ item, onClose }: ModalProps) {
       }
     }
   }, [isContactForm])
+
+  // Load Cal.com script for booking form
+  useEffect(() => {
+    if (!isBookingForm) return
+
+    const Cal = (window as any).Cal
+    if (!Cal) {
+      // Initialize Cal
+      (function (C: any, A: string, L: string) {
+        let p = function (a: any, ar: any) { a.q.push(ar) }
+        let d = C.document
+        C.Cal = C.Cal || function () {
+          let cal = C.Cal
+          let ar = arguments
+          if (!cal.loaded) {
+            cal.ns = {}
+            cal.q = cal.q || []
+            d.head.appendChild(d.createElement("script")).src = A
+            cal.loaded = true
+          }
+          if (ar[0] === L) {
+            const api = function () { p(api, arguments) }
+            const namespace = ar[1]
+            api.q = api.q || []
+            if (typeof namespace === "string") {
+              cal.ns[namespace] = cal.ns[namespace] || api
+              p(cal.ns[namespace], ar)
+              p(cal, ["initNamespace", namespace])
+            } else p(cal, ar)
+            return
+          }
+          p(cal, ar)
+        }
+      })(window, "https://app.cal.com/embed/embed.js", "init");
+
+      (window as any).Cal("init", "30min", { origin: "https://app.cal.com" });
+    }
+
+    // Small delay to ensure Cal is loaded
+    setTimeout(() => {
+      const CalNs = (window as any).Cal?.ns?.["30min"]
+      if (CalNs) {
+        CalNs("inline", {
+          elementOrSelector: "#my-cal-inline-30min",
+          config: { "layout": "month_view" },
+          calLink: "samhayek/30min",
+        })
+        CalNs("ui", { "hideEventTypeDetails": false, "layout": "month_view" })
+      }
+    }, 100)
+  }, [isBookingForm])
   
   const handleAction = () => {
     // Handle different CTAs
@@ -81,8 +134,8 @@ export default function Modal({ item, onClose }: ModalProps) {
         onClick={(e) => e.stopPropagation()}
         className="bg-[#0f0f0f] rounded-xl border border-[#222] max-w-[800px] w-full max-h-[85vh] overflow-auto cursor-default"
       >
-        {/* Hero image - hide for contact form without cover image */}
-        {(item.coverImage || !isContactForm) && (
+        {/* Hero image - hide for embed modals without cover image */}
+        {(item.coverImage || !isEmbedModal) && (
           <div className="w-full aspect-video bg-[#151515] rounded-t-xl flex items-center justify-center relative">
             {item.coverImage ? (
               <Image
@@ -155,6 +208,16 @@ export default function Modal({ item, onClose }: ModalProps) {
             </div>
           )}
 
+          {/* Cal.com embed for booking form */}
+          {isBookingForm && (
+            <div className="mb-8">
+              <div
+                id="my-cal-inline-30min"
+                style={{ width: '100%', height: '600px', overflow: 'scroll' }}
+              />
+            </div>
+          )}
+
           {/* Spotify/Apple Music embed */}
           {item.embedUrl && (
             <div className="mb-8">
@@ -204,7 +267,7 @@ export default function Modal({ item, onClose }: ModalProps) {
               >
                 Close
               </button>
-              {!isContactForm && (
+              {!isEmbedModal && (
                 <button
                   onClick={handleAction}
                   className="px-6 py-3 rounded-md font-sans text-sm font-medium bg-foreground text-background hover:bg-white transition-colors"
