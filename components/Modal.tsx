@@ -280,6 +280,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 item.lemonSqueezyUrl ? (
                   <a
                     href={item.lemonSqueezyUrl}
+                    onClick={onClose}
                     className="lemonsqueezy-button px-6 py-3 rounded-md font-sans text-sm font-medium bg-foreground text-background hover:bg-white transition-colors"
                   >
                     {item.cta}
