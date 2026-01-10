@@ -6,8 +6,8 @@ export default defineConfig({
   name: 'sam-hayek-studio',
   title: 'Sam Hayek Studio',
 
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+  projectId: 'jpxmevq8',
+  dataset: 'production',
 
   plugins: [structureTool()],
 
