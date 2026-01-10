@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { ArchiveItem, typeColors } from '@/lib/types'
@@ -23,6 +23,7 @@ interface ModalProps {
 export default function Modal({ item, onClose }: ModalProps) {
   const colors = typeColors[item.type] || typeColors.Everything
   const youformRef = useRef<HTMLDivElement>(null)
+  const closingForCheckoutRef = useRef(false)
 
   // Check if this is the contact form card
   const isContactForm = item.slug?.current === 'send-message'
@@ -41,7 +42,12 @@ export default function Modal({ item, onClose }: ModalProps) {
   // Prevent body scroll
   useEffect(() => {
     document.body.style.overflow = 'hidden'
-    return () => { document.body.style.overflow = 'auto' }
+    return () => {
+      // Don't restore overflow if closing for Lemon Squeezy checkout
+      if (!closingForCheckoutRef.current) {
+        document.body.style.overflow = 'auto'
+      }
+    }
   }, [])
 
   // Load YouForm script for contact form
@@ -132,6 +138,13 @@ export default function Modal({ item, onClose }: ModalProps) {
     } else if (item.embedUrl) {
       window.open(item.embedUrl, '_blank')
     }
+  }
+
+  const handleLemonSqueezyClick = () => {
+    // Keep body scroll locked for Lemon Squeezy overlay
+    // The ref prevents the cleanup from restoring overflow
+    closingForCheckoutRef.current = true
+    onClose()
   }
   
   return (
@@ -280,7 +293,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 item.lemonSqueezyUrl ? (
                   <a
                     href={item.lemonSqueezyUrl}
-                    onClick={onClose}
+                    onClick={handleLemonSqueezyClick}
                     className="lemonsqueezy-button px-6 py-3 rounded-md font-sans text-sm font-medium bg-foreground text-background hover:bg-white transition-colors"
                   >
                     {item.cta}
