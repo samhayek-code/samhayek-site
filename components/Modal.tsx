@@ -102,7 +102,7 @@ export default function Modal({ item, onClose }: ModalProps) {
       config: { layout: "month_view" },
       calLink: "samhayek/30min",
     })
-    Cal.ns["30min"]("ui", { hideEventTypeDetails: false, layout: "month_view" })
+    Cal.ns["30min"]("ui", { hideEventTypeDetails: true, layout: "month_view" })
   }, [isBookingForm])
   
   const handleAction = () => {
@@ -125,8 +125,8 @@ export default function Modal({ item, onClose }: ModalProps) {
         onClick={(e) => e.stopPropagation()}
         className="bg-[#0f0f0f] rounded-xl border border-[#222] max-w-[800px] w-full max-h-[85vh] overflow-auto cursor-default"
       >
-        {/* Hero image - hide for embed modals without cover image */}
-        {(item.coverImage || !isEmbedModal) && (
+        {/* Hero image - hide for embed modals */}
+        {!isEmbedModal && item.coverImage && (
           <div className="w-full aspect-video bg-[#151515] rounded-t-xl flex items-center justify-center relative">
             {item.coverImage ? (
               <Image
