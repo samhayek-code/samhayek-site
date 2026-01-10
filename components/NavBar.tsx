@@ -25,14 +25,15 @@ export default function NavBar({
 
   return (
     <div
-      className="sticky top-0 z-50 px-12 py-5 transition-all duration-300"
+      className="sticky top-0 z-50 px-4 sm:px-12 py-4 sm:py-5 transition-all duration-300"
       style={{
         background: isScrolled ? 'rgba(10, 10, 10, 0.95)' : 'transparent',
         backdropFilter: isScrolled ? 'blur(20px)' : 'none',
         borderBottom: isScrolled ? '1px solid #151515' : '1px solid transparent',
       }}
     >
-      <div className="max-w-[1600px] mx-auto flex items-center justify-between">
+      {/* Desktop layout */}
+      <div className="hidden sm:flex max-w-[1600px] mx-auto items-center justify-between">
         {/* Logo */}
         <button
           onClick={() => setActiveFilter('Everything')}
@@ -107,6 +108,46 @@ export default function NavBar({
               </svg>
             )}
           </button>
+        </div>
+      </div>
+
+      {/* Mobile layout */}
+      <div className="sm:hidden flex flex-col gap-4">
+        {/* Logo - centered on its own line */}
+        <button
+          onClick={() => setActiveFilter('Everything')}
+          className="font-sans text-sm font-medium text-foreground tracking-widest uppercase text-center whitespace-nowrap"
+        >
+          Sam Hayek
+        </button>
+
+        {/* Filter buttons - 3x3 grid */}
+        <div className="grid grid-cols-3 gap-2">
+          {filterCategories.map((filter) => {
+            const isActive = activeFilter === filter
+            const colors = typeColors[filter]
+
+            return (
+              <button
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
+                className="flex items-center justify-center gap-1.5 px-2 py-3 rounded font-mono text-[10px] uppercase tracking-wide transition-all duration-200"
+                style={{
+                  background: isActive ? 'rgba(255,255,255,0.1)' : 'transparent',
+                  color: isActive ? '#e5e5e5' : '#555',
+                }}
+              >
+                <div
+                  className="w-[5px] h-[5px] rounded-full transition-all duration-200"
+                  style={{
+                    background: isActive ? colors.dot : 'transparent',
+                    border: `1px solid ${isActive ? colors.dot : '#444'}`,
+                  }}
+                />
+                {filter}
+              </button>
+            )
+          })}
         </div>
       </div>
     </div>

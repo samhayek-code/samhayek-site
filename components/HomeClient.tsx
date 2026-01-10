@@ -6,6 +6,7 @@ import NavBar from '@/components/NavBar'
 import PageHeader from '@/components/PageHeader'
 import ArchiveGrid from '@/components/ArchiveGrid'
 import Modal from '@/components/Modal'
+import LiveClock from '@/components/LiveClock'
 
 // Soft click sound using Web Audio API
 function playClickSound(audioContext: AudioContext | null) {
@@ -160,10 +161,10 @@ export default function HomeClient({ items }: HomeClientProps) {
       )}
 
       {/* Footer */}
-      <footer className="px-12 py-12 border-t border-border">
+      <footer className="px-4 sm:px-12 py-8 sm:py-12 border-t border-border">
         <div className="max-w-[1600px] mx-auto flex items-center justify-between">
-          {/* Keyboard navigation indicator - bottom left */}
-          <div className="flex items-center gap-3">
+          {/* Left side - Navigate on desktop, Clock on mobile */}
+          <div className="hidden sm:flex items-center gap-3">
             <span className="font-mono text-[10px] text-[#444] uppercase tracking-wide">
               Navigate
             </span>
@@ -195,8 +196,13 @@ export default function HomeClient({ items }: HomeClientProps) {
             </div>
           </div>
 
+          {/* Clock - mobile only (left side) */}
+          <div className="sm:hidden">
+            <LiveClock />
+          </div>
+
           {/* Social icons - center */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-4 sm:gap-5">
             <a
               href="https://x.com/samhayek_"
               target="_blank"
@@ -232,9 +238,9 @@ export default function HomeClient({ items }: HomeClientProps) {
             </a>
           </div>
 
-          {/* Copyright - bottom right */}
+          {/* Copyright - right side */}
           <span className="font-mono text-[10px] text-[#333] tracking-wide">
-            © 2025 Sam Hayek
+            © 2025
           </span>
         </div>
       </footer>
