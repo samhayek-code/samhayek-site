@@ -2,8 +2,18 @@
 
 import { useEffect } from 'react'
 import Image from 'next/image'
+import { PortableText } from '@portabletext/react'
 import { ArchiveItem, typeColors } from '@/lib/types'
 import { urlFor } from '@/lib/sanity'
+
+// Convert Spotify URL to embed URL
+function getSpotifyEmbedUrl(url: string): string {
+  if (!url) return ''
+  // Already an embed URL
+  if (url.includes('/embed/')) return url
+  // Convert open.spotify.com/track/xxx to open.spotify.com/embed/track/xxx
+  return url.replace('open.spotify.com/', 'open.spotify.com/embed/')
+}
 
 interface ModalProps {
   item: ArchiveItem
@@ -96,21 +106,29 @@ export default function Modal({ item, onClose }: ModalProps) {
           </div>
           
           {/* Description */}
-          <p className="font-sans text-[15px] text-[#888] leading-relaxed mb-8">
+          <p className="font-sans text-[15px] text-[#888] leading-relaxed mb-6">
             {item.description}
           </p>
-          
+
+          {/* Body (rich text) */}
+          {item.body && item.body.length > 0 && (
+            <div className="prose prose-invert prose-sm max-w-none mb-8 text-[#aaa]">
+              <PortableText value={item.body} />
+            </div>
+          )}
+
           {/* Spotify/Apple Music embed */}
           {item.embedUrl && (
             <div className="mb-8">
               <iframe
-                src={item.embedUrl}
+                src={getSpotifyEmbedUrl(item.embedUrl)}
                 width="100%"
                 height="152"
                 frameBorder="0"
                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                 loading="lazy"
                 className="rounded-lg"
+                style={{ borderRadius: '12px' }}
               />
             </div>
           )}

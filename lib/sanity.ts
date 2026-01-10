@@ -27,11 +27,13 @@ export async function getArchiveItems() {
       price,
       year,
       description,
+      body,
       cta,
       coverImage,
       gallery,
       embedUrl,
-      externalUrl
+      externalUrl,
+      lemonSqueezyUrl
     }
   `)
 }
