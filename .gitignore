@@ -35,3 +35,6 @@ Thumbs.db
 
 # Sanity
 .sanity/
+
+# Local content staging (uploaded to Sanity, not committed)
+content/
