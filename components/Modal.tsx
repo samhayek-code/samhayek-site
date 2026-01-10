@@ -67,51 +67,42 @@ export default function Modal({ item, onClose }: ModalProps) {
   useEffect(() => {
     if (!isBookingForm) return
 
-    const Cal = (window as any).Cal
-    if (!Cal) {
-      // Initialize Cal
-      (function (C: any, A: string, L: string) {
-        let p = function (a: any, ar: any) { a.q.push(ar) }
-        let d = C.document
-        C.Cal = C.Cal || function () {
-          let cal = C.Cal
-          let ar = arguments
-          if (!cal.loaded) {
-            cal.ns = {}
-            cal.q = cal.q || []
-            d.head.appendChild(d.createElement("script")).src = A
-            cal.loaded = true
-          }
-          if (ar[0] === L) {
-            const api = function () { p(api, arguments) }
-            const namespace = ar[1]
-            api.q = api.q || []
-            if (typeof namespace === "string") {
-              cal.ns[namespace] = cal.ns[namespace] || api
-              p(cal.ns[namespace], ar)
-              p(cal, ["initNamespace", namespace])
-            } else p(cal, ar)
-            return
-          }
-          p(cal, ar)
+    // Initialize Cal loader (from Cal.com embed docs)
+    (function (C: any, A: string, L: string) {
+      let p = function (a: any, ar: any) { a.q.push(ar) }
+      let d = C.document
+      C.Cal = C.Cal || function () {
+        let cal = C.Cal
+        let ar = arguments
+        if (!cal.loaded) {
+          cal.ns = {}
+          cal.q = cal.q || []
+          d.head.appendChild(d.createElement("script")).src = A
+          cal.loaded = true
         }
-      })(window, "https://app.cal.com/embed/embed.js", "init");
-
-      (window as any).Cal("init", "30min", { origin: "https://app.cal.com" });
-    }
-
-    // Small delay to ensure Cal is loaded
-    setTimeout(() => {
-      const CalNs = (window as any).Cal?.ns?.["30min"]
-      if (CalNs) {
-        CalNs("inline", {
-          elementOrSelector: "#my-cal-inline-30min",
-          config: { "layout": "month_view" },
-          calLink: "samhayek/30min",
-        })
-        CalNs("ui", { "hideEventTypeDetails": false, "layout": "month_view" })
+        if (ar[0] === L) {
+          const api: any = function () { p(api, arguments) }
+          const namespace = ar[1]
+          api.q = api.q || []
+          if (typeof namespace === "string") {
+            cal.ns[namespace] = cal.ns[namespace] || api
+            p(cal.ns[namespace], ar)
+            p(cal, ["initNamespace", namespace])
+          } else p(cal, ar)
+          return
+        }
+        p(cal, ar)
       }
-    }, 100)
+    })(window, "https://app.cal.com/embed/embed.js", "init")
+
+    const Cal = (window as any).Cal
+    Cal("init", "30min", { origin: "https://app.cal.com" })
+    Cal.ns["30min"]("inline", {
+      elementOrSelector: "#my-cal-inline-30min",
+      config: { layout: "month_view" },
+      calLink: "samhayek/30min",
+    })
+    Cal.ns["30min"]("ui", { hideEventTypeDetails: false, layout: "month_view" })
   }, [isBookingForm])
   
   const handleAction = () => {
