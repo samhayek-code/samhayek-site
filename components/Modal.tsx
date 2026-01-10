@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { ArchiveItem, typeColors } from '@/lib/types'
@@ -22,7 +22,11 @@ interface ModalProps {
 
 export default function Modal({ item, onClose }: ModalProps) {
   const colors = typeColors[item.type] || typeColors.Everything
-  
+  const youformRef = useRef<HTMLDivElement>(null)
+
+  // Check if this is the contact form card
+  const isContactForm = item.slug?.current === 'send-message'
+
   // Close on escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -31,12 +35,31 @@ export default function Modal({ item, onClose }: ModalProps) {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [onClose])
-  
+
   // Prevent body scroll
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => { document.body.style.overflow = 'auto' }
   }, [])
+
+  // Load YouForm script for contact form
+  useEffect(() => {
+    if (!isContactForm) return
+
+    // Check if script already exists
+    const existingScript = document.querySelector('script[src="https://app.youform.com/embed.js"]')
+    if (!existingScript) {
+      const script = document.createElement('script')
+      script.src = 'https://app.youform.com/embed.js'
+      script.async = true
+      document.body.appendChild(script)
+    } else {
+      // Re-initialize if script already loaded
+      if ((window as any).YouForm) {
+        (window as any).YouForm.init()
+      }
+    }
+  }, [isContactForm])
   
   const handleAction = () => {
     // Handle different CTAs
@@ -58,19 +81,21 @@ export default function Modal({ item, onClose }: ModalProps) {
         onClick={(e) => e.stopPropagation()}
         className="bg-[#0f0f0f] rounded-xl border border-[#222] max-w-[800px] w-full max-h-[85vh] overflow-auto cursor-default"
       >
-        {/* Hero image */}
-        <div className="w-full aspect-video bg-[#151515] rounded-t-xl flex items-center justify-center relative">
-          {item.coverImage ? (
-            <Image
-              src={urlFor(item.coverImage).width(1600).height(900).url()}
-              alt={item.title}
-              fill
-              className="object-cover rounded-t-xl"
-            />
-          ) : (
-            <div className="w-20 h-20 rounded-lg bg-white/[0.03] border border-white/[0.06]" />
-          )}
-        </div>
+        {/* Hero image - hide for contact form without cover image */}
+        {(item.coverImage || !isContactForm) && (
+          <div className="w-full aspect-video bg-[#151515] rounded-t-xl flex items-center justify-center relative">
+            {item.coverImage ? (
+              <Image
+                src={urlFor(item.coverImage).width(1600).height(900).url()}
+                alt={item.title}
+                fill
+                className="object-cover rounded-t-xl"
+              />
+            ) : (
+              <div className="w-20 h-20 rounded-lg bg-white/[0.03] border border-white/[0.06]" />
+            )}
+          </div>
+        )}
         
         {/* Content */}
         <div className="p-8 overflow-x-hidden">
@@ -117,6 +142,19 @@ export default function Modal({ item, onClose }: ModalProps) {
             </div>
           )}
 
+          {/* YouForm embed for contact form */}
+          {isContactForm && (
+            <div className="mb-8">
+              <div
+                ref={youformRef}
+                data-youform-embed
+                data-form="muqaomml"
+                data-width="100%"
+                data-height="700"
+              />
+            </div>
+          )}
+
           {/* Spotify/Apple Music embed */}
           {item.embedUrl && (
             <div className="mb-8">
@@ -158,7 +196,7 @@ export default function Modal({ item, onClose }: ModalProps) {
             ) : (
               <span />
             )}
-            
+
             <div className="flex gap-3">
               <button
                 onClick={onClose}
@@ -166,12 +204,14 @@ export default function Modal({ item, onClose }: ModalProps) {
               >
                 Close
               </button>
-              <button
-                onClick={handleAction}
-                className="px-6 py-3 rounded-md font-sans text-sm font-medium bg-foreground text-background hover:bg-white transition-colors"
-              >
-                {item.cta}
-              </button>
+              {!isContactForm && (
+                <button
+                  onClick={handleAction}
+                  className="px-6 py-3 rounded-md font-sans text-sm font-medium bg-foreground text-background hover:bg-white transition-colors"
+                >
+                  {item.cta}
+                </button>
+              )}
             </div>
           </div>
         </div>
