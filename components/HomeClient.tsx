@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { ArchiveItem } from '@/lib/types'
+import { ArchiveItem, filterCategories } from '@/lib/types'
 import NavBar from '@/components/NavBar'
 import PageHeader from '@/components/PageHeader'
 import ArchiveGrid from '@/components/ArchiveGrid'
@@ -17,14 +17,15 @@ function playClickSound(audioContext: AudioContext | null) {
   oscillator.connect(gainNode)
   gainNode.connect(audioContext.destination)
 
-  oscillator.frequency.value = 1800
+  // Softer, more muted click
+  oscillator.frequency.value = 800
   oscillator.type = 'sine'
 
-  gainNode.gain.setValueAtTime(0.03, audioContext.currentTime)
-  gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.05)
+  gainNode.gain.setValueAtTime(0.015, audioContext.currentTime)
+  gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.03)
 
   oscillator.start(audioContext.currentTime)
-  oscillator.stop(audioContext.currentTime + 0.05)
+  oscillator.stop(audioContext.currentTime + 0.03)
 }
 
 interface HomeClientProps {
@@ -35,7 +36,6 @@ export default function HomeClient({ items }: HomeClientProps) {
   const [activeFilter, setActiveFilter] = useState('Everything')
   const [isScrolled, setIsScrolled] = useState(false)
   const [selectedItem, setSelectedItem] = useState<ArchiveItem | null>(null)
-  const [focusedIndex, setFocusedIndex] = useState(-1)
   const [soundEnabled, setSoundEnabled] = useState(false)
   const [leftKeyPressed, setLeftKeyPressed] = useState(false)
   const [rightKeyPressed, setRightKeyPressed] = useState(false)
@@ -104,45 +104,36 @@ export default function HomeClient({ items }: HomeClientProps) {
     ? items
     : items.filter(item => item.type === activeFilter)
 
-  // Keyboard navigation
+  // Keyboard navigation for filter categories
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Don't navigate when modal is open
       if (selectedItem) return
 
+      const currentIndex = filterCategories.indexOf(activeFilter)
+
       if (e.key === 'ArrowLeft') {
         setLeftKeyPressed(true)
         setTimeout(() => setLeftKeyPressed(false), 150)
-        setFocusedIndex(prev => {
-          const newIndex = prev <= 0 ? filteredItems.length - 1 : prev - 1
-          if (soundEnabled && audioContextRef.current) {
-            playClickSound(audioContextRef.current)
-          }
-          return newIndex
-        })
+        const newIndex = currentIndex <= 0 ? filterCategories.length - 1 : currentIndex - 1
+        setActiveFilter(filterCategories[newIndex])
+        if (soundEnabled && audioContextRef.current) {
+          playClickSound(audioContextRef.current)
+        }
       } else if (e.key === 'ArrowRight') {
         setRightKeyPressed(true)
         setTimeout(() => setRightKeyPressed(false), 150)
-        setFocusedIndex(prev => {
-          const newIndex = prev >= filteredItems.length - 1 ? 0 : prev + 1
-          if (soundEnabled && audioContextRef.current) {
-            playClickSound(audioContextRef.current)
-          }
-          return newIndex
-        })
-      } else if (e.key === 'Enter' && focusedIndex >= 0 && focusedIndex < filteredItems.length) {
-        setSelectedItem(filteredItems[focusedIndex])
+        const newIndex = currentIndex >= filterCategories.length - 1 ? 0 : currentIndex + 1
+        setActiveFilter(filterCategories[newIndex])
+        if (soundEnabled && audioContextRef.current) {
+          playClickSound(audioContextRef.current)
+        }
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [filteredItems, focusedIndex, selectedItem, soundEnabled])
-
-  // Reset focus when filter changes
-  useEffect(() => {
-    setFocusedIndex(-1)
-  }, [activeFilter])
+  }, [activeFilter, selectedItem, soundEnabled])
   
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -160,7 +151,6 @@ export default function HomeClient({ items }: HomeClientProps) {
       <ArchiveGrid
         items={filteredItems}
         onCardClick={setSelectedItem}
-        focusedIndex={focusedIndex}
         onHoverSound={playHoverSound}
       />
 

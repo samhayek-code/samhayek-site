@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { filterCategories, typeColors } from '@/lib/types'
 import LiveClock from './LiveClock'
 
@@ -20,6 +21,8 @@ export default function NavBar({
   onToggleSound,
   onHoverSound,
 }: NavBarProps) {
+  const [hoveredFilter, setHoveredFilter] = useState<string | null>(null)
+
   return (
     <div
       className="sticky top-0 z-50 px-12 py-5 transition-all duration-300"
@@ -43,24 +46,34 @@ export default function NavBar({
         <div className="flex gap-1">
           {filterCategories.map((filter) => {
             const isActive = activeFilter === filter
+            const isHovered = hoveredFilter === filter && !isActive
             const colors = typeColors[filter]
 
             return (
               <button
                 key={filter}
                 onClick={() => setActiveFilter(filter)}
-                onMouseEnter={onHoverSound}
+                onMouseEnter={() => {
+                  setHoveredFilter(filter)
+                  onHoverSound()
+                }}
+                onMouseLeave={() => setHoveredFilter(null)}
                 className="flex items-center gap-1.5 px-3 py-2 rounded font-mono text-[11px] uppercase tracking-wide transition-all duration-200"
                 style={{
-                  background: isActive ? 'rgba(255,255,255,0.1)' : 'transparent',
-                  color: isActive ? '#e5e5e5' : '#555',
+                  background: isActive
+                    ? 'rgba(255,255,255,0.1)'
+                    : isHovered
+                    ? 'rgba(255,255,255,0.04)'
+                    : 'transparent',
+                  color: isActive ? '#e5e5e5' : isHovered ? '#888' : '#555',
                 }}
               >
                 <div
                   className="w-[5px] h-[5px] rounded-full transition-all duration-200"
                   style={{
-                    background: isActive ? colors.dot : 'transparent',
-                    border: `1px solid ${isActive ? colors.dot : '#444'}`,
+                    background: isActive ? colors.dot : isHovered ? colors.dot : 'transparent',
+                    border: `1px solid ${isActive ? colors.dot : isHovered ? colors.dot : '#444'}`,
+                    opacity: isActive ? 1 : isHovered ? 0.4 : 1,
                   }}
                 />
                 {filter}
