@@ -99,10 +99,10 @@ export default function Modal({ item, onClose }: ModalProps) {
     Cal("init", "30min", { origin: "https://app.cal.com" })
     Cal.ns["30min"]("inline", {
       elementOrSelector: "#my-cal-inline-30min",
-      config: { layout: "month_view" },
+      config: { layout: "week_view" },
       calLink: "samhayek/30min",
     })
-    Cal.ns["30min"]("ui", { hideEventTypeDetails: true, layout: "month_view" })
+    Cal.ns["30min"]("ui", { hideEventTypeDetails: true, layout: "week_view" })
   }, [isBookingForm])
   
   const handleAction = () => {
