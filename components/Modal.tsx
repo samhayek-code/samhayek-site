@@ -148,19 +148,7 @@ export default function Modal({ item, onClose }: ModalProps) {
               ))}
             </div>
           )}
-          
-          {/* If no gallery, show placeholders */}
-          {(!item.gallery || item.gallery.length === 0) && (
-            <div className="grid grid-cols-3 gap-3 mb-8">
-              {[1, 2, 3].map((i) => (
-                <div 
-                  key={i} 
-                  className="aspect-square rounded-md bg-[#151515] border border-[#1a1a1a]"
-                />
-              ))}
-            </div>
-          )}
-          
+
           {/* Footer */}
           <div className="flex justify-between items-center pt-6 border-t border-[#1a1a1a]">
             {item.price ? (

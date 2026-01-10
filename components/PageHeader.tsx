@@ -9,7 +9,7 @@ export default function PageHeader({ filter }: PageHeaderProps) {
   const isEverything = filter === 'Everything'
   
   return (
-    <div className="min-h-[70vh] flex flex-col justify-end p-12">
+    <div className="min-h-[35vh] flex flex-col justify-end p-12 pt-24">
       <div className="max-w-[800px]">
         <span className="font-mono text-[11px] text-subtle tracking-[0.15em] uppercase block mb-6">
           {isEverything ? "Yo, I'm Sam" : filter}

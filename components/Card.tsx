@@ -34,7 +34,7 @@ export default function Card({ item, onClick }: CardProps) {
             fill
             className="object-cover transition-all duration-300"
             style={{
-              opacity: isHovered ? 0.4 : 0.25,
+              opacity: isHovered ? 0.7 : 0.35,
             }}
           />
         </div>
