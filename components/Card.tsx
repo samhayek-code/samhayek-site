@@ -32,9 +32,10 @@ export default function Card({ item, onClick }: CardProps) {
             src={urlFor(item.coverImage).width(600).height(600).url()}
             alt={item.title}
             fill
-            className="object-cover transition-all duration-300"
+            className="object-cover transition-all duration-300 ease-out"
             style={{
-              opacity: isHovered ? 0.7 : 0.35,
+              opacity: isHovered ? 0.85 : 0.4,
+              filter: isHovered ? 'blur(0px)' : 'blur(2px)',
             }}
           />
         </div>
@@ -42,9 +43,11 @@ export default function Card({ item, onClick }: CardProps) {
 
       {/* Dark overlay for better text readability */}
       <div
-        className="absolute inset-0 z-[1] transition-opacity duration-300"
+        className="absolute inset-0 z-[1] transition-all duration-300 ease-out"
         style={{
-          background: 'linear-gradient(to bottom, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.3) 40%, rgba(10,10,10,0.7) 100%)',
+          background: isHovered
+            ? 'linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.1) 40%, rgba(10,10,10,0.5) 100%)'
+            : 'linear-gradient(to bottom, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.4) 40%, rgba(10,10,10,0.7) 100%)',
         }}
       />
 
