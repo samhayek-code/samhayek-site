@@ -18,7 +18,7 @@ export function urlFor(source: SanityImageSource) {
 // Fetch all items for the archive
 export async function getArchiveItems() {
   return client.fetch(`
-    *[_type == "archiveItem"] | order(date desc) {
+    *[_type == "archiveItem"] | order(coalesce(order, 0) asc, date desc) {
       _id,
       title,
       slug,
@@ -64,7 +64,7 @@ export async function getItemBySlug(slug: string) {
 // Fetch items by type
 export async function getItemsByType(type: string) {
   return client.fetch(`
-    *[_type == "archiveItem" && type == $type] | order(date desc) {
+    *[_type == "archiveItem" && type == $type] | order(coalesce(order, 0) asc, date desc) {
       _id,
       title,
       slug,

@@ -5,4 +5,5 @@ export default defineCliConfig({
     projectId: 'jpxmevq8',
     dataset: 'production',
   },
+  studioHost: 'samhayek',
 })

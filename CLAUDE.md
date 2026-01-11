@@ -62,7 +62,11 @@ Site/
 ├── app/                    # Next.js app router
 │   ├── page.tsx           # Home page (server component)
 │   ├── layout.tsx         # Root layout + OG meta tags
-│   └── globals.css        # Global styles
+│   ├── globals.css        # Global styles
+│   ├── icon.png           # Favicon (32x32)
+│   ├── apple-icon.png     # Apple touch icon
+│   ├── sitemap.ts         # Dynamic sitemap generation
+│   └── robots.ts          # Robots.txt configuration
 ├── components/
 │   ├── Card.tsx           # Archive card with hover effects + sound
 │   ├── Modal.tsx          # Item detail modal (Spotify, YouForm, Cal.com, gallery)
@@ -163,12 +167,58 @@ npx sanity deploy    # Deploy Sanity Studio to samhayek.sanity.studio
 3. **Create item**: POST mutation with image refs + content
 4. **Auto-deploy**: Site updates automatically via Sanity CDN
 
+### Adding Music via CLI
+
+```bash
+# 1. Download album art (from Spotify or other source)
+curl -o content/music/song-name.jpg "IMAGE_URL"
+
+# 2. Upload image to Sanity
+TOKEN=$(grep SANITY_API_TOKEN .env.local | cut -d= -f2)
+curl -s "https://jpxmevq8.api.sanity.io/v2024-01-01/assets/images/production" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: image/jpeg" \
+  --data-binary @content/music/song-name.jpg
+
+# Returns: {"_id": "image-xxx-640x640-jpg", ...}
+
+# 3. Create archive item
+curl -s "https://jpxmevq8.api.sanity.io/v2024-01-01/data/mutate/production" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{
+    "mutations": [{
+      "create": {
+        "_type": "archiveItem",
+        "title": "Song Name",
+        "slug": { "_type": "slug", "current": "song-name" },
+        "type": "Music",
+        "label": "Single",
+        "year": "2024",
+        "description": "A single by Sam Hayek.",
+        "cta": "Listen",
+        "embedUrl": "https://open.spotify.com/track/TRACK_ID",
+        "coverImage": {
+          "_type": "image",
+          "asset": { "_type": "reference", "_ref": "image-xxx-640x640-jpg" }
+        }
+      }
+    }]
+  }'
+```
+
 ## Environment Variables
 
 ```bash
 # .env.local (gitignored)
 NEXT_PUBLIC_SANITY_PROJECT_ID=jpxmevq8
 NEXT_PUBLIC_SANITY_DATASET=production
+SANITY_API_TOKEN=<token>  # For CLI mutations (create/update content)
+```
+
+**Note**: The `SANITY_API_TOKEN` is stored in `.env.local` and can be read with:
+```bash
+grep SANITY_API_TOKEN .env.local | cut -d= -f2
 ```
 
 ## Design Tokens
@@ -197,3 +247,17 @@ NEXT_PUBLIC_SANITY_DATASET=production
 
 ### Breakpoints
 - Mobile: < 640px (`sm:` prefix for desktop styles)
+
+## Current Content Inventory
+
+### Music
+| Title | Label | Year | Slug |
+|-------|-------|------|------|
+| Passport | Single | 2024 | passport |
+| Fine (like this) | Single | 2024 | fine-like-this |
+
+### Special Items
+| Slug | Purpose |
+|------|---------|
+| send-message | Contact form (YouForm embed) |
+| book-a-call | Calendar booking (Cal.com embed) |

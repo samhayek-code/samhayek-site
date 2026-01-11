@@ -54,10 +54,17 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'order',
+      title: 'Order',
+      type: 'number',
+      description: 'Sort priority: lower numbers first, higher numbers last. Leave at 0 for default (sorts by date). Use 100+ to push to end.',
+      initialValue: 0,
+    }),
+    defineField({
       name: 'date',
       title: 'Date',
       type: 'date',
-      description: 'Used for sorting',
+      description: 'Used for sorting (when order is the same)',
     }),
     defineField({
       name: 'year',
