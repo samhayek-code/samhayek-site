@@ -126,24 +126,34 @@ export default function NavBar({
         <div className="grid grid-cols-3 gap-2">
           {filterCategories.map((filter) => {
             const isActive = activeFilter === filter
+            const isHovered = hoveredFilter === filter && !isActive
             const colors = typeColors[filter]
 
             return (
               <button
                 key={filter}
                 onClick={() => setActiveFilter(filter)}
-                onMouseEnter={onHoverSound}
+                onMouseEnter={() => {
+                  setHoveredFilter(filter)
+                  onHoverSound()
+                }}
+                onMouseLeave={() => setHoveredFilter(null)}
                 className="flex items-center justify-center gap-1.5 px-2 py-3 rounded font-mono text-[10px] uppercase tracking-wide transition-all duration-200"
                 style={{
-                  background: isActive ? 'rgba(255,255,255,0.1)' : 'transparent',
-                  color: isActive ? '#e5e5e5' : '#555',
+                  background: isActive
+                    ? 'rgba(255,255,255,0.1)'
+                    : isHovered
+                    ? 'rgba(255,255,255,0.04)'
+                    : 'transparent',
+                  color: isActive ? '#e5e5e5' : isHovered ? '#888' : '#555',
                 }}
               >
                 <div
                   className="w-[5px] h-[5px] rounded-full transition-all duration-200"
                   style={{
-                    background: isActive ? colors.dot : 'transparent',
-                    border: `1px solid ${isActive ? colors.dot : '#444'}`,
+                    background: isActive ? colors.dot : isHovered ? colors.dot : 'transparent',
+                    border: `1px solid ${isActive ? colors.dot : isHovered ? colors.dot : '#444'}`,
+                    opacity: isActive ? 1 : isHovered ? 0.4 : 1,
                   }}
                 />
                 {filter}
