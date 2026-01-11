@@ -1,10 +1,52 @@
 'use client'
 
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { ArchiveItem, typeColors } from '@/lib/types'
 import { urlFor } from '@/lib/sanity'
+
+// Lightbox component for full-screen image viewing
+function Lightbox({
+  src,
+  alt,
+  onClose
+}: {
+  src: string
+  alt: string
+  onClose: () => void
+}) {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [onClose])
+
+  return (
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-[3000] flex items-center justify-center bg-black/95 cursor-zoom-out p-4"
+    >
+      <img
+        src={src}
+        alt={alt}
+        className="max-w-full max-h-full object-contain"
+        onClick={(e) => e.stopPropagation()}
+      />
+      <button
+        onClick={onClose}
+        className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors"
+        aria-label="Close lightbox"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  )
+}
 
 // Convert Spotify URL to embed URL
 function getSpotifyEmbedUrl(url: string): string {
@@ -24,11 +66,13 @@ export default function Modal({ item, onClose }: ModalProps) {
   const colors = typeColors[item.type] || typeColors.Everything
   const youformRef = useRef<HTMLDivElement>(null)
   const closingForCheckoutRef = useRef(false)
+  const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string } | null>(null)
 
   // Check if this is a special modal type
   const isContactForm = item.slug?.current === 'send-message'
   const isBookingForm = item.slug?.current === 'book-a-call'
   const isCaseStudy = item.slug?.current === 'samhayek-com'
+  const isArt = item.type === 'Art'
   const isEmbedModal = isContactForm || isBookingForm
   const hideCtaButton = isEmbedModal || isCaseStudy
 
@@ -158,8 +202,8 @@ export default function Modal({ item, onClose }: ModalProps) {
         onClick={(e) => e.stopPropagation()}
         className="bg-[#0f0f0f] rounded-xl border border-[#222] max-w-[800px] w-full max-h-[85vh] overflow-auto cursor-default"
       >
-        {/* Hero image - hide for embed modals */}
-        {!isEmbedModal && item.coverImage && (
+        {/* Hero image - hide for embed modals and Art type */}
+        {!isEmbedModal && !isArt && item.coverImage && (
           <div className="w-full aspect-video bg-[#151515] rounded-t-xl flex items-center justify-center relative">
             {item.coverImage ? (
               <Image
@@ -212,6 +256,61 @@ export default function Modal({ item, onClose }: ModalProps) {
             {item.description}
           </p>
 
+          {/* Art display - full-width images with lightbox */}
+          {isArt && (
+            <div className="space-y-4 mb-8">
+              {/* Cover image as main artwork */}
+              {item.coverImage && (
+                <div
+                  className="relative w-full cursor-zoom-in group"
+                  onClick={() => {
+                    const src = urlFor(item.coverImage!).width(2400).quality(90).url()
+                    setLightboxImage({ src, alt: item.title })
+                  }}
+                >
+                  <Image
+                    src={urlFor(item.coverImage).width(1600).quality(85).url()}
+                    alt={item.title}
+                    width={1600}
+                    height={1600}
+                    className="w-full h-auto rounded-lg"
+                    style={{ maxHeight: '70vh', objectFit: 'contain' }}
+                  />
+                  <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors rounded-lg flex items-center justify-center">
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white/60 text-sm font-mono">
+                      Click to expand
+                    </span>
+                  </div>
+                </div>
+              )}
+              {/* Additional gallery images */}
+              {item.gallery && item.gallery.length > 0 && item.gallery.map((image, i) => (
+                <div
+                  key={i}
+                  className="relative w-full cursor-zoom-in group"
+                  onClick={() => {
+                    const src = urlFor(image).width(2400).quality(90).url()
+                    setLightboxImage({ src, alt: `${item.title} ${i + 2}` })
+                  }}
+                >
+                  <Image
+                    src={urlFor(image).width(1600).quality(85).url()}
+                    alt={`${item.title} ${i + 2}`}
+                    width={1600}
+                    height={1600}
+                    className="w-full h-auto rounded-lg"
+                    style={{ maxHeight: '70vh', objectFit: 'contain' }}
+                  />
+                  <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors rounded-lg flex items-center justify-center">
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white/60 text-sm font-mono">
+                      Click to expand
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
           {/* Body (rich text) */}
           {item.body && item.body.length > 0 && (
             <div className="prose prose-invert prose-sm max-w-full w-full mb-8 text-[#aaa] overflow-hidden break-words [&>p]:mb-4 [&>p]:leading-relaxed">
@@ -258,8 +357,8 @@ export default function Modal({ item, onClose }: ModalProps) {
             </div>
           )}
           
-          {/* Gallery */}
-          {item.gallery && item.gallery.length > 0 && (
+          {/* Gallery - for non-Art items (Art handles gallery separately above) */}
+          {!isArt && item.gallery && item.gallery.length > 0 && (
             <div className="grid grid-cols-3 gap-3 mb-8">
               {item.gallery.map((image, i) => (
                 <div key={i} className="aspect-square relative rounded-md overflow-hidden bg-[#151515] border border-[#1a1a1a]">
@@ -313,6 +412,15 @@ export default function Modal({ item, onClose }: ModalProps) {
           </div>
         </div>
       </div>
+
+      {/* Lightbox */}
+      {lightboxImage && (
+        <Lightbox
+          src={lightboxImage.src}
+          alt={lightboxImage.alt}
+          onClose={() => setLightboxImage(null)}
+        />
+      )}
     </div>
   )
 }
