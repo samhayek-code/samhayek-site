@@ -8,9 +8,9 @@ import ArchiveGrid from '@/components/ArchiveGrid'
 import Modal from '@/components/Modal'
 import LiveClock from '@/components/LiveClock'
 
-// Soft click sound using Web Audio API
+// Soft, padded click sound using Web Audio API
 function playClickSound(audioContext: AudioContext | null) {
-  if (!audioContext) return
+  if (!audioContext || audioContext.state !== 'running') return
 
   const oscillator = audioContext.createOscillator()
   const gainNode = audioContext.createGain()
@@ -18,15 +18,18 @@ function playClickSound(audioContext: AudioContext | null) {
   oscillator.connect(gainNode)
   gainNode.connect(audioContext.destination)
 
-  // Softer, more muted click
-  oscillator.frequency.value = 800
+  // Lower frequency for warmer, softer tone
+  oscillator.frequency.value = 440
   oscillator.type = 'sine'
 
-  gainNode.gain.setValueAtTime(0.015, audioContext.currentTime)
-  gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.03)
+  // Fade in slightly, then fade out - creates "padded" feel
+  const now = audioContext.currentTime
+  gainNode.gain.setValueAtTime(0, now)
+  gainNode.gain.linearRampToValueAtTime(0.008, now + 0.015) // Gentle fade in
+  gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.08) // Slow fade out
 
-  oscillator.start(audioContext.currentTime)
-  oscillator.stop(audioContext.currentTime + 0.03)
+  oscillator.start(now)
+  oscillator.stop(now + 0.08)
 }
 
 interface HomeClientProps {
@@ -43,22 +46,26 @@ export default function HomeClient({ items }: HomeClientProps) {
 
   const audioContextRef = useRef<AudioContext | null>(null)
 
-  // Initialize audio context on first interaction
+  // Initialize audio context immediately, resume on first interaction
   useEffect(() => {
-    const initAudio = () => {
-      if (!audioContextRef.current) {
-        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
+    // Create AudioContext immediately (will be in suspended state)
+    audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
+
+    const resumeAudio = () => {
+      if (audioContextRef.current?.state === 'suspended') {
+        audioContextRef.current.resume()
       }
-      window.removeEventListener('click', initAudio)
-      window.removeEventListener('keydown', initAudio)
     }
 
-    window.addEventListener('click', initAudio)
-    window.addEventListener('keydown', initAudio)
+    // Resume on any user interaction
+    window.addEventListener('click', resumeAudio)
+    window.addEventListener('keydown', resumeAudio)
+    window.addEventListener('touchstart', resumeAudio)
 
     return () => {
-      window.removeEventListener('click', initAudio)
-      window.removeEventListener('keydown', initAudio)
+      window.removeEventListener('click', resumeAudio)
+      window.removeEventListener('keydown', resumeAudio)
+      window.removeEventListener('touchstart', resumeAudio)
     }
   }, [])
 
