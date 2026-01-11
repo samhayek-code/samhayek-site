@@ -182,10 +182,10 @@ export default function HomeClient({ items }: HomeClientProps) {
       )}
 
       {/* Footer */}
-      <footer className="px-4 sm:px-12 py-8 sm:py-12 border-t border-border">
+      <footer className="px-4 lg:px-12 py-8 lg:py-12 border-t border-border">
         <div className="max-w-[1600px] mx-auto flex items-center justify-between">
-          {/* Left side - Navigate on desktop, Clock on mobile */}
-          <div className="hidden sm:flex items-center gap-3">
+          {/* Left side - Navigate on desktop, Clock on mobile/tablet */}
+          <div className="hidden lg:flex items-center gap-3">
             <span className="font-mono text-[10px] text-[#444] uppercase tracking-wide">
               Navigate
             </span>
@@ -217,13 +217,13 @@ export default function HomeClient({ items }: HomeClientProps) {
             </div>
           </div>
 
-          {/* Clock - mobile only (left side) */}
-          <div className="sm:hidden">
+          {/* Clock - mobile/tablet only (left side) */}
+          <div className="lg:hidden">
             <LiveClock />
           </div>
 
           {/* Social icons - center */}
-          <div className="flex items-center gap-4 sm:gap-5">
+          <div className="flex items-center gap-4 lg:gap-5">
             <a
               href="https://x.com/samhayek_"
               target="_blank"

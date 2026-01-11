@@ -25,15 +25,15 @@ export default function NavBar({
 
   return (
     <div
-      className="sticky top-0 z-50 px-4 sm:px-12 py-4 sm:py-5 transition-all duration-300"
+      className="sticky top-0 z-50 px-4 lg:px-12 py-4 lg:py-5 transition-all duration-300"
       style={{
         background: isScrolled ? 'rgba(10, 10, 10, 0.95)' : 'transparent',
         backdropFilter: isScrolled ? 'blur(20px)' : 'none',
         borderBottom: isScrolled ? '1px solid #151515' : '1px solid transparent',
       }}
     >
-      {/* Desktop layout */}
-      <div className="hidden sm:flex max-w-[1600px] mx-auto items-center justify-between">
+      {/* Desktop layout (1024px+) */}
+      <div className="hidden lg:flex max-w-[1600px] mx-auto items-center justify-between">
         {/* Logo */}
         <button
           onClick={() => setActiveFilter('Everything')}
@@ -111,8 +111,8 @@ export default function NavBar({
         </div>
       </div>
 
-      {/* Mobile layout */}
-      <div className="sm:hidden flex flex-col gap-4">
+      {/* Mobile/Tablet layout (below 1024px) */}
+      <div className="lg:hidden flex flex-col gap-4">
         {/* Logo - centered on its own line */}
         <button
           onClick={() => setActiveFilter('Everything')}
