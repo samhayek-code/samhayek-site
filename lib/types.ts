@@ -64,7 +64,7 @@ export const headerContent: Record<string, { title: string; subtitle: string }> 
     subtitle: 'Paintings, mixed media, and explorations in form.',
   },
   Writing: {
-    title: 'Language Arts.',
+    title: 'Language arts.',
     subtitle: 'Poetry, essays, and thoughts worth preserving.',
   },
   Downloads: {
