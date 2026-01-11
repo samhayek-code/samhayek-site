@@ -38,3 +38,6 @@ Thumbs.db
 
 # Local content staging (uploaded to Sanity, not committed)
 content/
+
+# Exports (local only)
+exports/
