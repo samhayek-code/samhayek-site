@@ -127,8 +127,10 @@ export default function Modal({ item, onClose }: ModalProps) {
   const isBookingForm = item.slug?.current === 'book-a-call'
   const isCaseStudy = item.slug?.current === 'samhayek-com'
   const isArt = item.type === 'Art'
+  const isDesign = item.type === 'Design'
+  const isGalleryType = isArt || isDesign  // Types that use full-width gallery display
   const isEmbedModal = isContactForm || isBookingForm
-  const hideCtaButton = isEmbedModal || isCaseStudy || isArt
+  const hideCtaButton = isEmbedModal || isCaseStudy || isGalleryType
 
   // Close on escape
   useEffect(() => {
@@ -256,8 +258,8 @@ export default function Modal({ item, onClose }: ModalProps) {
         onClick={(e) => e.stopPropagation()}
         className="bg-[#0f0f0f] rounded-xl border border-[#222] max-w-[800px] w-full max-h-[85vh] overflow-auto cursor-default"
       >
-        {/* Hero image - hide for embed modals and Art type */}
-        {!isEmbedModal && !isArt && item.coverImage && (
+        {/* Hero image - hide for embed modals and gallery types (Art, Design) */}
+        {!isEmbedModal && !isGalleryType && item.coverImage && (
           <div className="w-full aspect-video bg-[#151515] rounded-t-xl flex items-center justify-center relative">
             {item.coverImage ? (
               <Image
@@ -310,8 +312,8 @@ export default function Modal({ item, onClose }: ModalProps) {
             {item.description}
           </p>
 
-          {/* Art display - full-width images with lightbox */}
-          {isArt && (() => {
+          {/* Gallery display - full-width images with lightbox (Art, Design) */}
+          {isGalleryType && (() => {
             // Build array of all images for lightbox navigation
             const allImages: { src: string; alt: string; thumbnail: string }[] = []
             if (item.coverImage) {
@@ -411,8 +413,8 @@ export default function Modal({ item, onClose }: ModalProps) {
             </div>
           )}
           
-          {/* Gallery - for non-Art items (Art handles gallery separately above) */}
-          {!isArt && item.gallery && item.gallery.length > 0 && (
+          {/* Gallery - for non-gallery types (Art/Design handle gallery separately above) */}
+          {!isGalleryType && item.gallery && item.gallery.length > 0 && (
             <div className="grid grid-cols-3 gap-3 mb-8">
               {item.gallery.map((image, i) => (
                 <div key={i} className="aspect-square relative rounded-md overflow-hidden bg-[#151515] border border-[#1a1a1a]">
