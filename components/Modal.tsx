@@ -6,23 +6,42 @@ import { PortableText } from '@portabletext/react'
 import { ArchiveItem, typeColors } from '@/lib/types'
 import { urlFor } from '@/lib/sanity'
 
-// Lightbox component for full-screen image viewing
+// Lightbox component for full-screen image viewing with navigation
 function Lightbox({
-  src,
-  alt,
-  onClose
+  images,
+  currentIndex,
+  onClose,
+  onNavigate
 }: {
-  src: string
-  alt: string
+  images: { src: string; alt: string }[]
+  currentIndex: number
   onClose: () => void
+  onNavigate: (index: number) => void
 }) {
+  const hasMultiple = images.length > 1
+  const current = images[currentIndex]
+
+  const goNext = useCallback(() => {
+    if (currentIndex < images.length - 1) {
+      onNavigate(currentIndex + 1)
+    }
+  }, [currentIndex, images.length, onNavigate])
+
+  const goPrev = useCallback(() => {
+    if (currentIndex > 0) {
+      onNavigate(currentIndex - 1)
+    }
+  }, [currentIndex, onNavigate])
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowRight') goNext()
+      if (e.key === 'ArrowLeft') goPrev()
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [onClose])
+  }, [onClose, goNext, goPrev])
 
   return (
     <div
@@ -30,11 +49,46 @@ function Lightbox({
       className="fixed inset-0 z-[3000] flex items-center justify-center bg-black/95 cursor-zoom-out p-4"
     >
       <img
-        src={src}
-        alt={alt}
+        src={current.src}
+        alt={current.alt}
         className="max-w-full max-h-full object-contain"
         onClick={(e) => e.stopPropagation()}
       />
+
+      {/* Navigation arrows */}
+      {hasMultiple && (
+        <>
+          <button
+            onClick={(e) => { e.stopPropagation(); goPrev() }}
+            disabled={currentIndex === 0}
+            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 text-white/60 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-all"
+            aria-label="Previous image"
+          >
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); goNext() }}
+            disabled={currentIndex === images.length - 1}
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 text-white/60 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-all"
+            aria-label="Next image"
+          >
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+        </>
+      )}
+
+      {/* Image counter */}
+      {hasMultiple && (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 font-mono text-sm text-white/60">
+          {currentIndex + 1} / {images.length}
+        </div>
+      )}
+
+      {/* Close button */}
       <button
         onClick={onClose}
         className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors"
@@ -66,7 +120,7 @@ export default function Modal({ item, onClose }: ModalProps) {
   const colors = typeColors[item.type] || typeColors.Everything
   const youformRef = useRef<HTMLDivElement>(null)
   const closingForCheckoutRef = useRef(false)
-  const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string } | null>(null)
+  const [lightboxState, setLightboxState] = useState<{ images: { src: string; alt: string }[]; currentIndex: number } | null>(null)
 
   // Check if this is a special modal type
   const isContactForm = item.slug?.current === 'send-message'
@@ -257,59 +311,59 @@ export default function Modal({ item, onClose }: ModalProps) {
           </p>
 
           {/* Art display - full-width images with lightbox */}
-          {isArt && (
-            <div className="space-y-4 mb-8">
-              {/* Cover image as main artwork */}
-              {item.coverImage && (
-                <div
-                  className="relative w-full cursor-zoom-in group"
-                  onClick={() => {
-                    const src = urlFor(item.coverImage!).width(2400).quality(90).url()
-                    setLightboxImage({ src, alt: item.title })
-                  }}
-                >
-                  <Image
-                    src={urlFor(item.coverImage).width(1600).quality(85).url()}
-                    alt={item.title}
-                    width={1600}
-                    height={1600}
-                    className="w-full h-auto rounded-lg"
-                    style={{ maxHeight: '70vh', objectFit: 'contain' }}
-                  />
-                  <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors rounded-lg flex items-center justify-center">
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white/60 text-sm font-mono">
-                      Click to expand
-                    </span>
+          {isArt && (() => {
+            // Build array of all images for lightbox navigation
+            const allImages: { src: string; alt: string; thumbnail: string }[] = []
+            if (item.coverImage) {
+              allImages.push({
+                src: urlFor(item.coverImage).width(2400).quality(90).url(),
+                alt: item.title,
+                thumbnail: urlFor(item.coverImage).width(1600).quality(85).url()
+              })
+            }
+            if (item.gallery) {
+              item.gallery.forEach((image, i) => {
+                allImages.push({
+                  src: urlFor(image).width(2400).quality(90).url(),
+                  alt: `${item.title} ${i + 2}`,
+                  thumbnail: urlFor(image).width(1600).quality(85).url()
+                })
+              })
+            }
+
+            const openLightbox = (index: number) => {
+              setLightboxState({
+                images: allImages.map(img => ({ src: img.src, alt: img.alt })),
+                currentIndex: index
+              })
+            }
+
+            return (
+              <div className="space-y-4 mb-8">
+                {allImages.map((image, i) => (
+                  <div
+                    key={i}
+                    className="relative w-full cursor-zoom-in group"
+                    onClick={() => openLightbox(i)}
+                  >
+                    <Image
+                      src={image.thumbnail}
+                      alt={image.alt}
+                      width={1600}
+                      height={1600}
+                      className="w-full h-auto rounded-lg"
+                      style={{ maxHeight: '70vh', objectFit: 'contain' }}
+                    />
+                    <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors rounded-lg flex items-center justify-center">
+                      <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white/60 text-sm font-mono">
+                        {allImages.length > 1 ? `${i + 1} / ${allImages.length} — Click to expand` : 'Click to expand'}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              )}
-              {/* Additional gallery images */}
-              {item.gallery && item.gallery.length > 0 && item.gallery.map((image, i) => (
-                <div
-                  key={i}
-                  className="relative w-full cursor-zoom-in group"
-                  onClick={() => {
-                    const src = urlFor(image).width(2400).quality(90).url()
-                    setLightboxImage({ src, alt: `${item.title} ${i + 2}` })
-                  }}
-                >
-                  <Image
-                    src={urlFor(image).width(1600).quality(85).url()}
-                    alt={`${item.title} ${i + 2}`}
-                    width={1600}
-                    height={1600}
-                    className="w-full h-auto rounded-lg"
-                    style={{ maxHeight: '70vh', objectFit: 'contain' }}
-                  />
-                  <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors rounded-lg flex items-center justify-center">
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white/60 text-sm font-mono">
-                      Click to expand
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )
+          })()}
 
           {/* Body (rich text) */}
           {item.body && item.body.length > 0 && (
@@ -414,11 +468,12 @@ export default function Modal({ item, onClose }: ModalProps) {
       </div>
 
       {/* Lightbox */}
-      {lightboxImage && (
+      {lightboxState && (
         <Lightbox
-          src={lightboxImage.src}
-          alt={lightboxImage.alt}
-          onClose={() => setLightboxImage(null)}
+          images={lightboxState.images}
+          currentIndex={lightboxState.currentIndex}
+          onClose={() => setLightboxState(null)}
+          onNavigate={(index) => setLightboxState(prev => prev ? { ...prev, currentIndex: index } : null)}
         />
       )}
     </div>
