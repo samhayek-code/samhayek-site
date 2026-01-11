@@ -1,12 +1,12 @@
-export type ItemType = 
-  | 'Music' 
-  | 'Art' 
-  | 'Writing' 
-  | 'Downloads' 
-  | 'Tools' 
-  | 'Shop' 
-  | 'Design' 
-  | 'Chat'
+export type ItemType =
+  | 'Music'
+  | 'Art'
+  | 'Writing'
+  | 'Downloads'
+  | 'Tools'
+  | 'Shop'
+  | 'Design'
+  | 'Connect'
 
 export interface ArchiveItem {
   _id: string
@@ -35,7 +35,7 @@ export const typeColors: Record<string, { dot: string; bg: string }> = {
   Tools: { dot: '#f472b6', bg: 'rgba(244,114,182,0.08)' },
   Shop: { dot: '#f87171', bg: 'rgba(248,113,113,0.08)' },
   Design: { dot: '#60a5fa', bg: 'rgba(96,165,250,0.08)' },
-  Chat: { dot: '#34d399', bg: 'rgba(52,211,153,0.08)' },
+  Connect: { dot: '#34d399', bg: 'rgba(52,211,153,0.08)' },
 }
 
 export const filterCategories = [
@@ -47,7 +47,7 @@ export const filterCategories = [
   'Tools',
   'Shop',
   'Design',
-  'Chat',
+  'Connect',
 ]
 
 export const headerContent: Record<string, { title: string; subtitle: string }> = {
@@ -56,7 +56,7 @@ export const headerContent: Record<string, { title: string; subtitle: string }> 
     subtitle: 'Building with sound, light, language, and code.',
   },
   Music: {
-    title: 'Sound as language.',
+    title: 'Emotion over Time.',
     subtitle: 'Exploring the space between silence and meaning.',
   },
   Art: {
@@ -64,12 +64,12 @@ export const headerContent: Record<string, { title: string; subtitle: string }> 
     subtitle: 'Paintings, mixed media, and explorations in form.',
   },
   Writing: {
-    title: 'Words that linger.',
+    title: 'Language Arts.',
     subtitle: 'Poetry, essays, and thoughts worth preserving.',
   },
   Downloads: {
     title: 'Take something with you.',
-    subtitle: 'Wallpapers, presets, and resources. Free to use.',
+    subtitle: 'Free resources and digital products.',
   },
   Tools: {
     title: 'Built to be useful.',
@@ -80,11 +80,11 @@ export const headerContent: Record<string, { title: string; subtitle: string }> 
     subtitle: 'Limited prints, apparel, and physical goods.',
   },
   Design: {
-    title: 'Brands that resonate.',
-    subtitle: 'Strategic identity systems for founders with vision.',
+    title: 'Identity + Function.',
+    subtitle: 'Strategic systems for founders with vision.',
   },
-  Chat: {
-    title: "Let's connect.",
-    subtitle: 'Whether you have a project in mind or just want to say hello.',
+  Connect: {
+    title: "Let's chat.",
+    subtitle: "Building something? What's on your mind?",
   },
 }

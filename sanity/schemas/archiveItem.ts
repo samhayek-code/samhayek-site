@@ -34,7 +34,7 @@ export default defineType({
           { title: 'Tools', value: 'Tools' },
           { title: 'Shop', value: 'Shop' },
           { title: 'Design', value: 'Design' },
-          { title: 'Chat', value: 'Chat' },
+          { title: 'Connect', value: 'Connect' },
         ],
       },
       validation: (Rule) => Rule.required(),
