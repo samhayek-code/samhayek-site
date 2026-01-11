@@ -190,18 +190,18 @@ export default function Modal({ item, onClose }: ModalProps) {
             </div>
             
             {/* Label pill */}
-            <div 
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded"
+            <div
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded shrink-0"
               style={{
                 background: 'rgba(255,255,255,0.03)',
                 border: '1px solid rgba(255,255,255,0.06)',
               }}
             >
-              <div 
-                className="w-1.5 h-1.5 rounded-full"
+              <div
+                className="w-1.5 h-1.5 rounded-full shrink-0"
                 style={{ background: colors.dot }}
               />
-              <span className="font-mono text-[11px] text-muted uppercase tracking-wide">
+              <span className="font-mono text-[11px] text-muted uppercase tracking-wide whitespace-nowrap">
                 {item.label}
               </span>
             </div>
