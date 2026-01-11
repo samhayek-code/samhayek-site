@@ -248,16 +248,38 @@ grep SANITY_API_TOKEN .env.local | cut -d= -f2
 ### Breakpoints
 - Mobile: < 640px (`sm:` prefix for desktop styles)
 
+## Card Ordering
+
+Cards sort by `order` ASC, then `date` DESC (newest first).
+
+| Order Value | Behavior |
+|-------------|----------|
+| -10 | Pinned to top |
+| 0 (default) | Sorts by date among peers |
+| 100+ | Pushed to bottom |
+
+Set `order` in Sanity Studio to override chronological sorting. Chat items default to `order: 100`.
+
 ## Current Content Inventory
 
-### Music
-| Title | Label | Year | Slug |
-|-------|-------|------|------|
-| Passport | Single | 2024 | passport |
-| Fine (like this) | Single | 2024 | fine-like-this |
+| Title | Type | Order | Date | Slug |
+|-------|------|-------|------|------|
+| Baseline | Tools | 0 | 2026-01-01 | baseline |
+| Circadian Journal | Downloads | 0 | 2025-01-01 | circadian-journal |
+| Fine (like this) | Music | 0 | 2024-12-01 | fine-like-this |
+| Passport | Music | 0 | 2024-06-01 | passport |
+| Book a Call | Chat | 100 | — | book-a-call |
+| Send a Message | Chat | 100 | — | send-message |
 
-### Special Items
-| Slug | Purpose |
-|------|---------|
-| send-message | Contact form (YouForm embed) |
-| book-a-call | Calendar booking (Cal.com embed) |
+## Version Control
+
+- **Git**: All code versioned, push to `main` triggers deploy
+- **Vercel**: Keeps deployment history, instant rollback via dashboard
+- **Sanity**: Document revision history, content separate from code
+
+### Recovery Commands
+```bash
+git checkout .                    # Discard uncommitted changes
+git log --oneline                 # View commit history
+git revert <commit>               # Undo a specific commit
+```
