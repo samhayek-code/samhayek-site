@@ -8,7 +8,7 @@ import ArchiveGrid from '@/components/ArchiveGrid'
 import Modal from '@/components/Modal'
 import LiveClock from '@/components/LiveClock'
 
-// Soft, padded click sound using Web Audio API
+// Soft, padded click sound using Web Audio API (E5 - E minor)
 function playClickSound(audioContext: AudioContext | null) {
   if (!audioContext || audioContext.state !== 'running') return
 
@@ -18,18 +18,18 @@ function playClickSound(audioContext: AudioContext | null) {
   oscillator.connect(gainNode)
   gainNode.connect(audioContext.destination)
 
-  // Lower frequency for warmer, softer tone
-  oscillator.frequency.value = 440
+  // E5 (659 Hz) - E minor root note
+  oscillator.frequency.value = 659
   oscillator.type = 'sine'
 
-  // Fade in slightly, then fade out - creates "padded" feel
+  // Short attack, quick fade out
   const now = audioContext.currentTime
   gainNode.gain.setValueAtTime(0, now)
-  gainNode.gain.linearRampToValueAtTime(0.008, now + 0.015) // Gentle fade in
-  gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.08) // Slow fade out
+  gainNode.gain.linearRampToValueAtTime(0.011, now + 0.008) // 8ms attack
+  gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.04) // 40ms total
 
   oscillator.start(now)
-  oscillator.stop(now + 0.08)
+  oscillator.stop(now + 0.04)
 }
 
 interface HomeClientProps {
@@ -78,7 +78,12 @@ export default function HomeClient({ items }: HomeClientProps) {
   }, [])
 
   // Save sound preference
-  const toggleSound = useCallback(() => {
+  const toggleSound = useCallback(async () => {
+    // Ensure audio context is running before toggling
+    if (audioContextRef.current?.state === 'suspended') {
+      await audioContextRef.current.resume()
+    }
+
     setSoundEnabled(prev => {
       const newValue = !prev
       localStorage.setItem('soundEnabled', JSON.stringify(newValue))
