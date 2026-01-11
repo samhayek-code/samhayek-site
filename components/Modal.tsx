@@ -102,13 +102,49 @@ function Lightbox({
   )
 }
 
-// Convert Spotify URL to embed URL
-function getSpotifyEmbedUrl(url: string): string {
-  if (!url) return ''
+// Convert media URLs to embed URLs
+function getEmbedUrl(url: string): { src: string; type: 'spotify' | 'youtube' | 'other' } {
+  if (!url) return { src: '', type: 'other' }
+
   // Already an embed URL
-  if (url.includes('/embed/')) return url
-  // Convert open.spotify.com/track/xxx to open.spotify.com/embed/track/xxx
-  return url.replace('open.spotify.com/', 'open.spotify.com/embed/')
+  if (url.includes('/embed/')) {
+    const type = url.includes('youtube') ? 'youtube' : url.includes('spotify') ? 'spotify' : 'other'
+    return { src: url, type }
+  }
+
+  // Spotify
+  if (url.includes('spotify.com')) {
+    return {
+      src: url.replace('open.spotify.com/', 'open.spotify.com/embed/'),
+      type: 'spotify'
+    }
+  }
+
+  // YouTube - handles youtube.com/watch, youtu.be, and youtube.com/shorts
+  if (url.includes('youtube.com') || url.includes('youtu.be')) {
+    let videoId = ''
+
+    if (url.includes('youtube.com/watch')) {
+      // youtube.com/watch?v=VIDEO_ID
+      const urlParams = new URL(url).searchParams
+      videoId = urlParams.get('v') || ''
+    } else if (url.includes('youtu.be/')) {
+      // youtu.be/VIDEO_ID
+      videoId = url.split('youtu.be/')[1]?.split('?')[0] || ''
+    } else if (url.includes('youtube.com/shorts/')) {
+      // youtube.com/shorts/VIDEO_ID
+      videoId = url.split('/shorts/')[1]?.split('?')[0] || ''
+    }
+
+    if (videoId) {
+      return {
+        src: `https://www.youtube.com/embed/${videoId}`,
+        type: 'youtube'
+      }
+    }
+  }
+
+  return { src: url, type: 'other' }
 }
 
 interface ModalProps {
@@ -397,21 +433,25 @@ export default function Modal({ item, onClose }: ModalProps) {
             </div>
           )}
 
-          {/* Spotify/Apple Music embed */}
-          {item.embedUrl && (
-            <div className="mb-8">
-              <iframe
-                src={getSpotifyEmbedUrl(item.embedUrl)}
-                width="100%"
-                height="152"
-                frameBorder="0"
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-                className="rounded-lg"
-                style={{ borderRadius: '12px' }}
-              />
-            </div>
-          )}
+          {/* Media embed (Spotify, YouTube, etc.) */}
+          {item.embedUrl && (() => {
+            const embed = getEmbedUrl(item.embedUrl)
+            const height = embed.type === 'youtube' ? '315' : '152'
+            return (
+              <div className="mb-8">
+                <iframe
+                  src={embed.src}
+                  width="100%"
+                  height={height}
+                  frameBorder="0"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                  className="rounded-lg"
+                  style={{ borderRadius: '12px' }}
+                />
+              </div>
+            )
+          })()}
           
           {/* Gallery - for non-gallery types (Art/Design handle gallery separately above) */}
           {!isGalleryType && item.gallery && item.gallery.length > 0 && (
