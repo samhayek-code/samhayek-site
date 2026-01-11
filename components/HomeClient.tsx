@@ -98,12 +98,18 @@ export default function HomeClient({ items }: HomeClientProps) {
     })
   }, [])
 
-  // Play hover sound
-  const playHoverSound = useCallback(() => {
+  // Play sound (for hover and click)
+  const playSound = useCallback(() => {
     if (soundEnabled && audioContextRef.current) {
       playClickSound(audioContextRef.current)
     }
   }, [soundEnabled])
+
+  // Handle card click - play sound and open modal
+  const handleCardClick = useCallback((item: ArchiveItem) => {
+    playSound()
+    setSelectedItem(item)
+  }, [playSound])
 
   // Scroll detection
   useEffect(() => {
@@ -161,13 +167,13 @@ export default function HomeClient({ items }: HomeClientProps) {
         isScrolled={isScrolled}
         soundEnabled={soundEnabled}
         onToggleSound={toggleSound}
-        onHoverSound={playHoverSound}
+        onHoverSound={playSound}
       />
 
       <ArchiveGrid
         items={filteredItems}
-        onCardClick={setSelectedItem}
-        onHoverSound={playHoverSound}
+        onCardClick={handleCardClick}
+        onHoverSound={playSound}
       />
 
       {/* Modal */}
