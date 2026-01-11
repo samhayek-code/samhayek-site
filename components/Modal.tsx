@@ -25,10 +25,12 @@ export default function Modal({ item, onClose }: ModalProps) {
   const youformRef = useRef<HTMLDivElement>(null)
   const closingForCheckoutRef = useRef(false)
 
-  // Check if this is the contact form card
+  // Check if this is a special modal type
   const isContactForm = item.slug?.current === 'send-message'
   const isBookingForm = item.slug?.current === 'book-a-call'
+  const isCaseStudy = item.slug?.current === 'samhayek-com'
   const isEmbedModal = isContactForm || isBookingForm
+  const hideCtaButton = isEmbedModal || isCaseStudy
 
   // Close on escape
   useEffect(() => {
@@ -289,7 +291,7 @@ export default function Modal({ item, onClose }: ModalProps) {
               >
                 Close
               </button>
-              {!isEmbedModal && (
+              {!hideCtaButton && (
                 item.lemonSqueezyUrl ? (
                   <a
                     href={item.lemonSqueezyUrl}
