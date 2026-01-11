@@ -40,7 +40,7 @@ export default function HomeClient({ items }: HomeClientProps) {
   const [activeFilter, setActiveFilter] = useState('Everything')
   const [isScrolled, setIsScrolled] = useState(false)
   const [selectedItem, setSelectedItem] = useState<ArchiveItem | null>(null)
-  const [soundEnabled, setSoundEnabled] = useState(false)
+  const [soundEnabled, setSoundEnabled] = useState(true) // Sound on by default
   const [leftKeyPressed, setLeftKeyPressed] = useState(false)
   const [rightKeyPressed, setRightKeyPressed] = useState(false)
 
@@ -57,24 +57,27 @@ export default function HomeClient({ items }: HomeClientProps) {
       }
     }
 
-    // Resume on any user interaction
+    // Resume on any user interaction (including mouse movement)
     window.addEventListener('click', resumeAudio)
     window.addEventListener('keydown', resumeAudio)
     window.addEventListener('touchstart', resumeAudio)
+    window.addEventListener('mousemove', resumeAudio, { once: true })
 
     return () => {
       window.removeEventListener('click', resumeAudio)
       window.removeEventListener('keydown', resumeAudio)
       window.removeEventListener('touchstart', resumeAudio)
+      window.removeEventListener('mousemove', resumeAudio)
     }
   }, [])
 
-  // Load sound preference from localStorage
+  // Load sound preference from localStorage (defaults to true if not set)
   useEffect(() => {
     const saved = localStorage.getItem('soundEnabled')
     if (saved !== null) {
       setSoundEnabled(JSON.parse(saved))
     }
+    // If nothing saved, keep default (true)
   }, [])
 
   // Save sound preference
