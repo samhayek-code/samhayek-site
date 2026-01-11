@@ -134,6 +134,12 @@ export default defineType({
       type: 'url',
       description: 'For Shop/Design items — checkout link',
     }),
+    defineField({
+      name: 'videoUrl',
+      title: 'Video URL',
+      type: 'url',
+      description: 'Cloudinary video URL for Lab/experimental pieces',
+    }),
   ],
   preview: {
     select: {

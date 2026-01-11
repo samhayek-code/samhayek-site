@@ -24,6 +24,7 @@ export interface ArchiveItem {
   embedUrl?: string
   externalUrl?: string
   lemonSqueezyUrl?: string
+  videoUrl?: string
 }
 
 export const typeColors: Record<string, { dot: string; bg: string }> = {

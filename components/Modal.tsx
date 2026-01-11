@@ -452,7 +452,23 @@ export default function Modal({ item, onClose }: ModalProps) {
               </div>
             )
           })()}
-          
+
+          {/* Video (Cloudinary) */}
+          {item.videoUrl && (
+            <div className="mb-8">
+              <video
+                src={item.videoUrl}
+                controls
+                playsInline
+                preload="metadata"
+                className="w-full rounded-lg"
+                style={{ maxHeight: '70vh' }}
+              >
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          )}
+
           {/* Gallery - for non-gallery types (Art/Design handle gallery separately above) */}
           {!isGalleryType && item.gallery && item.gallery.length > 0 && (
             <div className="grid grid-cols-3 gap-3 mb-8">
