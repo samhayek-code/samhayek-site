@@ -56,8 +56,8 @@ export const headerContent: Record<string, { title: string; subtitle: string }> 
     subtitle: 'Building with sound, light, language, and code.',
   },
   Music: {
-    title: 'Emotion over Time.',
-    subtitle: 'Exploring the space between silence and meaning.',
+    title: 'Soundwaves.',
+    subtitle: 'The space between silence and meaning.',
   },
   Art: {
     title: 'Visual meditations.',
@@ -77,7 +77,7 @@ export const headerContent: Record<string, { title: string; subtitle: string }> 
   },
   Shop: {
     title: 'Own a piece.',
-    subtitle: 'Limited prints, apparel, and physical goods.',
+    subtitle: 'Limited edition prints, apparel, and physical goods.',
   },
   Design: {
     title: 'Identity + Function.',
@@ -85,6 +85,6 @@ export const headerContent: Record<string, { title: string; subtitle: string }> 
   },
   Connect: {
     title: "Let's chat.",
-    subtitle: "Building something? What's on your mind?",
+    subtitle: 'Building something?',
   },
 }

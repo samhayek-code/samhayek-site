@@ -12,7 +12,7 @@ export default function PageHeader({ filter }: PageHeaderProps) {
     <div className="min-h-[35vh] flex flex-col justify-end p-4 lg:p-12 pt-24">
       <div className="max-w-[800px]">
         <span className="font-mono text-[11px] text-subtle tracking-[0.15em] uppercase block mb-6">
-          {isEverything ? "Yo, I'm Sam" : filter}
+          {isEverything ? "I'm Sam" : filter}
         </span>
         
         <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-normal text-foreground mb-4 leading-tight">
