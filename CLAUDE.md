@@ -265,6 +265,7 @@ Set `order` in Sanity Studio to override chronological sorting. Chat items defau
 | Title | Type | Order | Date | Slug |
 |-------|------|-------|------|------|
 | Baseline | Tools | 0 | 2026-01-01 | baseline |
+| samhayek.com | Design | 0 | 2025-01-10 | samhayek-com |
 | Circadian Journal | Downloads | 0 | 2025-01-01 | circadian-journal |
 | Fine (like this) | Music | 0 | 2024-12-01 | fine-like-this |
 | Passport | Music | 0 | 2024-06-01 | passport |
