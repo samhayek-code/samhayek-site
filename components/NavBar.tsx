@@ -116,6 +116,7 @@ export default function NavBar({
         {/* Logo - centered on its own line */}
         <button
           onClick={() => setActiveFilter('Everything')}
+          onMouseEnter={onHoverSound}
           className="font-sans text-sm font-medium text-foreground tracking-widest uppercase text-center whitespace-nowrap"
         >
           Sam Hayek
@@ -131,6 +132,7 @@ export default function NavBar({
               <button
                 key={filter}
                 onClick={() => setActiveFilter(filter)}
+                onMouseEnter={onHoverSound}
                 className="flex items-center justify-center gap-1.5 px-2 py-3 rounded font-mono text-[10px] uppercase tracking-wide transition-all duration-200"
                 style={{
                   background: isActive ? 'rgba(255,255,255,0.1)' : 'transparent',
