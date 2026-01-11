@@ -44,8 +44,8 @@ export const filterCategories = [
   'Music',
   'Art',
   'Writing',
-  'Downloads',
   'Tools',
+  'Downloads',
   'Shop',
   'Connect',
 ]
