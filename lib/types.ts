@@ -40,13 +40,13 @@ export const typeColors: Record<string, { dot: string; bg: string }> = {
 
 export const filterCategories = [
   'Everything',
+  'Design',
   'Music',
   'Art',
   'Writing',
   'Downloads',
   'Tools',
   'Shop',
-  'Design',
   'Connect',
 ]
 
