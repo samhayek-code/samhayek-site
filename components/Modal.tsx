@@ -74,7 +74,7 @@ export default function Modal({ item, onClose }: ModalProps) {
   const isCaseStudy = item.slug?.current === 'samhayek-com'
   const isArt = item.type === 'Art'
   const isEmbedModal = isContactForm || isBookingForm
-  const hideCtaButton = isEmbedModal || isCaseStudy
+  const hideCtaButton = isEmbedModal || isCaseStudy || isArt
 
   // Close on escape
   useEffect(() => {
