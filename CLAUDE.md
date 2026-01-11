@@ -52,8 +52,8 @@ curl -s "https://jpxmevq8.api.sanity.io/v2024-01-01/assets/images/production" \
 | Downloads | Wallpaper, Preset | Download | #a78bfa |
 | Tools | Generator, Utility | Use Tool | #f472b6 |
 | Shop | Print, Merch | Buy | #f87171 |
-| Design | Package, Service | Get Started | #60a5fa |
-| Chat | 30 min, Async | Schedule/Write | #34d399 |
+| Design | Package, Case Study | Get Started/Read | #60a5fa |
+| Connect | 30 min, Async | Schedule/Write | #34d399 |
 
 ## Project Structure
 
@@ -126,15 +126,17 @@ Site/
 - All link to @samhayek_
 
 ### Responsive Design
-**Desktop (>= 640px)**:
+**Desktop (>= 1024px)**:
 - Nav: Logo left, filter row center, clock + sound toggle right
 - Footer: Navigate arrows left, social icons center, copyright right
 
-**Mobile (< 640px)**:
+**Mobile/Tablet (< 1024px)**:
 - Nav: "Sam Hayek" centered on own line, filter buttons in 3x3 grid
 - Footer: Clock left, social icons center, copyright right
 - No sound toggle or keyboard nav indicators
 - Touch-friendly button sizing (py-3)
+
+**Note**: Breakpoint is `lg:` (1024px), not `sm:` (640px).
 
 ### Integrations
 - **Spotify**: Paste track/album URL, auto-converts to embed
@@ -246,7 +248,7 @@ grep SANITY_API_TOKEN .env.local | cut -d= -f2
 - Active: `rgba(255,255,255,0.1)` bg, `#e5e5e5` text, colored dot at 100%
 
 ### Breakpoints
-- Mobile: < 640px (`sm:` prefix for desktop styles)
+- Mobile/Tablet: < 1024px (`lg:` prefix for desktop styles)
 
 ## Card Ordering
 
@@ -258,7 +260,7 @@ Cards sort by `order` ASC, then `date` DESC (newest first).
 | 0 (default) | Sorts by date among peers |
 | 100+ | Pushed to bottom |
 
-Set `order` in Sanity Studio to override chronological sorting. Chat items default to `order: 100`.
+Set `order` in Sanity Studio to override chronological sorting. Connect items default to `order: 100`.
 
 ## Current Content Inventory
 
@@ -269,8 +271,13 @@ Set `order` in Sanity Studio to override chronological sorting. Chat items defau
 | Circadian Journal | Downloads | 0 | 2025-01-01 | circadian-journal |
 | Fine (like this) | Music | 0 | 2024-12-01 | fine-like-this |
 | Passport | Music | 0 | 2024-06-01 | passport |
-| Book a Call | Chat | 100 | — | book-a-call |
-| Send a Message | Chat | 100 | — | send-message |
+| Book a Call | Connect | 100 | — | book-a-call |
+| Send a Message | Connect | 100 | — | send-message |
+
+### Special Modal Handling
+- `send-message`: YouForm contact embed (hides CTA button)
+- `book-a-call`: Cal.com booking embed (hides CTA button)
+- `samhayek-com`: Case study with rich text body (hides CTA button)
 
 ## Version Control
 
