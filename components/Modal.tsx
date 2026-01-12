@@ -164,6 +164,7 @@ export default function Modal({ item, onClose }: ModalProps) {
   const isCaseStudy = item.slug?.current === 'samhayek-com'
   const isArt = item.type === 'Art'
   const isDesign = item.type === 'Design'
+  const isWriting = item.type === 'Writing'
   const isGalleryType = isArt || isDesign  // Types that use full-width gallery display
   const isEmbedModal = isContactForm || isBookingForm
   const hideCtaButton = isEmbedModal || isCaseStudy || isGalleryType
@@ -294,8 +295,8 @@ export default function Modal({ item, onClose }: ModalProps) {
         onClick={(e) => e.stopPropagation()}
         className="bg-[#0f0f0f] rounded-xl border border-[#222] max-w-[800px] w-full max-h-[85vh] overflow-auto cursor-default"
       >
-        {/* Hero image - hide for embed modals and gallery types (Art, Design) */}
-        {!isEmbedModal && !isGalleryType && item.coverImage && (
+        {/* Hero image - hide for embed modals, gallery types (Art, Design), and Writing */}
+        {!isEmbedModal && !isGalleryType && !isWriting && item.coverImage && (
           <div className="w-full aspect-video bg-[#151515] rounded-t-xl flex items-center justify-center relative">
             {item.coverImage ? (
               <Image
