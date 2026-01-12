@@ -51,7 +51,7 @@ export const filterCategories = [
   'Connect',
 ]
 
-// Helper to extract plain text from Portable Text
+// Helper to extract plain text from Portable Text (preserves line breaks)
 export function extractPlainText(blocks: any[]): string {
   if (!blocks || !Array.isArray(blocks)) return ''
   return blocks
@@ -63,7 +63,7 @@ export function extractPlainText(blocks: any[]): string {
         .map((span: any) => span.text)
         .join('')
     })
-    .join(' ')
+    .join('\n')
 }
 
 export const headerContent: Record<string, { title: string; subtitle: string }> = {

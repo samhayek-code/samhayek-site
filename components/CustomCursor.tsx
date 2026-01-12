@@ -61,7 +61,7 @@ export default function CustomCursor() {
           width: isPointer ? '6px' : '12px',
           height: isPointer ? '6px' : '12px',
           borderColor: 'white',
-          borderWidth: isPointer ? '1px' : '1.5px',
+          borderWidth: isPointer ? '1px' : '2.5px',
           transform: 'translate(-50%, -50%)',
         }}
       />

@@ -202,18 +202,26 @@ export default function Modal({ item, onClose }: ModalProps) {
   useEffect(() => {
     if (!isContactForm) return
 
+    const initYouForm = () => {
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        if ((window as any).YouForm) {
+          (window as any).YouForm.init()
+        }
+      }, 100)
+    }
+
     // Check if script already exists
     const existingScript = document.querySelector('script[src="https://app.youform.com/embed.js"]')
     if (!existingScript) {
       const script = document.createElement('script')
       script.src = 'https://app.youform.com/embed.js'
       script.async = true
+      script.onload = initYouForm
       document.body.appendChild(script)
     } else {
       // Re-initialize if script already loaded
-      if ((window as any).YouForm) {
-        (window as any).YouForm.init()
-      }
+      initYouForm()
     }
   }, [isContactForm])
 

@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { filterCategories, typeColors } from '@/lib/types'
-import LiveClock from './LiveClock'
 
 interface NavBarProps {
   activeFilter: string
@@ -11,6 +10,8 @@ interface NavBarProps {
   soundEnabled: boolean
   onToggleSound: () => void
   onHoverSound: () => void
+  leftKeyPressed: boolean
+  rightKeyPressed: boolean
 }
 
 export default function NavBar({
@@ -20,6 +21,8 @@ export default function NavBar({
   soundEnabled,
   onToggleSound,
   onHoverSound,
+  leftKeyPressed,
+  rightKeyPressed,
 }: NavBarProps) {
   const [hoveredFilter, setHoveredFilter] = useState<string | null>(null)
 
@@ -83,9 +86,38 @@ export default function NavBar({
           })}
         </div>
 
-        {/* Right side: Clock + Sound toggle */}
+        {/* Right side: Navigate + Sound toggle */}
         <div className="flex items-center gap-4">
-          <LiveClock />
+          {/* Navigate arrows */}
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-[10px] text-[#444] uppercase tracking-wide">
+              Navigate
+            </span>
+            <div className="flex gap-1">
+              <div
+                className={`w-6 h-6 rounded border flex items-center justify-center transition-all duration-150 ${
+                  leftKeyPressed
+                    ? 'bg-white border-white text-black'
+                    : 'bg-transparent border-[#333] text-[#444]'
+                }`}
+              >
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </div>
+              <div
+                className={`w-6 h-6 rounded border flex items-center justify-center transition-all duration-150 ${
+                  rightKeyPressed
+                    ? 'bg-white border-white text-black'
+                    : 'bg-transparent border-[#333] text-[#444]'
+                }`}
+              >
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </div>
+            </div>
+          </div>
 
           {/* Sound toggle */}
           <button
