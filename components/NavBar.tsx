@@ -95,24 +95,24 @@ export default function NavBar({
             </span>
             <div className="flex gap-1">
               <div
-                className={`w-6 h-6 rounded border flex items-center justify-center transition-all duration-150 ${
+                className={`w-8 h-8 rounded border flex items-center justify-center transition-all duration-150 ${
                   leftKeyPressed
                     ? 'bg-white border-white text-black'
                     : 'bg-transparent border-[#333] text-[#444]'
                 }`}
               >
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M15 18l-6-6 6-6" />
                 </svg>
               </div>
               <div
-                className={`w-6 h-6 rounded border flex items-center justify-center transition-all duration-150 ${
+                className={`w-8 h-8 rounded border flex items-center justify-center transition-all duration-150 ${
                   rightKeyPressed
                     ? 'bg-white border-white text-black'
                     : 'bg-transparent border-[#333] text-[#444]'
                 }`}
               >
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M9 18l6-6-6-6" />
                 </svg>
               </div>
