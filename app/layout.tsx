@@ -37,6 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans">
+        <div className="iso-grid" />
         <div className="noise-overlay" />
         {children}
       </body>

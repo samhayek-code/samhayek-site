@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { ArchiveItem, typeColors } from '@/lib/types'
+import { ArchiveItem, typeColors, extractPlainText } from '@/lib/types'
 import { urlFor } from '@/lib/sanity'
 
 interface CardProps {
@@ -14,6 +14,8 @@ interface CardProps {
 export default function Card({ item, onClick, onHoverSound }: CardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const colors = typeColors[item.type] || typeColors.Everything
+  const isWritingType = item.type === 'Writing'
+  const bodyText = isWritingType && item.body ? extractPlainText(item.body) : ''
 
   const handleMouseEnter = () => {
     setIsHovered(true)
@@ -25,10 +27,10 @@ export default function Card({ item, onClick, onHoverSound }: CardProps) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onClick(item)}
-      className="card-hover relative overflow-hidden rounded-lg cursor-pointer flex flex-col aspect-square"
+      className="card-hover card-noise relative overflow-hidden rounded-lg cursor-pointer flex flex-col aspect-square"
       style={{
         background: '#0a0a0a',
-        border: `1px solid ${isHovered ? '#222' : '#151515'}`,
+        border: `1px solid ${isHovered ? '#2a2a2a' : '#1a1a1a'}`,
       }}
     >
       {/* Background image - spans entire card */}
@@ -47,9 +49,24 @@ export default function Card({ item, onClick, onHoverSound }: CardProps) {
         </div>
       )}
 
+      {/* Blurred text preview for Writing cards */}
+      {isWritingType && bodyText && (
+        <div
+          className="absolute inset-0 z-[1] overflow-hidden flex items-center justify-center p-8"
+          style={{
+            filter: 'blur(3px)',
+            opacity: isHovered ? 0.15 : 0.1,
+          }}
+        >
+          <p className="text-foreground text-[11px] leading-relaxed text-center line-clamp-[12] font-serif">
+            {bodyText.slice(0, 800)}
+          </p>
+        </div>
+      )}
+
       {/* Dark overlay for better text readability */}
       <div
-        className="absolute inset-0 z-[1] transition-all duration-300 ease-out"
+        className="absolute inset-0 z-[2] transition-all duration-300 ease-out"
         style={{
           background: isHovered
             ? 'linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.1) 40%, rgba(10,10,10,0.5) 100%)'
@@ -59,7 +76,7 @@ export default function Card({ item, onClick, onHoverSound }: CardProps) {
 
       {/* Hover gradient */}
       <div
-        className="absolute inset-0 z-[2] transition-all duration-400 pointer-events-none"
+        className="absolute inset-0 z-[3] transition-all duration-400 pointer-events-none"
         style={{
           background: isHovered
             ? `radial-gradient(ellipse at 50% 0%, ${colors.bg}, transparent 70%)`

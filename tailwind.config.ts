@@ -10,11 +10,11 @@ const config: Config = {
     extend: {
       colors: {
         background: '#0a0a0a',
-        foreground: '#e5e5e5',
-        muted: '#666',
-        subtle: '#444',
-        border: '#151515',
-        'border-hover': '#222',
+        foreground: '#f0f0f0',
+        muted: '#777',
+        subtle: '#555',
+        border: '#1a1a1a',
+        'border-hover': '#2a2a2a',
         // Type colors
         'type-music': '#ffffff',
         'type-art': '#a3e635',

@@ -51,6 +51,21 @@ export const filterCategories = [
   'Connect',
 ]
 
+// Helper to extract plain text from Portable Text
+export function extractPlainText(blocks: any[]): string {
+  if (!blocks || !Array.isArray(blocks)) return ''
+  return blocks
+    .filter((block) => block._type === 'block')
+    .map((block) => {
+      if (!block.children) return ''
+      return block.children
+        .filter((child: any) => child._type === 'span')
+        .map((span: any) => span.text)
+        .join('')
+    })
+    .join(' ')
+}
+
 export const headerContent: Record<string, { title: string; subtitle: string }> = {
   Everything: {
     title: 'Artist + Designer',

@@ -195,11 +195,19 @@ SANITY_API_TOKEN=<token>
 ## Design Tokens
 
 - **Background**: #0a0a0a
-- **Surface**: #111111
-- **Border**: #151515 / #222 (hover)
-- **Text**: #e5e5e5
-- **Muted**: #666
+- **Surface**: #131313
+- **Border**: #1a1a1a / #2a2a2a (hover)
+- **Text**: #f0f0f0
+- **Muted**: #777
+- **Subtle**: #555
 - **Fonts**: Plus Jakarta Sans (sans), IBM Plex Mono (mono)
+
+## UI Features
+
+- **Custom cursors**: White circle (default), larger circle (pointer/interactive)
+- **Isometric grid**: Triangle pattern at ~3.5% opacity as fixed background
+- **Card noise**: Subtle grain texture on cards at ~4% opacity
+- **Writing cards**: Blurred text preview of body content as background
 
 ## Card Ordering
 
