@@ -14,8 +14,7 @@ export default function CustomCursor() {
     const target = e.target as HTMLElement
     const interactive = target.closest(
       'a, button, [role="button"], input, select, textarea, label, ' +
-      '.card-hover, .cursor-pointer, [onclick], summary, ' +
-      '.wallet-button, .lemonsqueezy-button'
+      '.card-hover, .cursor-pointer, [onclick], summary, .lemonsqueezy-button'
     )
     setIsPointer(!!interactive)
   }, [])
@@ -62,7 +61,7 @@ export default function CustomCursor() {
           width: isPointer ? '6px' : '12px',
           height: isPointer ? '6px' : '12px',
           borderColor: 'white',
-          borderWidth: isPointer ? '1px' : '1px',
+          borderWidth: isPointer ? '1px' : '1.5px',
           transform: 'translate(-50%, -50%)',
         }}
       />

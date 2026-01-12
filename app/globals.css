@@ -50,12 +50,12 @@ body {
   background: #3a3a3a;
 }
 
-/* Isometric grid background */
+/* Grid background */
 .iso-grid {
   position: fixed;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='26' viewBox='0 0 30 26'%3E%3Cpath d='M15 0 L30 13 L15 26 L0 13 Z M0 13 L30 13' fill='none' stroke='%23ffffff' stroke-width='0.3'/%3E%3C/svg%3E");
-  background-size: 30px 26px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M0 0 H32 M0 0 V32' fill='none' stroke='%23ffffff' stroke-width='0.5'/%3E%3C/svg%3E");
+  background-size: 32px 32px;
   opacity: 0.05;
   pointer-events: none;
   z-index: 0;

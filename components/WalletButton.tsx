@@ -53,7 +53,7 @@ export default function WalletButton({ currency, address }: WalletButtonProps) {
   return (
     <div className="relative">
       <div
-        className="wallet-button flex items-center gap-3 p-4 rounded-lg border transition-all group"
+        className="flex items-center gap-3 p-4 rounded-lg border transition-all group"
         style={{
           background: 'rgba(255,255,255,0.02)',
           borderColor: 'rgba(255,255,255,0.08)',

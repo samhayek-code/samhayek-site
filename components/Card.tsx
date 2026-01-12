@@ -52,14 +52,15 @@ export default function Card({ item, onClick, onHoverSound }: CardProps) {
       {/* Blurred text preview for Writing cards */}
       {isWritingType && bodyText && (
         <div
-          className="absolute inset-0 z-[1] overflow-hidden flex items-center justify-center p-6 transition-all duration-300"
+          className="absolute inset-0 z-[1] overflow-hidden flex items-center justify-center transition-all duration-300"
           style={{
-            filter: 'blur(2px)',
-            opacity: isHovered ? 0.35 : 0.2,
+            padding: '48px',
+            filter: isHovered ? 'blur(0.5px)' : 'blur(3px)',
+            opacity: isHovered ? 0.7 : 0.25,
           }}
         >
-          <p className="text-foreground text-[10px] leading-loose text-center font-mono">
-            {bodyText.slice(0, 600)}
+          <p className="text-foreground text-base leading-relaxed text-center font-serif italic">
+            {bodyText.slice(0, 80)}...
           </p>
         </div>
       )}
