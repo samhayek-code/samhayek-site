@@ -165,6 +165,7 @@ export default function Modal({ item, onClose }: ModalProps) {
   const youformRef = useRef<HTMLDivElement>(null)
   const closingForCheckoutRef = useRef(false)
   const [lightboxState, setLightboxState] = useState<{ images: { src: string; alt: string }[]; currentIndex: number } | null>(null)
+  const [activeQR, setActiveQR] = useState<{ currency: string; address: string } | null>(null)
 
   // Check if this is a special modal type
   const isContactForm = item.slug?.current === 'send-message'
@@ -423,10 +424,50 @@ export default function Modal({ item, onClose }: ModalProps) {
 
           {/* Wallet buttons for Support card */}
           {isSupport && (
-            <div className="space-y-3 mb-8">
-              <WalletButton currency="SOL" address={WALLET_ADDRESSES.SOL} />
-              <WalletButton currency="ETH" address={WALLET_ADDRESSES.ETH} />
-              <WalletButton currency="BTC" address={WALLET_ADDRESSES.BTC} />
+            <div className="relative space-y-3 mb-8">
+              <WalletButton
+                currency="SOL"
+                address={WALLET_ADDRESSES.SOL}
+                onShowQR={(currency, address) => setActiveQR(activeQR?.currency === currency ? null : { currency, address })}
+              />
+              <WalletButton
+                currency="ETH"
+                address={WALLET_ADDRESSES.ETH}
+                onShowQR={(currency, address) => setActiveQR(activeQR?.currency === currency ? null : { currency, address })}
+              />
+              <WalletButton
+                currency="BTC"
+                address={WALLET_ADDRESSES.BTC}
+                onShowQR={(currency, address) => setActiveQR(activeQR?.currency === currency ? null : { currency, address })}
+              />
+
+              {/* QR Code popup - fixed position centered on ETH row */}
+              {activeQR && (
+                <div
+                  className="absolute inset-0 flex items-center justify-center z-50"
+                  onClick={() => setActiveQR(null)}
+                >
+                  <div
+                    className="p-4 rounded-xl shadow-2xl"
+                    style={{
+                      background: '#0f0f0f',
+                      border: '1px solid rgba(255,255,255,0.15)',
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <img
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(activeQR.address)}&bgcolor=0f0f0f&color=ffffff`}
+                      alt={`${activeQR.currency} QR code`}
+                      width={160}
+                      height={160}
+                      className="rounded-lg"
+                    />
+                    <div className="text-center mt-2 font-mono text-xs text-muted">
+                      {activeQR.currency}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

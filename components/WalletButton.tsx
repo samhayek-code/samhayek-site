@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react'
 interface WalletButtonProps {
   currency: 'SOL' | 'ETH' | 'BTC'
   address: string
+  onShowQR?: (currency: string, address: string) => void
+  showQRButton?: boolean
 }
 
 const currencyColors: Record<string, string> = {
@@ -31,9 +33,8 @@ const currencyIcons: Record<string, JSX.Element> = {
   ),
 }
 
-export default function WalletButton({ currency, address }: WalletButtonProps) {
+export default function WalletButton({ currency, address, onShowQR, showQRButton = true }: WalletButtonProps) {
   const [copied, setCopied] = useState(false)
-  const [showQR, setShowQR] = useState(false)
   const color = currencyColors[currency]
   const icon = currencyIcons[currency]
 
@@ -46,9 +47,6 @@ export default function WalletButton({ currency, address }: WalletButtonProps) {
       console.error('Failed to copy:', err)
     }
   }
-
-  // Generate QR code URL using a free API
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(address)}&bgcolor=0f0f0f&color=ffffff`
 
   return (
     <div className="relative">
@@ -78,22 +76,24 @@ export default function WalletButton({ currency, address }: WalletButtonProps) {
         {/* Actions */}
         <div className="flex gap-2 shrink-0">
           {/* QR Code button */}
-          <button
-            onClick={() => setShowQR(!showQR)}
-            className="p-2 rounded-md transition-all hover:bg-white/10"
-            style={{ color: showQR ? color : '#666' }}
-            aria-label="Show QR code"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="3" y="3" width="7" height="7" />
-              <rect x="14" y="3" width="7" height="7" />
-              <rect x="3" y="14" width="7" height="7" />
-              <rect x="14" y="14" width="3" height="3" />
-              <rect x="18" y="14" width="3" height="3" />
-              <rect x="14" y="18" width="3" height="3" />
-              <rect x="18" y="18" width="3" height="3" />
-            </svg>
-          </button>
+          {showQRButton && onShowQR && (
+            <button
+              onClick={() => onShowQR(currency, address)}
+              className="p-2 rounded-md transition-all hover:bg-white/10"
+              style={{ color: '#666' }}
+              aria-label="Show QR code"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
+                <rect x="14" y="14" width="3" height="3" />
+                <rect x="18" y="14" width="3" height="3" />
+                <rect x="14" y="18" width="3" height="3" />
+                <rect x="18" y="18" width="3" height="3" />
+              </svg>
+            </button>
+          )}
 
           {/* Copy button */}
           <button
@@ -115,34 +115,6 @@ export default function WalletButton({ currency, address }: WalletButtonProps) {
           </button>
         </div>
       </div>
-
-      {/* QR Code popup - centered overlay */}
-      {showQR && (
-        <div
-          className="absolute inset-0 flex items-center justify-center z-50"
-          onClick={() => setShowQR(false)}
-        >
-          <div
-            className="p-4 rounded-xl shadow-2xl"
-            style={{
-              background: '#0f0f0f',
-              border: '1px solid rgba(255,255,255,0.15)',
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <img
-              src={qrCodeUrl}
-              alt={`${currency} QR code`}
-              width={160}
-              height={160}
-              className="rounded-lg"
-            />
-            <div className="text-center mt-2 font-mono text-xs text-muted">
-              {currency}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
