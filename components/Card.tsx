@@ -6,6 +6,13 @@ import { ArchiveItem, typeColors, extractPlainText } from '@/lib/types'
 import { urlFor } from '@/lib/sanity'
 
 // Filled SVG icons for Connect type cards
+// Hover colors for Connect type icons
+const connectIconColors: Record<string, string> = {
+  'book-a-call': '#fbbf24',  // yellow
+  'send-message': '#60a5fa', // blue
+  'support': '#34d399',      // green
+}
+
 const connectIcons: Record<string, JSX.Element> = {
   'book-a-call': (
     <svg viewBox="0 0 24 24" fill="currentColor" className="w-24 h-24">
@@ -38,6 +45,7 @@ export default function Card({ item, onClick, onHoverSound }: CardProps) {
   const isConnectType = item.type === 'Connect'
   const bodyText = isWritingType && item.body ? extractPlainText(item.body) : ''
   const connectIcon = isConnectType ? connectIcons[item.slug?.current] : null
+  const connectColor = isConnectType ? connectIconColors[item.slug?.current] || colors.dot : colors.dot
 
   const handleMouseEnter = () => {
     setIsHovered(true)
@@ -76,7 +84,7 @@ export default function Card({ item, onClick, onHoverSound }: CardProps) {
         <div
           className="absolute inset-0 z-[1] flex items-center justify-center transition-all duration-300"
           style={{
-            color: isHovered ? colors.dot : '#444',
+            color: isHovered ? connectColor : '#444',
             opacity: isHovered ? 0.9 : 0.5,
           }}
         >
