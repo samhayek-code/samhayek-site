@@ -33,8 +33,8 @@ export default function Card({ item, onClick, onHoverSound }: CardProps) {
         border: `1px solid ${isHovered ? '#2a2a2a' : '#1a1a1a'}`,
       }}
     >
-      {/* Background image - spans entire card */}
-      {item.coverImage && (
+      {/* Background image - spans entire card (hidden for Writing type) */}
+      {item.coverImage && !isWritingType && (
         <div className="absolute inset-0 z-0">
           <Image
             src={urlFor(item.coverImage).width(600).height(600).url()}
@@ -52,14 +52,14 @@ export default function Card({ item, onClick, onHoverSound }: CardProps) {
       {/* Blurred text preview for Writing cards */}
       {isWritingType && bodyText && (
         <div
-          className="absolute inset-0 z-[1] overflow-hidden flex items-center justify-center p-8"
+          className="absolute inset-0 z-[1] overflow-hidden flex items-center justify-center p-6 transition-all duration-300"
           style={{
-            filter: 'blur(3px)',
-            opacity: isHovered ? 0.15 : 0.1,
+            filter: 'blur(2px)',
+            opacity: isHovered ? 0.35 : 0.2,
           }}
         >
-          <p className="text-foreground text-[11px] leading-relaxed text-center line-clamp-[12] font-serif">
-            {bodyText.slice(0, 800)}
+          <p className="text-foreground text-[10px] leading-loose text-center font-mono">
+            {bodyText.slice(0, 600)}
           </p>
         </div>
       )}

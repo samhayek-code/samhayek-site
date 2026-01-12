@@ -5,6 +5,14 @@ import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { ArchiveItem, typeColors } from '@/lib/types'
 import { urlFor } from '@/lib/sanity'
+import WalletButton from './WalletButton'
+
+// Crypto wallet addresses for Support card
+const WALLET_ADDRESSES = {
+  SOL: 'HCvLdXCkmN4CFMwjPYAuvdLduNJYP53ziiQuCYiKdzkJ',
+  ETH: '0x35ccffF3e9bA23EA6FD6030aE24C4fc7032E23d1',
+  BTC: 'bc1qwsr58r24ckt2dc0p2aa2qc8gp6punt7t4tdsea',
+}
 
 // Lightbox component for full-screen image viewing with navigation
 function Lightbox({
@@ -162,12 +170,13 @@ export default function Modal({ item, onClose }: ModalProps) {
   const isContactForm = item.slug?.current === 'send-message'
   const isBookingForm = item.slug?.current === 'book-a-call'
   const isCaseStudy = item.slug?.current === 'samhayek-com'
+  const isSupport = item.slug?.current === 'support'
   const isArt = item.type === 'Art'
   const isDesign = item.type === 'Design'
   const isWriting = item.type === 'Writing'
   const isGalleryType = isArt || isDesign  // Types that use full-width gallery display
   const isEmbedModal = isContactForm || isBookingForm
-  const hideCtaButton = isEmbedModal || isCaseStudy || isGalleryType
+  const hideCtaButton = isEmbedModal || isCaseStudy || isGalleryType || isSupport
 
   // Close on escape
   useEffect(() => {
@@ -404,8 +413,17 @@ export default function Modal({ item, onClose }: ModalProps) {
             )
           })()}
 
-          {/* Body (rich text) */}
-          {item.body && item.body.length > 0 && (
+          {/* Wallet buttons for Support card */}
+          {isSupport && (
+            <div className="space-y-3 mb-8">
+              <WalletButton currency="SOL" address={WALLET_ADDRESSES.SOL} />
+              <WalletButton currency="ETH" address={WALLET_ADDRESSES.ETH} />
+              <WalletButton currency="BTC" address={WALLET_ADDRESSES.BTC} />
+            </div>
+          )}
+
+          {/* Body (rich text) - hide for Support card */}
+          {item.body && item.body.length > 0 && !isSupport && (
             <div className="prose prose-invert prose-sm max-w-full w-full mb-8 text-[#aaa] overflow-hidden break-words [&>p]:mb-4 [&>p]:leading-relaxed">
               <PortableText value={item.body} />
             </div>
