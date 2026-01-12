@@ -118,22 +118,24 @@ export default function WalletButton({ currency, address }: WalletButtonProps) {
 
       {/* QR Code popup */}
       {showQR && (
-        <div
-          className="absolute top-full left-1/2 -translate-x-1/2 mt-3 p-4 rounded-xl z-50 shadow-2xl"
-          style={{
-            background: '#0f0f0f',
-            border: '1px solid rgba(255,255,255,0.1)',
-          }}
-        >
-          <img
-            src={qrCodeUrl}
-            alt={`${currency} QR code`}
-            width={200}
-            height={200}
-            className="rounded-lg"
-          />
-          <div className="text-center mt-2 font-mono text-xs text-muted">
-            Scan to copy {currency} address
+        <div className="absolute inset-x-0 top-full mt-3 flex justify-center z-50">
+          <div
+            className="p-4 rounded-xl shadow-2xl"
+            style={{
+              background: '#0f0f0f',
+              border: '1px solid rgba(255,255,255,0.1)',
+            }}
+          >
+            <img
+              src={qrCodeUrl}
+              alt={`${currency} QR code`}
+              width={200}
+              height={200}
+              className="rounded-lg"
+            />
+            <div className="text-center mt-2 font-mono text-xs text-muted">
+              Scan to copy {currency} address
+            </div>
           </div>
         </div>
       )}
