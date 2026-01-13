@@ -57,7 +57,6 @@ export const filterCategories = [
   'Music',
   'Art',
   'Writing',
-  'Lab',
   'Tools',
   'Downloads',
   'Shop',
