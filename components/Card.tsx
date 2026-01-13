@@ -71,31 +71,28 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
   const entranceDelay = Math.min(index * 40, 400)
   const glowColorRgb = hexToRgb(colors.dot)
 
-  // Anime.js border light sweep effect using conic gradient rotation
+  // Rotating conic gradient glow on hover
   useEffect(() => {
     if (!borderRef.current || !glowRef.current) return
 
     if (isHovered) {
-      const rect = borderRef.current
-      const glow = glowRef.current
-
-      // Fade in the base border
-      animationRef.current = animate(rect, {
+      // Fade in base border
+      animationRef.current = animate(borderRef.current, {
         opacity: [0, 0.4],
         duration: 300,
         ease: 'outCubic',
       })
 
-      // Rotate the conic gradient mask - creates smooth traveling highlight
-      glow.style.opacity = '1'
-      glowAnimationRef.current = animate(glow, {
+      // Show and rotate the glow
+      glowRef.current.style.opacity = '1'
+      glowAnimationRef.current = animate(glowRef.current, {
         rotate: [0, 360],
         duration: 4000,
         ease: 'inOutSine',
         loop: false,
       })
     } else {
-      // Cancel all animations immediately on mouse leave
+      // Cancel animations
       if (animationRef.current) {
         animationRef.current.pause()
         animationRef.current = null
@@ -104,7 +101,7 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
         glowAnimationRef.current.pause()
         glowAnimationRef.current = null
       }
-      // Reset immediately
+      // Reset
       if (borderRef.current) {
         borderRef.current.style.opacity = '0'
       }
@@ -161,28 +158,22 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
         />
       </svg>
 
-      {/* Rotating conic gradient glow - uses inner cutout for border-only effect */}
+      {/* Rotating conic gradient glow - masked to border only */}
       <div
         ref={glowRef}
         className="absolute pointer-events-none z-[99]"
         style={{
-          inset: '-2px',
-          borderRadius: '9px',
+          inset: '-1px',
+          borderRadius: '8px',
           opacity: 0,
           background: `conic-gradient(from 0deg, transparent 0deg, transparent 160deg, ${colors.dot} 180deg, transparent 200deg, transparent 360deg)`,
+          mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          maskComposite: 'exclude',
+          WebkitMaskComposite: 'xor',
+          padding: '1px',
           filter: `drop-shadow(0 0 4px ${colors.dot})`,
         }}
-      >
-        {/* Inner cutout to create border-only effect */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: '1px',
-            borderRadius: '8px',
-            background: '#0a0a0a',
-          }}
-        />
-      </div>
+      />
 
       {/* Background image - spans entire card (hidden for Writing and Connect types) */}
       {item.coverImage && !isWritingType && !isConnectType && (
