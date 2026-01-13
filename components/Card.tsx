@@ -59,6 +59,7 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
   const borderRef = useRef<SVGRectElement>(null)
   const glowRef = useRef<SVGRectElement>(null)
   const animationRef = useRef<JSAnimation | null>(null)
+  const glowAnimationRef = useRef<JSAnimation | null>(null)
   const colors = typeColors[item.type] || typeColors.Everything
   const isWritingType = item.type === 'Writing'
   const isConnectType = item.type === 'Connect'
@@ -79,41 +80,51 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
       const glow = glowRef.current
       const perimeter = rect.getTotalLength()
 
-      // Set up the traveling highlight - a short segment that moves around
-      const highlightLength = perimeter * 0.25 // 25% of perimeter
+      // Set up the traveling highlight - longer segment for softer feel
+      const highlightLength = perimeter * 0.35 // 35% of perimeter
       glow.style.strokeDasharray = `${highlightLength} ${perimeter - highlightLength}`
 
       // Fade in the base border
       animationRef.current = animate(rect, {
-        opacity: [0, 0.5],
-        duration: 200,
+        opacity: [0, 0.4],
+        duration: 300,
         ease: 'outCubic',
       })
 
-      // Animate the highlight sweep around the border
-      animate(glow, {
+      // Animate the highlight sweep - slow, organic breathing feel
+      glowAnimationRef.current = animate(glow, {
         strokeDashoffset: [0, -perimeter],
-        opacity: [0, 0.9, 0.9, 0],
-        duration: 1500,
+        opacity: [0, 0.7, 0.7, 0],
+        duration: 4000,
         ease: 'inOutSine',
-        loop: 2,
+        loop: false,
       })
     } else {
-      // Reset on mouse leave
+      // Cancel all animations immediately on mouse leave
       if (animationRef.current) {
         animationRef.current.pause()
+        animationRef.current = null
       }
+      if (glowAnimationRef.current) {
+        glowAnimationRef.current.pause()
+        glowAnimationRef.current = null
+      }
+      // Reset opacity immediately
       if (borderRef.current) {
         borderRef.current.style.opacity = '0'
       }
       if (glowRef.current) {
         glowRef.current.style.opacity = '0'
+        glowRef.current.style.strokeDashoffset = '0'
       }
     }
 
     return () => {
       if (animationRef.current) {
         animationRef.current.pause()
+      }
+      if (glowAnimationRef.current) {
+        glowAnimationRef.current.pause()
       }
     }
   }, [isHovered])
@@ -154,7 +165,7 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
           strokeWidth="1"
           style={{ opacity: 0 }}
         />
-        {/* Traveling highlight - sweeps around the border */}
+        {/* Traveling highlight - sweeps around the border with soft edges */}
         <rect
           ref={glowRef}
           x="0.5"
@@ -165,10 +176,11 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
           ry="7"
           fill="none"
           stroke={colors.dot}
-          strokeWidth="1"
+          strokeWidth="2"
+          strokeLinecap="round"
           style={{
             opacity: 0,
-            filter: `drop-shadow(0 0 4px ${colors.dot})`,
+            filter: `blur(1px) drop-shadow(0 0 6px ${colors.dot})`,
           }}
         />
       </svg>
