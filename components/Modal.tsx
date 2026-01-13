@@ -685,6 +685,21 @@ export default function Modal({ item, onClose }: ModalProps) {
                 className="rounded-lg border border-[#1a1a1a]"
                 style={{ background: '#0a0a0a' }}
               />
+              {item.prototypeUrl && (
+                <div className="mt-4 flex justify-center">
+                  <a
+                    href={item.prototypeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md font-sans text-sm font-medium bg-[#1a1a1a] text-foreground hover:bg-[#252525] border border-[#333] transition-colors"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polygon points="5 3 19 12 5 21 5 3" />
+                    </svg>
+                    View Prototype
+                  </a>
+                </div>
+              )}
             </div>
           )}
 

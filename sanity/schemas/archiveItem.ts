@@ -145,7 +145,13 @@ export default defineType({
       name: 'figmaUrl',
       title: 'Figma URL',
       type: 'url',
-      description: 'Figma file or prototype URL for Design items',
+      description: 'Figma file URL for embedded viewer',
+    }),
+    defineField({
+      name: 'prototypeUrl',
+      title: 'Prototype URL',
+      type: 'url',
+      description: 'Figma prototype URL for interactive preview',
     }),
     defineField({
       name: 'fileAsset',
