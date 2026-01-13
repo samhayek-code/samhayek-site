@@ -57,9 +57,7 @@ function hexToRgb(hex: string): string {
 export default function Card({ item, onClick, onHoverSound, index = 0 }: CardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const borderRef = useRef<SVGRectElement>(null)
-  const glowRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<JSAnimation | null>(null)
-  const glowAnimationRef = useRef<JSAnimation | null>(null)
   const colors = typeColors[item.type] || typeColors.Everything
   const isWritingType = item.type === 'Writing'
   const isConnectType = item.type === 'Connect'
@@ -71,52 +69,29 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
   const entranceDelay = Math.min(index * 40, 400)
   const glowColorRgb = hexToRgb(colors.dot)
 
-  // Rotating conic gradient glow on hover
+  // Simple colored border glow on hover
   useEffect(() => {
-    if (!borderRef.current || !glowRef.current) return
+    if (!borderRef.current) return
 
     if (isHovered) {
-      // Fade in base border
       animationRef.current = animate(borderRef.current, {
-        opacity: [0, 0.4],
+        opacity: [0, 0.6],
         duration: 300,
         ease: 'outCubic',
       })
-
-      // Show and rotate the glow
-      glowRef.current.style.opacity = '1'
-      glowAnimationRef.current = animate(glowRef.current, {
-        rotate: [0, 360],
-        duration: 4000,
-        ease: 'inOutSine',
-        loop: false,
-      })
     } else {
-      // Cancel animations
       if (animationRef.current) {
         animationRef.current.pause()
         animationRef.current = null
       }
-      if (glowAnimationRef.current) {
-        glowAnimationRef.current.pause()
-        glowAnimationRef.current = null
-      }
-      // Reset
       if (borderRef.current) {
         borderRef.current.style.opacity = '0'
-      }
-      if (glowRef.current) {
-        glowRef.current.style.opacity = '0'
-        glowRef.current.style.transform = 'rotate(0deg)'
       }
     }
 
     return () => {
       if (animationRef.current) {
         animationRef.current.pause()
-      }
-      if (glowAnimationRef.current) {
-        glowAnimationRef.current.pause()
       }
     }
   }, [isHovered])
@@ -138,7 +113,7 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
         '--entrance-delay': `${entranceDelay}ms`,
       } as React.CSSProperties}
     >
-      {/* Base border - fades in on hover */}
+      {/* Colored border glow - fades in on hover */}
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none z-[100]"
         style={{ overflow: 'visible' }}
@@ -154,40 +129,12 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
           fill="none"
           stroke={colors.dot}
           strokeWidth="1"
-          style={{ opacity: 0 }}
-        />
-      </svg>
-
-      {/* Rotating conic gradient glow - static mask, rotating inner gradient */}
-      <div
-        className="absolute pointer-events-none z-[99]"
-        style={{
-          inset: '-1px',
-          borderRadius: '8px',
-          opacity: isHovered ? 1 : 0,
-          transition: 'opacity 0.3s ease-out',
-          // Static mask creates border-only cutout
-          mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-          maskComposite: 'exclude',
-          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-          WebkitMaskComposite: 'xor',
-          padding: '1px',
-          overflow: 'hidden',
-        }}
-      >
-        {/* This inner div rotates, but mask above stays static */}
-        <div
-          ref={glowRef}
           style={{
-            position: 'absolute',
-            inset: '-50%',
-            width: '200%',
-            height: '200%',
-            background: `conic-gradient(from 0deg, transparent 0deg, transparent 160deg, ${colors.dot} 180deg, transparent 200deg, transparent 360deg)`,
-            filter: `blur(2px) drop-shadow(0 0 6px ${colors.dot})`,
+            opacity: 0,
+            filter: `drop-shadow(0 0 4px ${colors.dot})`,
           }}
         />
-      </div>
+      </svg>
 
       {/* Background image - spans entire card (hidden for Writing and Connect types) */}
       {item.coverImage && !isWritingType && !isConnectType && (
