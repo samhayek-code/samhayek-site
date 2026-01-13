@@ -140,6 +140,12 @@ export default defineType({
       type: 'url',
       description: 'Cloudinary video URL for Lab/experimental pieces',
     }),
+    defineField({
+      name: 'fileAsset',
+      title: 'File Download',
+      type: 'file',
+      description: 'Downloadable file (PDF, etc.)',
+    }),
   ],
   preview: {
     select: {
