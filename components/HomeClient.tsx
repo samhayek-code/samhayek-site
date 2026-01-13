@@ -239,7 +239,7 @@ export default function HomeClient({ items }: HomeClientProps) {
 
           {/* Copyright - right side */}
           <span className="font-mono text-[10px] text-[#333] tracking-wide">
-            © 2025
+            © 2026
           </span>
         </div>
       </footer>

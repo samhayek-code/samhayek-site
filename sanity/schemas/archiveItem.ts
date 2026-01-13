@@ -142,6 +142,12 @@ export default defineType({
       description: 'Cloudinary video URL for Lab/experimental pieces',
     }),
     defineField({
+      name: 'figmaUrl',
+      title: 'Figma URL',
+      type: 'url',
+      description: 'Figma file or prototype URL for Design items',
+    }),
+    defineField({
       name: 'fileAsset',
       title: 'File Download',
       type: 'file',

@@ -181,7 +181,7 @@ export default function Modal({ item, onClose }: ModalProps) {
   const hasMerch = item.merchGallery && item.merchGallery.length > 0
   const isGalleryType = (isArt || isDesign) && !isCollection  // Types that use full-width gallery display (but not collections)
   const isEmbedModal = isContactForm || isBookingForm
-  const hideCtaButton = isEmbedModal || isCaseStudy || isGalleryType || isSupport || isCollection
+  const hideCtaButton = isEmbedModal || isCaseStudy || isGalleryType || isSupport || isCollection || isWriting
 
   // Collection navigation
   const collectionPieces = item.collectionPieces || []
@@ -330,7 +330,7 @@ export default function Modal({ item, onClose }: ModalProps) {
   return (
     <div 
       onClick={onClose}
-      className="fixed inset-0 z-[2000] flex items-center justify-center p-12 cursor-pointer modal-backdrop"
+      className="fixed inset-0 z-[2000] flex items-center justify-center p-4 lg:p-12 cursor-pointer modal-backdrop"
     >
       <div 
         onClick={(e) => e.stopPropagation()}
@@ -353,11 +353,11 @@ export default function Modal({ item, onClose }: ModalProps) {
         )}
         
         {/* Content */}
-        <div className="p-8 overflow-x-hidden">
+        <div className="p-5 lg:p-8 overflow-x-hidden">
           {/* Header */}
           <div className="flex justify-between items-start mb-6">
             <div>
-              <h2 className="font-sans text-2xl font-medium text-foreground mb-2">
+              <h2 className="font-sans text-xl lg:text-2xl font-medium text-foreground mb-2">
                 {item.title}
               </h2>
               {item.year && (
@@ -671,6 +671,20 @@ export default function Modal({ item, onClose }: ModalProps) {
               >
                 Your browser does not support the video tag.
               </video>
+            </div>
+          )}
+
+          {/* Figma embed */}
+          {item.figmaUrl && (
+            <div className="mb-8">
+              <iframe
+                src={`https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(item.figmaUrl)}`}
+                width="100%"
+                height="500"
+                allowFullScreen
+                className="rounded-lg border border-[#1a1a1a]"
+                style={{ background: '#0a0a0a' }}
+              />
             </div>
           )}
 

@@ -35,6 +35,7 @@ export async function getArchiveItems() {
       externalUrl,
       lemonSqueezyUrl,
       videoUrl,
+      figmaUrl,
       collectionPieces,
       collectionBanner,
       merchGallery
@@ -62,6 +63,7 @@ export async function getItemBySlug(slug: string) {
       externalUrl,
       lemonSqueezyUrl,
       videoUrl,
+      figmaUrl,
       collectionPieces,
       collectionBanner,
       merchGallery

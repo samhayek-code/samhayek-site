@@ -33,6 +33,7 @@ export interface ArchiveItem {
   externalUrl?: string
   lemonSqueezyUrl?: string
   videoUrl?: string
+  figmaUrl?: string
   collectionPieces?: CollectionPiece[]
   collectionBanner?: any // Sanity image for collection intro
   merchGallery?: any[] // Array of Sanity images
