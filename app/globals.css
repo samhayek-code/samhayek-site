@@ -100,22 +100,15 @@ body {
   animation-delay: var(--entrance-delay, 0ms);
 }
 
-/* Border glow pulse on hover */
-@keyframes glowPulse {
-  0%, 100% {
-    box-shadow: 0 0 0 1px rgba(var(--glow-color), 0.2), 0 0 8px rgba(var(--glow-color), 0.15);
-  }
-  50% {
-    box-shadow: 0 0 0 1px rgba(var(--glow-color), 0.5), 0 0 20px rgba(var(--glow-color), 0.4);
-  }
-}
-
+/* Border glow on hover - simple transition, no animation conflict */
 .card-glow {
   --glow-color: 255, 255, 255;
+  box-shadow: 0 0 0 0 rgba(var(--glow-color), 0);
+  transition: box-shadow 0.4s ease-out;
 }
 
 .card-glow:hover {
-  animation: glowPulse 2s ease-in-out 2 forwards;
+  box-shadow: 0 0 0 1px rgba(var(--glow-color), 0.3), 0 0 16px rgba(var(--glow-color), 0.25);
 }
 
 /* Modal backdrop */
