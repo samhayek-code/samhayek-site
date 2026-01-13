@@ -676,22 +676,6 @@ export default function Modal({ item, onClose }: ModalProps) {
             </div>
           )}
 
-          {/* Legacy Video (Cloudinary) - fallback for old content */}
-          {item.videoUrl && !item.muxVideo?.asset?.playbackId && (
-            <div className="mb-8">
-              <video
-                src={item.videoUrl}
-                controls
-                playsInline
-                preload="metadata"
-                className="w-full rounded-lg"
-                style={{ maxHeight: '70vh' }}
-              >
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          )}
-
           {/* Figma embed */}
           {item.figmaUrl && (
             <div className="mb-8">

@@ -44,8 +44,7 @@ Personal website for **Sam Hayek** — artist, musician, and brand designer.
 | embedUrl | url | Spotify/YouTube embed |
 | externalUrl | url | External link (Tools) |
 | lemonSqueezyUrl | url | Checkout overlay (Shop) |
-| videoUrl | url | Legacy Cloudinary video URL (deprecated) |
-| muxVideo | mux.video | MUX video asset (preferred) |
+| muxVideo | mux.video | MUX video asset |
 | figmaUrl | url | Figma file embed |
 | prototypeUrl | url | Figma prototype link |
 | fileAsset | file | Downloadable file (PDF, etc.) |
@@ -102,10 +101,9 @@ Everything → Design → Music → Art → Writing → Tools → Downloads → 
 - YouTube: Supports youtube.com/watch, youtu.be, youtube.com/shorts (height: 315px)
 
 **Video support:**
-- MUX integration via `muxVideo` field (preferred)
+- MUX integration via `muxVideo` field
 - Upload videos directly in Sanity Studio via MUX plugin
 - MuxPlayer component with streaming, adaptive quality
-- Legacy Cloudinary fallback via `videoUrl` for old content
 
 **Special slugs:**
 - `send-message`: YouForm contact embed

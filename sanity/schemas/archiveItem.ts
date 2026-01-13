@@ -136,12 +136,6 @@ export default defineType({
       description: 'For Shop/Design items — checkout link',
     }),
     defineField({
-      name: 'videoUrl',
-      title: 'Video URL (Legacy)',
-      type: 'url',
-      description: 'Legacy Cloudinary video URL - use MUX Video instead',
-    }),
-    defineField({
       name: 'muxVideo',
       title: 'MUX Video',
       type: 'mux.video',

@@ -44,7 +44,6 @@ export interface ArchiveItem {
   embedUrl?: string
   externalUrl?: string
   lemonSqueezyUrl?: string
-  videoUrl?: string
   muxVideo?: MuxVideo // MUX video asset
   figmaUrl?: string
   prototypeUrl?: string
