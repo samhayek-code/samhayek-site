@@ -16,7 +16,7 @@ Personal website for **Sam Hayek** — artist, musician, and brand designer.
 - **CMS**: Sanity v3 with GROQ queries
 - **Rich Text**: `@portabletext/react`
 - **Images**: `@sanity/image-url` for transforms
-- **Video**: Cloudinary (native HTML5 player)
+- **Video**: MUX (`sanity-plugin-mux-input` + `@mux/mux-player-react`)
 - **Deployment**: Vercel (auto-deploys on push to main)
 
 ## Sanity CMS
@@ -44,7 +44,8 @@ Personal website for **Sam Hayek** — artist, musician, and brand designer.
 | embedUrl | url | Spotify/YouTube embed |
 | externalUrl | url | External link (Tools) |
 | lemonSqueezyUrl | url | Checkout overlay (Shop) |
-| videoUrl | url | Cloudinary video URL |
+| videoUrl | url | Legacy Cloudinary video URL (deprecated) |
+| muxVideo | mux.video | MUX video asset (preferred) |
 | figmaUrl | url | Figma file embed |
 | prototypeUrl | url | Figma prototype link |
 | fileAsset | file | Downloadable file (PDF, etc.) |
@@ -101,8 +102,10 @@ Everything → Design → Music → Art → Writing → Tools → Downloads → 
 - YouTube: Supports youtube.com/watch, youtu.be, youtube.com/shorts (height: 315px)
 
 **Video support:**
-- Cloudinary integration via `videoUrl` field
-- Native HTML5 video player with controls
+- MUX integration via `muxVideo` field (preferred)
+- Upload videos directly in Sanity Studio via MUX plugin
+- MuxPlayer component with streaming, adaptive quality
+- Legacy Cloudinary fallback via `videoUrl` for old content
 
 **Special slugs:**
 - `send-message`: YouForm contact embed
@@ -225,6 +228,12 @@ curl -s "https://jpxmevq8.api.sanity.io/v2024-01-01/data/query/production" \
 NEXT_PUBLIC_SANITY_PROJECT_ID=jpxmevq8
 NEXT_PUBLIC_SANITY_DATASET=production
 SANITY_API_TOKEN=<token>
+
+# MUX Video
+MUX_TOKEN_ID=<mux-token-id>
+MUX_TOKEN_SECRET=<mux-token-secret>
+SANITY_STUDIO_MUX_TOKEN_ID=<mux-token-id>
+SANITY_STUDIO_MUX_TOKEN_SECRET=<mux-token-secret>
 ```
 
 ## Design Tokens
@@ -274,7 +283,7 @@ Cards sort by `order` ASC, then `date` DESC (newest first).
 
 - **Vercel**: Hosting + auto-deploy from main branch
 - **Sanity**: Headless CMS (hosted studio at samhayek.sanity.studio)
-- **Cloudinary**: Video hosting (free tier: 25 credits/month)
+- **MUX**: Video hosting + streaming (replaced Cloudinary)
 - **Lemon Squeezy**: Checkout overlay for Shop items (pending approval)
 - **Cal.com**: Booking embed
 - **YouForm**: Contact form embed
