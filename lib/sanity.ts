@@ -34,7 +34,9 @@ export async function getArchiveItems() {
       embedUrl,
       externalUrl,
       lemonSqueezyUrl,
-      videoUrl
+      videoUrl,
+      collectionPieces,
+      merchGallery
     }
   `)
 }
@@ -58,7 +60,9 @@ export async function getItemBySlug(slug: string) {
       embedUrl,
       externalUrl,
       lemonSqueezyUrl,
-      videoUrl
+      videoUrl,
+      collectionPieces,
+      merchGallery
     }
   `, { slug })
 }
