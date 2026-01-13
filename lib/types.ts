@@ -9,6 +9,13 @@ export type ItemType =
   | 'Connect'
   | 'Lab'
 
+export interface CollectionPiece {
+  _key: string
+  title: string
+  image: any // Sanity image
+  poemText: string
+}
+
 export interface ArchiveItem {
   _id: string
   title: string
@@ -26,6 +33,8 @@ export interface ArchiveItem {
   externalUrl?: string
   lemonSqueezyUrl?: string
   videoUrl?: string
+  collectionPieces?: CollectionPiece[]
+  merchGallery?: any[] // Array of Sanity images
 }
 
 export const typeColors: Record<string, { dot: string; bg: string }> = {

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
-import { ArchiveItem, typeColors } from '@/lib/types'
+import { ArchiveItem, typeColors, CollectionPiece } from '@/lib/types'
 import { urlFor } from '@/lib/sanity'
 import WalletButton from './WalletButton'
 
@@ -166,6 +166,8 @@ export default function Modal({ item, onClose }: ModalProps) {
   const closingForCheckoutRef = useRef(false)
   const [lightboxState, setLightboxState] = useState<{ images: { src: string; alt: string }[]; currentIndex: number } | null>(null)
   const [activeQR, setActiveQR] = useState<{ currency: string; address: string } | null>(null)
+  // Collection state: -1 = intro, 0 to n-1 = pieces, n = merch (if exists)
+  const [collectionIndex, setCollectionIndex] = useState(-1)
 
   // Check if this is a special modal type
   const isContactForm = item.slug?.current === 'send-message'
@@ -175,18 +177,39 @@ export default function Modal({ item, onClose }: ModalProps) {
   const isArt = item.type === 'Art'
   const isDesign = item.type === 'Design'
   const isWriting = item.type === 'Writing'
-  const isGalleryType = isArt || isDesign  // Types that use full-width gallery display
+  const isCollection = item.collectionPieces && item.collectionPieces.length > 0
+  const hasMerch = item.merchGallery && item.merchGallery.length > 0
+  const isGalleryType = (isArt || isDesign) && !isCollection  // Types that use full-width gallery display (but not collections)
   const isEmbedModal = isContactForm || isBookingForm
-  const hideCtaButton = isEmbedModal || isCaseStudy || isGalleryType || isSupport
+  const hideCtaButton = isEmbedModal || isCaseStudy || isGalleryType || isSupport || isCollection
 
-  // Close on escape
+  // Collection navigation
+  const collectionPieces = item.collectionPieces || []
+  const totalPieces = collectionPieces.length
+  // Max index: -1 (intro), 0 to totalPieces-1 (pieces), totalPieces (merch if exists)
+  const maxIndex = hasMerch ? totalPieces : totalPieces - 1
+  const minIndex = -1
+
+  const goNextCollection = useCallback(() => {
+    setCollectionIndex(prev => Math.min(prev + 1, maxIndex))
+  }, [maxIndex])
+
+  const goPrevCollection = useCallback(() => {
+    setCollectionIndex(prev => Math.max(prev - 1, minIndex))
+  }, [minIndex])
+
+  // Close on escape + collection navigation with arrow keys
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
+      if (isCollection && !lightboxState) {
+        if (e.key === 'ArrowRight') goNextCollection()
+        if (e.key === 'ArrowLeft') goPrevCollection()
+      }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [onClose])
+  }, [onClose, isCollection, lightboxState, goNextCollection, goPrevCollection])
 
   // Prevent body scroll
   useEffect(() => {
@@ -362,10 +385,12 @@ export default function Modal({ item, onClose }: ModalProps) {
             </div>
           </div>
           
-          {/* Description */}
-          <p className="font-sans text-[15px] text-[#888] leading-relaxed mb-6">
-            {item.description}
-          </p>
+          {/* Description - hide for collections (shown in intro screen) */}
+          {!isCollection && (
+            <p className="font-sans text-[15px] text-[#888] leading-relaxed mb-6">
+              {item.description}
+            </p>
+          )}
 
           {/* Gallery display - full-width images with lightbox (Art, Design) */}
           {isGalleryType && (() => {
@@ -421,6 +446,118 @@ export default function Modal({ item, onClose }: ModalProps) {
               </div>
             )
           })()}
+
+          {/* Collection display - intro, pieces carousel, merch grid */}
+          {isCollection && (
+            <div className="mb-8">
+              {/* Intro screen */}
+              {collectionIndex === -1 && (
+                <div className="text-center py-12">
+                  <p className="font-sans text-[15px] text-[#888] leading-relaxed max-w-lg mx-auto mb-8">
+                    {item.description}
+                  </p>
+                  <button
+                    onClick={goNextCollection}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-md font-sans text-sm font-medium bg-white/5 border border-white/10 text-foreground hover:bg-white/10 transition-colors"
+                  >
+                    Begin
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </button>
+                </div>
+              )}
+
+              {/* Individual pieces */}
+              {collectionIndex >= 0 && collectionIndex < totalPieces && (() => {
+                const piece = collectionPieces[collectionIndex]
+                return (
+                  <div className="space-y-6">
+                    {/* Piece image */}
+                    {piece.image && (
+                      <div className="relative w-full">
+                        <Image
+                          src={urlFor(piece.image).width(1600).quality(90).url()}
+                          alt={piece.title}
+                          width={1600}
+                          height={1600}
+                          className="w-full h-auto rounded-lg"
+                          style={{ maxHeight: '50vh', objectFit: 'contain' }}
+                        />
+                      </div>
+                    )}
+
+                    {/* Piece title */}
+                    <h3 className="font-sans text-xl font-medium text-foreground text-center">
+                      {piece.title}
+                    </h3>
+
+                    {/* Poem text */}
+                    {piece.poemText && (
+                      <div className="max-w-md mx-auto">
+                        <p className="font-sans text-[15px] text-[#999] leading-[1.8] whitespace-pre-line text-center">
+                          {piece.poemText}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )
+              })()}
+
+              {/* Merch grid */}
+              {collectionIndex === totalPieces && hasMerch && (
+                <div className="space-y-6">
+                  <h3 className="font-sans text-xl font-medium text-foreground text-center">
+                    The Collection
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {item.merchGallery!.map((image, i) => (
+                      <div key={i} className="aspect-square relative rounded-lg overflow-hidden bg-[#151515]">
+                        <Image
+                          src={urlFor(image).width(600).height(600).url()}
+                          alt={`Merch ${i + 1}`}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Navigation */}
+              <div className="flex items-center justify-between mt-8 pt-6 border-t border-[#1a1a1a]">
+                <button
+                  onClick={goPrevCollection}
+                  disabled={collectionIndex === minIndex}
+                  className="flex items-center gap-2 px-4 py-2 rounded-md font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M15 18l-6-6 6-6" />
+                  </svg>
+                  {collectionIndex === 0 ? 'Intro' : collectionIndex === totalPieces ? 'Back' : 'Previous'}
+                </button>
+
+                {/* Progress indicator */}
+                <div className="font-mono text-xs text-subtle">
+                  {collectionIndex === -1 && 'Intro'}
+                  {collectionIndex >= 0 && collectionIndex < totalPieces && `${collectionIndex + 1} / ${totalPieces}`}
+                  {collectionIndex === totalPieces && 'Collection'}
+                </div>
+
+                <button
+                  onClick={goNextCollection}
+                  disabled={collectionIndex === maxIndex}
+                  className="flex items-center gap-2 px-4 py-2 rounded-md font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                >
+                  {collectionIndex === -1 ? 'Begin' : collectionIndex === totalPieces - 1 && hasMerch ? 'Collection' : 'Next'}
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Wallet buttons for Support card */}
           {isSupport && (

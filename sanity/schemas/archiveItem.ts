@@ -147,6 +147,32 @@ export default defineType({
       type: 'file',
       description: 'Downloadable file (PDF, etc.)',
     }),
+    defineField({
+      name: 'collectionPieces',
+      title: 'Collection Pieces',
+      type: 'array',
+      description: 'For poetry/art collections - each piece with image and text',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'title', title: 'Title', type: 'string' },
+            { name: 'image', title: 'Image', type: 'image', options: { hotspot: true } },
+            { name: 'poemText', title: 'Poem Text', type: 'text', rows: 10 },
+          ],
+          preview: {
+            select: { title: 'title', media: 'image' },
+          },
+        },
+      ],
+    }),
+    defineField({
+      name: 'merchGallery',
+      title: 'Merch Gallery',
+      type: 'array',
+      description: 'Portfolio images of merchandise/physical items',
+      of: [{ type: 'image', options: { hotspot: true } }],
+    }),
   ],
   preview: {
     select: {
