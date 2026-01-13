@@ -100,17 +100,6 @@ body {
   animation-delay: var(--entrance-delay, 0ms);
 }
 
-/* Border glow on hover - simple transition, no animation conflict */
-.card-glow {
-  --glow-color: 255, 255, 255;
-  box-shadow: 0 0 0 0 rgba(var(--glow-color), 0);
-  transition: box-shadow 0.4s ease-out;
-}
-
-.card-glow:hover {
-  box-shadow: 0 0 0 1px rgba(var(--glow-color), 0.3), 0 0 16px rgba(var(--glow-color), 0.25);
-}
-
 /* Modal backdrop */
 .modal-backdrop {
   background: rgba(0, 0, 0, 0.85);

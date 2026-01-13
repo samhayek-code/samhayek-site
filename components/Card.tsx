@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
+import { animate, JSAnimation } from 'animejs'
 import { ArchiveItem, typeColors, extractPlainText } from '@/lib/types'
 import { urlFor } from '@/lib/sanity'
 
@@ -55,6 +56,8 @@ function hexToRgb(hex: string): string {
 
 export default function Card({ item, onClick, onHoverSound, index = 0 }: CardProps) {
   const [isHovered, setIsHovered] = useState(false)
+  const borderRef = useRef<SVGRectElement>(null)
+  const animationRef = useRef<JSAnimation | null>(null)
   const colors = typeColors[item.type] || typeColors.Everything
   const isWritingType = item.type === 'Writing'
   const isConnectType = item.type === 'Connect'
@@ -66,6 +69,53 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
   const entranceDelay = Math.min(index * 40, 400)
   const glowColorRgb = hexToRgb(colors.dot)
 
+  // Anime.js border draw + pulse effect
+  useEffect(() => {
+    if (!borderRef.current) return
+
+    if (isHovered) {
+      // Get the perimeter of the rounded rect
+      const rect = borderRef.current
+      const perimeter = rect.getTotalLength()
+
+      // Set initial state - fully hidden
+      rect.style.strokeDasharray = `${perimeter}`
+      rect.style.strokeDashoffset = `${perimeter}`
+
+      // Animate: draw the border, then pulse
+      animationRef.current = animate(rect, {
+        strokeDashoffset: [perimeter, 0],
+        opacity: [0.4, 0.8],
+        duration: 600,
+        ease: 'outCubic',
+        onComplete: () => {
+          // After draw completes, start pulse loop
+          animationRef.current = animate(rect, {
+            opacity: [0.8, 0.4, 0.8],
+            duration: 2000,
+            ease: 'inOutSine',
+            loop: 2,
+          })
+        }
+      })
+    } else {
+      // Reset on mouse leave
+      if (animationRef.current) {
+        animationRef.current.pause()
+      }
+      if (borderRef.current) {
+        borderRef.current.style.strokeDashoffset = `${borderRef.current.getTotalLength()}`
+        borderRef.current.style.opacity = '0'
+      }
+    }
+
+    return () => {
+      if (animationRef.current) {
+        animationRef.current.pause()
+      }
+    }
+  }, [isHovered])
+
   const handleMouseEnter = () => {
     setIsHovered(true)
     onHoverSound?.()
@@ -76,14 +126,36 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
       onMouseEnter={handleMouseEnter}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onClick(item)}
-      className="card-hover card-noise card-entrance card-glow relative overflow-hidden rounded-lg cursor-pointer flex flex-col aspect-square"
+      className="card-hover card-noise card-entrance relative overflow-hidden rounded-lg cursor-pointer flex flex-col aspect-square"
       style={{
         background: '#0a0a0a',
         border: `1px solid ${isHovered ? '#2a2a2a' : '#1a1a1a'}`,
         '--entrance-delay': `${entranceDelay}ms`,
-        '--glow-color': glowColorRgb,
       } as React.CSSProperties}
     >
+      {/* Animated SVG border */}
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none z-[100]"
+        style={{ overflow: 'visible' }}
+      >
+        <rect
+          ref={borderRef}
+          x="0.5"
+          y="0.5"
+          width="calc(100% - 1px)"
+          height="calc(100% - 1px)"
+          rx="7"
+          ry="7"
+          fill="none"
+          stroke={colors.dot}
+          strokeWidth="1.5"
+          style={{
+            opacity: 0,
+            filter: `drop-shadow(0 0 6px ${colors.dot})`,
+          }}
+        />
+      </svg>
+
       {/* Background image - spans entire card (hidden for Writing and Connect types) */}
       {item.coverImage && !isWritingType && !isConnectType && (
         <div className="absolute inset-0 z-0">

@@ -176,6 +176,7 @@ export default function HomeClient({ items }: HomeClientProps) {
         items={filteredItems}
         onCardClick={handleCardClick}
         onHoverSound={playSound}
+        activeFilter={activeFilter}
       />
 
       {/* Modal */}
