@@ -452,31 +452,10 @@ export default function Modal({ item, onClose }: ModalProps) {
             <div className="mb-8">
               {/* Intro screen */}
               {collectionIndex === -1 && (
-                <div className="text-center">
-                  {/* Collection banner */}
-                  {item.collectionBanner && (
-                    <div className="mb-8 -mx-8 -mt-8">
-                      <Image
-                        src={urlFor(item.collectionBanner).width(1600).quality(90).url()}
-                        alt={item.title}
-                        width={1400}
-                        height={400}
-                        className="w-full h-auto"
-                      />
-                    </div>
-                  )}
-                  <p className="font-sans text-[15px] text-[#888] leading-relaxed max-w-lg mx-auto mb-8">
+                <div className="text-center py-4">
+                  <p className="font-sans text-[15px] text-[#888] leading-relaxed max-w-lg mx-auto">
                     {item.description}
                   </p>
-                  <button
-                    onClick={goNextCollection}
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-md font-sans text-sm font-medium bg-white/5 border border-white/10 text-foreground hover:bg-white/10 transition-colors"
-                  >
-                    View
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M9 18l6-6-6-6" />
-                    </svg>
-                  </button>
                 </div>
               )}
 
@@ -537,37 +516,38 @@ export default function Modal({ item, onClose }: ModalProps) {
                 </div>
               )}
 
-              {/* Navigation */}
-              <div className="flex items-center justify-between mt-8 pt-6 border-t border-[#1a1a1a]">
-                <button
-                  onClick={goPrevCollection}
-                  disabled={collectionIndex === minIndex}
-                  className="flex items-center gap-2 px-4 py-2 rounded-md font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M15 18l-6-6 6-6" />
-                  </svg>
-                  {collectionIndex === 0 ? 'Intro' : collectionIndex === totalPieces ? 'Back' : 'Previous'}
-                </button>
+              {/* Navigation - hide on intro */}
+              {collectionIndex !== -1 && (
+                <div className="flex items-center justify-between mt-8 pt-6 border-t border-[#1a1a1a]">
+                  <button
+                    onClick={goPrevCollection}
+                    disabled={collectionIndex === 0}
+                    className="flex items-center gap-2 px-4 py-2 rounded-md font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                    Previous
+                  </button>
 
-                {/* Progress indicator */}
-                <div className="font-mono text-xs text-subtle">
-                  {collectionIndex === -1 && 'Intro'}
-                  {collectionIndex >= 0 && collectionIndex < totalPieces && `${collectionIndex + 1} / ${totalPieces}`}
-                  {collectionIndex === totalPieces && 'Collection'}
+                  {/* Progress indicator */}
+                  <div className="font-mono text-xs text-subtle">
+                    {collectionIndex >= 0 && collectionIndex < totalPieces && `${collectionIndex + 1} / ${totalPieces}`}
+                    {collectionIndex === totalPieces && 'Collection'}
+                  </div>
+
+                  <button
+                    onClick={goNextCollection}
+                    disabled={collectionIndex === maxIndex}
+                    className="flex items-center gap-2 px-4 py-2 rounded-md font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  >
+                    {collectionIndex === totalPieces - 1 && hasMerch ? 'Collection' : 'Next'}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </button>
                 </div>
-
-                <button
-                  onClick={goNextCollection}
-                  disabled={collectionIndex === maxIndex}
-                  className="flex items-center gap-2 px-4 py-2 rounded-md font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                >
-                  {collectionIndex === -1 ? 'View' : collectionIndex === totalPieces - 1 && hasMerch ? 'Collection' : 'Next'}
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M9 18l6-6-6-6" />
-                  </svg>
-                </button>
-              </div>
+              )}
             </div>
           )}
 
@@ -719,6 +699,15 @@ export default function Modal({ item, onClose }: ModalProps) {
               >
                 Close
               </button>
+              {/* View button for collection intro */}
+              {isCollection && collectionIndex === -1 && (
+                <button
+                  onClick={goNextCollection}
+                  className="px-6 py-3 rounded-md font-sans text-sm font-medium bg-foreground text-background hover:bg-white transition-colors"
+                >
+                  View
+                </button>
+              )}
               {!hideCtaButton && (
                 item.lemonSqueezyUrl ? (
                   <a
