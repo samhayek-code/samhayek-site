@@ -452,7 +452,19 @@ export default function Modal({ item, onClose }: ModalProps) {
             <div className="mb-8">
               {/* Intro screen */}
               {collectionIndex === -1 && (
-                <div className="text-center py-12">
+                <div className="text-center">
+                  {/* Collection banner */}
+                  {item.collectionBanner && (
+                    <div className="mb-8 -mx-8 -mt-8">
+                      <Image
+                        src={urlFor(item.collectionBanner).width(1600).quality(90).url()}
+                        alt={item.title}
+                        width={1400}
+                        height={400}
+                        className="w-full h-auto"
+                      />
+                    </div>
+                  )}
                   <p className="font-sans text-[15px] text-[#888] leading-relaxed max-w-lg mx-auto mb-8">
                     {item.description}
                   </p>
@@ -460,7 +472,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                     onClick={goNextCollection}
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-md font-sans text-sm font-medium bg-white/5 border border-white/10 text-foreground hover:bg-white/10 transition-colors"
                   >
-                    Begin
+                    View
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M9 18l6-6-6-6" />
                     </svg>
@@ -550,7 +562,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   disabled={collectionIndex === maxIndex}
                   className="flex items-center gap-2 px-4 py-2 rounded-md font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
-                  {collectionIndex === -1 ? 'Begin' : collectionIndex === totalPieces - 1 && hasMerch ? 'Collection' : 'Next'}
+                  {collectionIndex === -1 ? 'View' : collectionIndex === totalPieces - 1 && hasMerch ? 'Collection' : 'Next'}
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M9 18l6-6-6-6" />
                   </svg>

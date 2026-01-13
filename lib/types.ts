@@ -34,6 +34,7 @@ export interface ArchiveItem {
   lemonSqueezyUrl?: string
   videoUrl?: string
   collectionPieces?: CollectionPiece[]
+  collectionBanner?: any // Sanity image for collection intro
   merchGallery?: any[] // Array of Sanity images
 }
 

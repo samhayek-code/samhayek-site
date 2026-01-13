@@ -148,6 +148,13 @@ export default defineType({
       description: 'Downloadable file (PDF, etc.)',
     }),
     defineField({
+      name: 'collectionBanner',
+      title: 'Collection Banner',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Banner image for collection intro screen',
+    }),
+    defineField({
       name: 'collectionPieces',
       title: 'Collection Pieces',
       type: 'array',
