@@ -158,22 +158,36 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
         />
       </svg>
 
-      {/* Rotating conic gradient glow - masked to border only */}
+      {/* Rotating conic gradient glow - static mask, rotating inner gradient */}
       <div
-        ref={glowRef}
         className="absolute pointer-events-none z-[99]"
         style={{
           inset: '-1px',
           borderRadius: '8px',
-          opacity: 0,
-          background: `conic-gradient(from 0deg, transparent 0deg, transparent 160deg, ${colors.dot} 180deg, transparent 200deg, transparent 360deg)`,
+          opacity: isHovered ? 1 : 0,
+          transition: 'opacity 0.3s ease-out',
+          // Static mask creates border-only cutout
           mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
           maskComposite: 'exclude',
+          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
           WebkitMaskComposite: 'xor',
           padding: '1px',
-          filter: `drop-shadow(0 0 4px ${colors.dot})`,
+          overflow: 'hidden',
         }}
-      />
+      >
+        {/* This inner div rotates, but mask above stays static */}
+        <div
+          ref={glowRef}
+          style={{
+            position: 'absolute',
+            inset: '-50%',
+            width: '200%',
+            height: '200%',
+            background: `conic-gradient(from 0deg, transparent 0deg, transparent 160deg, ${colors.dot} 180deg, transparent 200deg, transparent 360deg)`,
+            filter: `blur(2px) drop-shadow(0 0 6px ${colors.dot})`,
+          }}
+        />
+      </div>
 
       {/* Background image - spans entire card (hidden for Writing and Connect types) */}
       {item.coverImage && !isWritingType && !isConnectType && (
