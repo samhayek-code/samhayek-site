@@ -7,6 +7,7 @@ export type ItemType =
   | 'Shop'
   | 'Design'
   | 'Connect'
+  | 'Lab'
 
 export interface ArchiveItem {
   _id: string
@@ -37,6 +38,7 @@ export const typeColors: Record<string, { dot: string; bg: string }> = {
   Shop: { dot: '#f87171', bg: 'rgba(248,113,113,0.08)' },
   Design: { dot: '#60a5fa', bg: 'rgba(96,165,250,0.08)' },
   Connect: { dot: '#34d399', bg: 'rgba(52,211,153,0.08)' },
+  Lab: { dot: '#06b6d4', bg: 'rgba(6,182,212,0.08)' },
 }
 
 export const filterCategories = [
@@ -45,6 +47,7 @@ export const filterCategories = [
   'Music',
   'Art',
   'Writing',
+  'Lab',
   'Tools',
   'Downloads',
   'Shop',
@@ -102,5 +105,9 @@ export const headerContent: Record<string, { title: string; subtitle: string }> 
   Connect: {
     title: "Let's chat.",
     subtitle: 'Building something?',
+  },
+  Lab: {
+    title: 'Experiments.',
+    subtitle: 'Cross-disciplinary work that defies categorization.',
   },
 }

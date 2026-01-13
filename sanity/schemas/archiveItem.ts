@@ -35,6 +35,7 @@ export default defineType({
           { title: 'Shop', value: 'Shop' },
           { title: 'Design', value: 'Design' },
           { title: 'Connect', value: 'Connect' },
+          { title: 'Lab', value: 'Lab' },
         ],
       },
       validation: (Rule) => Rule.required(),
