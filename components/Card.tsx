@@ -57,6 +57,7 @@ function hexToRgb(hex: string): string {
 export default function Card({ item, onClick, onHoverSound, index = 0 }: CardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const borderRef = useRef<SVGRectElement>(null)
+  const glowRef = useRef<SVGRectElement>(null)
   const animationRef = useRef<JSAnimation | null>(null)
   const colors = typeColors[item.type] || typeColors.Everything
   const isWritingType = item.type === 'Writing'
@@ -69,34 +70,33 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
   const entranceDelay = Math.min(index * 40, 400)
   const glowColorRgb = hexToRgb(colors.dot)
 
-  // Anime.js border draw + pulse effect
+  // Anime.js border light sweep effect
   useEffect(() => {
-    if (!borderRef.current) return
+    if (!borderRef.current || !glowRef.current) return
 
     if (isHovered) {
-      // Get the perimeter of the rounded rect
       const rect = borderRef.current
+      const glow = glowRef.current
       const perimeter = rect.getTotalLength()
 
-      // Set initial state - fully hidden
-      rect.style.strokeDasharray = `${perimeter}`
-      rect.style.strokeDashoffset = `${perimeter}`
+      // Set up the traveling highlight - a short segment that moves around
+      const highlightLength = perimeter * 0.25 // 25% of perimeter
+      glow.style.strokeDasharray = `${highlightLength} ${perimeter - highlightLength}`
 
-      // Animate: draw the border, then pulse
+      // Fade in the base border
       animationRef.current = animate(rect, {
-        strokeDashoffset: [perimeter, 0],
-        opacity: [0.4, 0.8],
-        duration: 600,
+        opacity: [0, 0.5],
+        duration: 200,
         ease: 'outCubic',
-        onComplete: () => {
-          // After draw completes, start pulse loop
-          animationRef.current = animate(rect, {
-            opacity: [0.8, 0.4, 0.8],
-            duration: 2000,
-            ease: 'inOutSine',
-            loop: 2,
-          })
-        }
+      })
+
+      // Animate the highlight sweep around the border
+      animate(glow, {
+        strokeDashoffset: [0, -perimeter],
+        opacity: [0, 0.9, 0.9, 0],
+        duration: 1500,
+        ease: 'inOutSine',
+        loop: 2,
       })
     } else {
       // Reset on mouse leave
@@ -104,8 +104,10 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
         animationRef.current.pause()
       }
       if (borderRef.current) {
-        borderRef.current.style.strokeDashoffset = `${borderRef.current.getTotalLength()}`
         borderRef.current.style.opacity = '0'
+      }
+      if (glowRef.current) {
+        glowRef.current.style.opacity = '0'
       }
     }
 
@@ -138,6 +140,7 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
         className="absolute inset-0 w-full h-full pointer-events-none z-[100]"
         style={{ overflow: 'visible' }}
       >
+        {/* Base border - fades in on hover */}
         <rect
           ref={borderRef}
           x="0.5"
@@ -148,10 +151,24 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
           ry="7"
           fill="none"
           stroke={colors.dot}
-          strokeWidth="1.5"
+          strokeWidth="1"
+          style={{ opacity: 0 }}
+        />
+        {/* Traveling highlight - sweeps around the border */}
+        <rect
+          ref={glowRef}
+          x="0.5"
+          y="0.5"
+          width="calc(100% - 1px)"
+          height="calc(100% - 1px)"
+          rx="7"
+          ry="7"
+          fill="none"
+          stroke={colors.dot}
+          strokeWidth="1"
           style={{
             opacity: 0,
-            filter: `drop-shadow(0 0 6px ${colors.dot})`,
+            filter: `drop-shadow(0 0 4px ${colors.dot})`,
           }}
         />
       </svg>
