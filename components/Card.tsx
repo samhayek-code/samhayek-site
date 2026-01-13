@@ -57,9 +57,7 @@ function hexToRgb(hex: string): string {
 export default function Card({ item, onClick, onHoverSound, index = 0 }: CardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const borderRef = useRef<SVGRectElement>(null)
-  const glowCoreRef = useRef<SVGRectElement>(null)
-  const glowMidRef = useRef<SVGRectElement>(null)
-  const glowOuterRef = useRef<SVGRectElement>(null)
+  const glowRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<JSAnimation | null>(null)
   const glowAnimationRef = useRef<JSAnimation | null>(null)
   const colors = typeColors[item.type] || typeColors.Everything
@@ -73,25 +71,13 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
   const entranceDelay = Math.min(index * 40, 400)
   const glowColorRgb = hexToRgb(colors.dot)
 
-  // Anime.js border light sweep effect with layered glow for gradient edges
+  // Anime.js border light sweep effect using conic gradient rotation
   useEffect(() => {
-    if (!borderRef.current || !glowCoreRef.current || !glowMidRef.current || !glowOuterRef.current) return
+    if (!borderRef.current || !glowRef.current) return
 
     if (isHovered) {
       const rect = borderRef.current
-      const core = glowCoreRef.current
-      const mid = glowMidRef.current
-      const outer = glowOuterRef.current
-      const perimeter = rect.getTotalLength()
-
-      // Layered highlight segments - core is bright & short, outer layers are longer & dimmer
-      const coreLength = perimeter * 0.08   // 8% - bright center
-      const midLength = perimeter * 0.12    // 12% - medium fade
-      const outerLength = perimeter * 0.17  // 17% - soft outer edge
-
-      core.style.strokeDasharray = `${coreLength} ${perimeter - coreLength}`
-      mid.style.strokeDasharray = `${midLength} ${perimeter - midLength}`
-      outer.style.strokeDasharray = `${outerLength} ${perimeter - outerLength}`
+      const glow = glowRef.current
 
       // Fade in the base border
       animationRef.current = animate(rect, {
@@ -100,10 +86,10 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
         ease: 'outCubic',
       })
 
-      // Animate all layers together - they move as one unit
-      glowAnimationRef.current = animate([core, mid, outer], {
-        strokeDashoffset: [0, -perimeter],
-        opacity: [0, 1, 1, 0],
+      // Rotate the conic gradient mask - creates smooth traveling highlight
+      glow.style.opacity = '1'
+      glowAnimationRef.current = animate(glow, {
+        rotate: [0, 360],
         duration: 4000,
         ease: 'inOutSine',
         loop: false,
@@ -118,17 +104,14 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
         glowAnimationRef.current.pause()
         glowAnimationRef.current = null
       }
-      // Reset opacity immediately
+      // Reset immediately
       if (borderRef.current) {
         borderRef.current.style.opacity = '0'
       }
-      const layers = [glowCoreRef.current, glowMidRef.current, glowOuterRef.current]
-      layers.forEach(layer => {
-        if (layer) {
-          layer.style.opacity = '0'
-          layer.style.strokeDashoffset = '0'
-        }
-      })
+      if (glowRef.current) {
+        glowRef.current.style.opacity = '0'
+        glowRef.current.style.transform = 'rotate(0deg)'
+      }
     }
 
     return () => {
@@ -158,12 +141,11 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
         '--entrance-delay': `${entranceDelay}ms`,
       } as React.CSSProperties}
     >
-      {/* Animated SVG border */}
+      {/* Base border - fades in on hover */}
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none z-[100]"
         style={{ overflow: 'visible' }}
       >
-        {/* Base border - fades in on hover */}
         <rect
           ref={borderRef}
           x="0.5"
@@ -177,58 +159,25 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
           strokeWidth="1"
           style={{ opacity: 0 }}
         />
-        {/* Layered glow - outer (dimmest, longest) */}
-        <rect
-          ref={glowOuterRef}
-          x="0.5"
-          y="0.5"
-          width="calc(100% - 1px)"
-          height="calc(100% - 1px)"
-          rx="7"
-          ry="7"
-          fill="none"
-          stroke={colors.dot}
-          strokeWidth="1"
-          strokeLinecap="round"
-          style={{
-            opacity: 0,
-            filter: `blur(2px) drop-shadow(0 0 8px ${colors.dot})`,
-          }}
-        />
-        {/* Layered glow - mid */}
-        <rect
-          ref={glowMidRef}
-          x="0.5"
-          y="0.5"
-          width="calc(100% - 1px)"
-          height="calc(100% - 1px)"
-          rx="7"
-          ry="7"
-          fill="none"
-          stroke={colors.dot}
-          strokeWidth="1"
-          strokeLinecap="round"
-          style={{
-            opacity: 0,
-            filter: `blur(1px) drop-shadow(0 0 4px ${colors.dot})`,
-          }}
-        />
-        {/* Layered glow - core (brightest, shortest) */}
-        <rect
-          ref={glowCoreRef}
-          x="0.5"
-          y="0.5"
-          width="calc(100% - 1px)"
-          height="calc(100% - 1px)"
-          rx="7"
-          ry="7"
-          fill="none"
-          stroke={colors.dot}
-          strokeWidth="1"
-          strokeLinecap="round"
-          style={{ opacity: 0 }}
-        />
       </svg>
+
+      {/* Rotating conic gradient glow */}
+      <div
+        ref={glowRef}
+        className="absolute pointer-events-none z-[99]"
+        style={{
+          inset: '-1px',
+          borderRadius: '8px',
+          opacity: 0,
+          background: `conic-gradient(from 0deg, transparent 0deg, transparent 160deg, ${colors.dot} 180deg, transparent 200deg, transparent 360deg)`,
+          mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          maskComposite: 'exclude',
+          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMaskComposite: 'xor',
+          padding: '1px',
+          filter: `drop-shadow(0 0 4px ${colors.dot})`,
+        }}
+      />
 
       {/* Background image - spans entire card (hidden for Writing and Connect types) */}
       {item.coverImage && !isWritingType && !isConnectType && (
