@@ -100,24 +100,36 @@ body {
   animation-delay: var(--entrance-delay, 0ms);
 }
 
-/* Border glow pulse on hover */
+/* Border glow pulse on hover - uses pseudo-element to avoid animation conflict */
 @keyframes borderPulse {
   0%, 100% {
-    box-shadow: 0 0 0 rgba(var(--glow-color), 0);
+    opacity: 0.15;
   }
   50% {
-    box-shadow: 0 0 12px rgba(var(--glow-color), 0.3);
+    opacity: 0.4;
   }
 }
 
 .card-glow {
   --glow-color: 255, 255, 255;
-  transition: box-shadow 0.3s ease-out;
+  position: relative;
 }
 
-.card-glow:hover {
+.card-glow::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: 0 0 12px rgb(var(--glow-color));
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.card-glow:hover::before {
   animation: borderPulse 2s ease-in-out 2;
-  box-shadow: 0 0 8px rgba(var(--glow-color), 0.15);
+  opacity: 0.15;
 }
 
 /* Modal backdrop */
