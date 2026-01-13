@@ -12,6 +12,7 @@
     "sanity:deploy": "sanity deploy"
   },
   "dependencies": {
+    "@mux/mux-player-react": "^3.10.2",
     "@portabletext/react": "^3.0.0",
     "@sanity/client": "^6.12.0",
     "@sanity/image-url": "^1.0.2",
@@ -22,6 +23,7 @@
     "react-dom": "^18.2.0",
     "react-is": "^19.2.3",
     "sanity": "^3.28.0",
+    "sanity-plugin-mux-input": "^2.12.1",
     "styled-components": "^6.3.3"
   },
   "devDependencies": {

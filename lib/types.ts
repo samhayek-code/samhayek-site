@@ -16,6 +16,18 @@ export interface CollectionPiece {
   poemText: string
 }
 
+export interface MuxVideoAsset {
+  _type: 'mux.videoAsset'
+  playbackId: string
+  assetId: string
+  status: string
+}
+
+export interface MuxVideo {
+  _type: 'mux.video'
+  asset: MuxVideoAsset
+}
+
 export interface ArchiveItem {
   _id: string
   title: string
@@ -33,6 +45,7 @@ export interface ArchiveItem {
   externalUrl?: string
   lemonSqueezyUrl?: string
   videoUrl?: string
+  muxVideo?: MuxVideo // MUX video asset
   figmaUrl?: string
   prototypeUrl?: string
   collectionPieces?: CollectionPiece[]

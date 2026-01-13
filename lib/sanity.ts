@@ -35,6 +35,13 @@ export async function getArchiveItems() {
       externalUrl,
       lemonSqueezyUrl,
       videoUrl,
+      muxVideo {
+        asset-> {
+          playbackId,
+          assetId,
+          status
+        }
+      },
       figmaUrl,
       prototypeUrl,
       collectionPieces,
@@ -64,6 +71,13 @@ export async function getItemBySlug(slug: string) {
       externalUrl,
       lemonSqueezyUrl,
       videoUrl,
+      muxVideo {
+        asset-> {
+          playbackId,
+          assetId,
+          status
+        }
+      },
       figmaUrl,
       prototypeUrl,
       collectionPieces,

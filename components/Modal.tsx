@@ -3,6 +3,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
+import MuxPlayer from '@mux/mux-player-react'
 import { ArchiveItem, typeColors, CollectionPiece } from '@/lib/types'
 import { urlFor } from '@/lib/sanity'
 import WalletButton from './WalletButton'
@@ -658,8 +659,25 @@ export default function Modal({ item, onClose }: ModalProps) {
             )
           })()}
 
-          {/* Video (Cloudinary) */}
-          {item.videoUrl && (
+          {/* MUX Video Player */}
+          {item.muxVideo?.asset?.playbackId && (
+            <div className="mb-8">
+              <MuxPlayer
+                playbackId={item.muxVideo.asset.playbackId}
+                streamType="on-demand"
+                accentColor="#ffffff"
+                style={{
+                  width: '100%',
+                  maxHeight: '70vh',
+                  borderRadius: '8px',
+                  aspectRatio: '16/9'
+                }}
+              />
+            </div>
+          )}
+
+          {/* Legacy Video (Cloudinary) - fallback for old content */}
+          {item.videoUrl && !item.muxVideo?.asset?.playbackId && (
             <div className="mb-8">
               <video
                 src={item.videoUrl}

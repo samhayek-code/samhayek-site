@@ -137,9 +137,15 @@ export default defineType({
     }),
     defineField({
       name: 'videoUrl',
-      title: 'Video URL',
+      title: 'Video URL (Legacy)',
       type: 'url',
-      description: 'Cloudinary video URL for Lab/experimental pieces',
+      description: 'Legacy Cloudinary video URL - use MUX Video instead',
+    }),
+    defineField({
+      name: 'muxVideo',
+      title: 'MUX Video',
+      type: 'mux.video',
+      description: 'Upload video via MUX for better playback',
     }),
     defineField({
       name: 'figmaUrl',
