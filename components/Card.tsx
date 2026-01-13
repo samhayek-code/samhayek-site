@@ -161,23 +161,28 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
         />
       </svg>
 
-      {/* Rotating conic gradient glow */}
+      {/* Rotating conic gradient glow - uses inner cutout for border-only effect */}
       <div
         ref={glowRef}
         className="absolute pointer-events-none z-[99]"
         style={{
-          inset: '-1px',
-          borderRadius: '8px',
+          inset: '-2px',
+          borderRadius: '9px',
           opacity: 0,
           background: `conic-gradient(from 0deg, transparent 0deg, transparent 160deg, ${colors.dot} 180deg, transparent 200deg, transparent 360deg)`,
-          mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-          maskComposite: 'exclude',
-          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-          WebkitMaskComposite: 'xor',
-          padding: '1px',
           filter: `drop-shadow(0 0 4px ${colors.dot})`,
         }}
-      />
+      >
+        {/* Inner cutout to create border-only effect */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: '1px',
+            borderRadius: '8px',
+            background: '#0a0a0a',
+          }}
+        />
+      </div>
 
       {/* Background image - spans entire card (hidden for Writing and Connect types) */}
       {item.coverImage && !isWritingType && !isConnectType && (
