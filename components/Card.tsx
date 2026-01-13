@@ -50,7 +50,7 @@ export default function Card({ item, onClick, onHoverSound }: CardProps) {
   const colors = typeColors[item.type] || typeColors.Everything
   const isWritingType = item.type === 'Writing'
   const isConnectType = item.type === 'Connect'
-  const bodyText = isWritingType && item.body ? extractPlainText(item.body) : ''
+  const bodyText = isWritingType ? (item.body ? extractPlainText(item.body) : item.description || '') : ''
   const connectIcon = isConnectType ? connectIcons[item.slug?.current] : null
   const connectColor = isConnectType ? connectIconColors[item.slug?.current] || colors.dot : colors.dot
 

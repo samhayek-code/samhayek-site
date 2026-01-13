@@ -478,6 +478,35 @@ export default function Modal({ item, onClose }: ModalProps) {
                       </div>
                     )}
 
+                    {/* Navigation between image and text */}
+                    <div className="flex items-center justify-between py-4 border-y border-[#1a1a1a]">
+                      <button
+                        onClick={goPrevCollection}
+                        disabled={collectionIndex === 0}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-md font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M15 18l-6-6 6-6" />
+                        </svg>
+                        Prev
+                      </button>
+
+                      <div className="font-mono text-xs text-subtle">
+                        {collectionIndex + 1} / {totalPieces}
+                      </div>
+
+                      <button
+                        onClick={goNextCollection}
+                        disabled={collectionIndex === totalPieces - 1 && !hasMerch}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-md font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      >
+                        {collectionIndex === totalPieces - 1 && hasMerch ? 'Collection' : 'Next'}
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M9 18l6-6-6-6" />
+                        </svg>
+                      </button>
+                    </div>
+
                     {/* Piece title */}
                     <h3 className="font-sans text-xl font-medium text-foreground text-center">
                       {piece.title}
@@ -513,39 +542,18 @@ export default function Modal({ item, onClose }: ModalProps) {
                       </div>
                     ))}
                   </div>
-                </div>
-              )}
-
-              {/* Navigation - hide on intro */}
-              {collectionIndex !== -1 && (
-                <div className="flex items-center justify-between mt-8 pt-6 border-t border-[#1a1a1a]">
-                  <button
-                    onClick={goPrevCollection}
-                    disabled={collectionIndex === 0}
-                    className="flex items-center gap-2 px-4 py-2 rounded-md font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M15 18l-6-6 6-6" />
-                    </svg>
-                    Previous
-                  </button>
-
-                  {/* Progress indicator */}
-                  <div className="font-mono text-xs text-subtle">
-                    {collectionIndex >= 0 && collectionIndex < totalPieces && `${collectionIndex + 1} / ${totalPieces}`}
-                    {collectionIndex === totalPieces && 'Collection'}
+                  {/* Back button for merch */}
+                  <div className="flex justify-center pt-4">
+                    <button
+                      onClick={goPrevCollection}
+                      className="flex items-center gap-2 px-4 py-2 rounded-md font-sans text-sm text-muted hover:text-foreground transition-colors"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M15 18l-6-6 6-6" />
+                      </svg>
+                      Back to poems
+                    </button>
                   </div>
-
-                  <button
-                    onClick={goNextCollection}
-                    disabled={collectionIndex === maxIndex}
-                    className="flex items-center gap-2 px-4 py-2 rounded-md font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                  >
-                    {collectionIndex === totalPieces - 1 && hasMerch ? 'Collection' : 'Next'}
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M9 18l6-6-6-6" />
-                    </svg>
-                  </button>
                 </div>
               )}
             </div>
