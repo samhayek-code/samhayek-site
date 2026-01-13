@@ -12,12 +12,7 @@ export default defineConfig({
 
   plugins: [
     structureTool(),
-    muxInput({
-      credentials: {
-        tokenId: process.env.SANITY_STUDIO_MUX_TOKEN_ID || '',
-        tokenSecret: process.env.SANITY_STUDIO_MUX_TOKEN_SECRET || '',
-      },
-    }),
+    muxInput(),
   ],
 
   schema: {
