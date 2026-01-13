@@ -43,9 +43,17 @@ interface CardProps {
   item: ArchiveItem
   onClick: (item: ArchiveItem) => void
   onHoverSound?: () => void
+  index?: number
 }
 
-export default function Card({ item, onClick, onHoverSound }: CardProps) {
+// Convert hex color to RGB values for CSS custom property
+function hexToRgb(hex: string): string {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+  if (!result) return '255, 255, 255'
+  return `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
+}
+
+export default function Card({ item, onClick, onHoverSound, index = 0 }: CardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const colors = typeColors[item.type] || typeColors.Everything
   const isWritingType = item.type === 'Writing'
@@ -53,6 +61,10 @@ export default function Card({ item, onClick, onHoverSound }: CardProps) {
   const bodyText = isWritingType ? (item.body ? extractPlainText(item.body) : item.description || '') : ''
   const connectIcon = isConnectType ? connectIcons[item.slug?.current] : null
   const connectColor = isConnectType ? connectIconColors[item.slug?.current] || colors.dot : colors.dot
+
+  // Calculate stagger delay (40ms per card, max 400ms)
+  const entranceDelay = Math.min(index * 40, 400)
+  const glowColorRgb = hexToRgb(colors.dot)
 
   const handleMouseEnter = () => {
     setIsHovered(true)
@@ -64,11 +76,13 @@ export default function Card({ item, onClick, onHoverSound }: CardProps) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onClick(item)}
-      className="card-hover card-noise relative overflow-hidden rounded-lg cursor-pointer flex flex-col aspect-square"
+      className="card-hover card-noise card-entrance card-glow relative overflow-hidden rounded-lg cursor-pointer flex flex-col aspect-square"
       style={{
         background: '#0a0a0a',
         border: `1px solid ${isHovered ? '#2a2a2a' : '#1a1a1a'}`,
-      }}
+        '--entrance-delay': `${entranceDelay}ms`,
+        '--glow-color': glowColorRgb,
+      } as React.CSSProperties}
     >
       {/* Background image - spans entire card (hidden for Writing and Connect types) */}
       {item.coverImage && !isWritingType && !isConnectType && (
