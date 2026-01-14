@@ -171,7 +171,6 @@ export default function Modal({ item, onClose }: ModalProps) {
   const [collectionIndex, setCollectionIndex] = useState(-1)
   // Whop checkout state
   const [showWhopCheckout, setShowWhopCheckout] = useState(false)
-  const whopCheckoutRef = useRef<HTMLDivElement>(null)
 
   // Check if this is a special modal type
   const isContactForm = item.slug?.current === 'send-message'
@@ -315,23 +314,14 @@ export default function Modal({ item, onClose }: ModalProps) {
     }
   }, [item.lemonSqueezyUrl])
 
-  // Load Whop checkout script when showing checkout
-  useEffect(() => {
-    if (!showWhopCheckout || !item.whopPlanId) return
-
-    const loadWhopCheckout = () => {
-      const existingScript = document.querySelector('script[src*="whop.com"][src*="checkout"]')
-      if (!existingScript) {
-        const script = document.createElement('script')
-        script.src = 'https://whop.com/static/checkout/loader.js'
-        script.async = true
-        script.defer = true
-        document.head.appendChild(script)
-      }
-    }
-
-    loadWhopCheckout()
-  }, [showWhopCheckout, item.whopPlanId])
+  // Build Whop checkout iframe URL
+  const getWhopCheckoutUrl = useCallback((planId: string) => {
+    const url = new URL(`/embedded/checkout/${planId}/`, 'https://whop.com')
+    url.searchParams.set('h', window.location.origin)
+    url.searchParams.set('theme', 'dark')
+    url.searchParams.set('skip_redirect', 'true')
+    return url.toString()
+  }, [])
 
   const handleAction = () => {
     // Handle non-Lemon Squeezy CTAs (Lemon Squeezy uses anchor with class)
@@ -739,12 +729,16 @@ export default function Modal({ item, onClose }: ModalProps) {
                   Back
                 </button>
               </div>
-              <div
-                ref={whopCheckoutRef}
-                data-whop-checkout-plan-id={item.whopPlanId}
-                data-whop-checkout-theme="dark"
-                data-whop-checkout-skip-redirect="true"
-                style={{ minHeight: '500px' }}
+              <iframe
+                src={getWhopCheckoutUrl(item.whopPlanId)}
+                style={{
+                  width: '100%',
+                  height: '500px',
+                  border: 'none',
+                  borderRadius: '8px',
+                  overflow: 'hidden',
+                }}
+                allow="payment; clipboard-write"
               />
             </div>
           )}
