@@ -284,9 +284,9 @@ export default function Card({ item, onClick, onHoverSound, index = 0, theme = '
         <button
           className="px-3.5 py-2 rounded text-xs font-medium font-sans transition-all duration-200"
           style={{
-            background: isHovered ? '#e5e5e5' : 'var(--cta-bg)',
-            color: isHovered ? '#0a0a0a' : 'var(--cta-text)',
-            border: `1px solid ${isHovered ? '#e5e5e5' : 'var(--cta-border)'}`,
+            background: isHovered ? 'var(--cta-hover-bg)' : 'var(--cta-bg)',
+            color: isHovered ? 'var(--cta-hover-text)' : 'var(--cta-text)',
+            border: `1px solid ${isHovered ? 'var(--cta-hover-border)' : 'var(--cta-border)'}`,
           }}
         >
           {item.cta}

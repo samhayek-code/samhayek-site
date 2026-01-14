@@ -29,6 +29,9 @@
   --cta-bg: rgba(0, 0, 0, 0.5);
   --cta-text: #cccccc;
   --cta-border: rgba(255, 255, 255, 0.15);
+  --cta-hover-bg: #e5e5e5;
+  --cta-hover-text: #0a0a0a;
+  --cta-hover-border: #e5e5e5;
   /* Nav active state */
   --nav-active-bg: rgba(255, 255, 255, 0.1);
   --nav-hover-bg: rgba(255, 255, 255, 0.04);
@@ -70,6 +73,9 @@
   --cta-bg: rgba(255, 255, 255, 0.7);
   --cta-text: #333333;
   --cta-border: rgba(0, 0, 0, 0.15);
+  --cta-hover-bg: #1a1a1a;
+  --cta-hover-text: #f0f0f0;
+  --cta-hover-border: #1a1a1a;
   /* Nav active state */
   --nav-active-bg: rgba(0, 0, 0, 0.08);
   --nav-hover-bg: rgba(0, 0, 0, 0.04);
