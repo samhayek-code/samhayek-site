@@ -222,7 +222,7 @@ export default function Card({ item, onClick, onHoverSound, index = 0, theme = '
         className="absolute inset-0 z-[2] transition-all duration-300 ease-out"
         style={{
           background: isHovered
-            ? `linear-gradient(to bottom, rgba(var(--card-overlay-rgb),${theme === 'light' ? '0.15' : '0.5'}) 0%, rgba(var(--card-overlay-rgb),${theme === 'light' ? '0.05' : '0.1'}) 40%, rgba(var(--card-overlay-rgb),${theme === 'light' ? '0.15' : '0.5'}) 100%)`
+            ? `linear-gradient(to bottom, rgba(var(--card-overlay-rgb),${theme === 'light' ? '0.1' : '0.5'}) 0%, rgba(var(--card-overlay-rgb),${theme === 'light' ? '0.02' : '0.1'}) 40%, rgba(var(--card-overlay-rgb),${theme === 'light' ? '0.1' : '0.5'}) 100%)`
             : `linear-gradient(to bottom, rgba(var(--card-overlay-rgb),${theme === 'light' ? '0.25' : '0.7'}) 0%, rgba(var(--card-overlay-rgb),${theme === 'light' ? '0.1' : '0.4'}) 40%, rgba(var(--card-overlay-rgb),${theme === 'light' ? '0.25' : '0.7'}) 100%)`,
         }}
       />
