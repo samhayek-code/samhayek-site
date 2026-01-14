@@ -320,6 +320,9 @@ export default function Modal({ item, onClose }: ModalProps) {
     url.searchParams.set('h', window.location.origin)
     url.searchParams.set('theme', 'dark')
     url.searchParams.set('skip_redirect', 'true')
+    url.searchParams.set('d', 'checkout') // Hint to Whop this is a checkout flow
+    // Add cache-busting parameter to force fresh settings
+    url.searchParams.set('_t', Date.now().toString())
     return url.toString()
   }, [])
 
