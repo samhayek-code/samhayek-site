@@ -27,9 +27,9 @@ const config: Config = {
         'type-chat': '#34d399',
       },
       fontFamily: {
-        sans: ['Source Sans 3', 'system-ui', 'sans-serif'],
+        sans: ['General Sans', 'system-ui', 'sans-serif'],
         serif: ['Source Serif 4', 'Georgia', 'serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        mono: ['IBM Plex Mono', 'monospace'],
       },
       letterSpacing: {
         tighter: '-0.03em',

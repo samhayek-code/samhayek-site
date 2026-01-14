@@ -92,7 +92,7 @@ function Lightbox({
 
       {/* Image counter */}
       {hasMultiple && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 font-mono font-medium text-sm text-white/60">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 font-mono text-sm text-white/60">
           {currentIndex + 1} / {images.length}
         </div>
       )}
@@ -373,11 +373,11 @@ export default function Modal({ item, onClose }: ModalProps) {
           {/* Header */}
           <div className="flex justify-between items-start mb-6">
             <div>
-              <h2 className="font-serif text-xl lg:text-2xl font-semibold tracking-tighter text-foreground mb-2">
+              <h2 className="font-sans text-xl lg:text-2xl font-medium tracking-tighter text-foreground mb-2">
                 {item.title}
               </h2>
               {item.year && (
-                <span className="font-mono font-medium text-xs text-subtle">
+                <span className="font-mono text-xs text-subtle">
                   {item.year}
                 </span>
               )}
@@ -395,7 +395,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 className="w-1.5 h-1.5 rounded-full shrink-0"
                 style={{ background: colors.dot }}
               />
-              <span className="font-mono font-medium text-[11px] text-muted uppercase tracking-wide whitespace-nowrap">
+              <span className="font-mono text-[11px] text-muted uppercase tracking-wide whitespace-nowrap">
                 {item.label}
               </span>
             </div>
@@ -507,7 +507,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                         Prev
                       </button>
 
-                      <div className="font-mono font-medium text-xs text-subtle">
+                      <div className="font-mono text-xs text-subtle">
                         {collectionIndex + 1} / {totalPieces}
                       </div>
 
@@ -524,7 +524,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                     </div>
 
                     {/* Piece title */}
-                    <h3 className="font-serif text-xl font-semibold tracking-tighter text-foreground text-center">
+                    <h3 className="font-sans text-xl font-medium tracking-tighter text-foreground text-center">
                       {piece.title}
                     </h3>
 
@@ -543,7 +543,7 @@ export default function Modal({ item, onClose }: ModalProps) {
               {/* Merch grid */}
               {collectionIndex === totalPieces && hasMerch && (
                 <div className="space-y-6">
-                  <h3 className="font-serif text-xl font-semibold tracking-tighter text-foreground text-center">
+                  <h3 className="font-sans text-xl font-medium tracking-tighter text-foreground text-center">
                     The Collection
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -615,7 +615,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                       height={160}
                       className="rounded-lg"
                     />
-                    <div className="text-center mt-2 font-mono font-medium text-xs text-muted">
+                    <div className="text-center mt-2 font-mono text-xs text-muted">
                       {activeQR.currency}
                     </div>
                   </div>
@@ -725,7 +725,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           {showWhopCheckout && item.whopPlanId && (
             <div className="mb-8">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-serif text-lg font-semibold tracking-tighter text-foreground">Checkout</h3>
+                <h3 className="font-sans text-lg font-medium tracking-tighter text-foreground">Checkout</h3>
                 <button
                   onClick={() => setShowWhopCheckout(false)}
                   className="text-muted hover:text-foreground transition-colors text-sm"
@@ -751,7 +751,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           {/* Footer */}
           <div className="flex justify-between items-center pt-6 border-t border-border">
             {item.price ? (
-              <span className="font-mono font-medium text-lg text-foreground">
+              <span className="font-mono text-lg text-foreground">
                 {item.price}
               </span>
             ) : (
