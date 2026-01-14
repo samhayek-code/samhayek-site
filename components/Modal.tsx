@@ -4,7 +4,7 @@ import { useEffect, useRef, useCallback, useState } from 'react'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import MuxPlayer from '@mux/mux-player-react'
-import { ArchiveItem, typeColors, CollectionPiece } from '@/lib/types'
+import { ArchiveItem, typeColors } from '@/lib/types'
 import { urlFor } from '@/lib/sanity'
 import WalletButton from './WalletButton'
 
