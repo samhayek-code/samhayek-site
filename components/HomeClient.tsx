@@ -205,6 +205,7 @@ export default function HomeClient({ items }: HomeClientProps) {
         onCardClick={handleCardClick}
         onHoverSound={playSound}
         activeFilter={activeFilter}
+        theme={theme}
       />
 
       {/* Modal */}

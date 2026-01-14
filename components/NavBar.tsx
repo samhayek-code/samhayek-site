@@ -77,11 +77,11 @@ export default function NavBar({
                 className="flex items-center gap-1.5 px-3 py-2 rounded font-mono text-[11px] uppercase tracking-wide transition-all duration-200"
                 style={{
                   background: isActive
-                    ? 'rgba(255,255,255,0.1)'
+                    ? 'var(--nav-active-bg)'
                     : isHovered
-                    ? 'rgba(255,255,255,0.04)'
+                    ? 'var(--nav-hover-bg)'
                     : 'transparent',
-                  color: isActive ? '#e5e5e5' : isHovered ? '#888' : '#555',
+                  color: isActive ? 'var(--foreground)' : isHovered ? 'var(--muted)' : 'var(--subtle)',
                 }}
               >
                 <div
@@ -107,22 +107,24 @@ export default function NavBar({
             </span>
             <div className="flex gap-1">
               <div
-                className={`w-8 h-8 rounded border flex items-center justify-center transition-all duration-150 ${
-                  leftKeyPressed
-                    ? 'bg-white border-white text-black'
-                    : 'bg-transparent border-[#333] text-[#444]'
-                }`}
+                className="w-8 h-8 rounded border flex items-center justify-center transition-all duration-150"
+                style={{
+                  background: leftKeyPressed ? 'var(--arrow-flash-bg)' : 'transparent',
+                  borderColor: leftKeyPressed ? 'var(--arrow-flash-border)' : 'var(--border)',
+                  color: leftKeyPressed ? 'var(--arrow-flash-text)' : 'var(--subtle)',
+                }}
               >
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M15 18l-6-6 6-6" />
                 </svg>
               </div>
               <div
-                className={`w-8 h-8 rounded border flex items-center justify-center transition-all duration-150 ${
-                  rightKeyPressed
-                    ? 'bg-white border-white text-black'
-                    : 'bg-transparent border-[#333] text-[#444]'
-                }`}
+                className="w-8 h-8 rounded border flex items-center justify-center transition-all duration-150"
+                style={{
+                  background: rightKeyPressed ? 'var(--arrow-flash-bg)' : 'transparent',
+                  borderColor: rightKeyPressed ? 'var(--arrow-flash-border)' : 'var(--border)',
+                  color: rightKeyPressed ? 'var(--arrow-flash-text)' : 'var(--subtle)',
+                }}
               >
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M9 18l6-6-6-6" />
@@ -211,11 +213,11 @@ export default function NavBar({
                 className="flex items-center justify-center gap-1.5 px-2 py-3 rounded font-mono text-[10px] uppercase tracking-wide transition-all duration-200"
                 style={{
                   background: isActive
-                    ? 'rgba(255,255,255,0.1)'
+                    ? 'var(--nav-active-bg)'
                     : isHovered
-                    ? 'rgba(255,255,255,0.04)'
+                    ? 'var(--nav-hover-bg)'
                     : 'transparent',
-                  color: isActive ? '#e5e5e5' : isHovered ? '#888' : '#555',
+                  color: isActive ? 'var(--foreground)' : isHovered ? 'var(--muted)' : 'var(--subtle)',
                 }}
               >
                 <div

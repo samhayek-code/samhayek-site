@@ -22,11 +22,20 @@
   --modal-backdrop: rgba(0, 0, 0, 0.85);
   /* Card overlay colors */
   --card-overlay-rgb: 10, 10, 10;
+  --card-overlay-default: 0.7;
+  --card-overlay-hover: 0.5;
   --card-pill-bg: rgba(0, 0, 0, 0.5);
   --card-pill-border: rgba(255, 255, 255, 0.1);
   --cta-bg: rgba(0, 0, 0, 0.5);
   --cta-text: #cccccc;
   --cta-border: rgba(255, 255, 255, 0.15);
+  /* Nav active state */
+  --nav-active-bg: rgba(255, 255, 255, 0.1);
+  --nav-hover-bg: rgba(255, 255, 255, 0.04);
+  /* Arrow key flash */
+  --arrow-flash-bg: #ffffff;
+  --arrow-flash-border: #ffffff;
+  --arrow-flash-text: #000000;
   /* Modal colors */
   --modal-bg: #0f0f0f;
   --modal-border: #222222;
@@ -54,11 +63,20 @@
   --modal-backdrop: rgba(0, 0, 0, 0.5);
   /* Card overlay colors */
   --card-overlay-rgb: 255, 255, 255;
+  --card-overlay-default: 0.25;
+  --card-overlay-hover: 0.15;
   --card-pill-bg: rgba(255, 255, 255, 0.7);
   --card-pill-border: rgba(0, 0, 0, 0.1);
   --cta-bg: rgba(255, 255, 255, 0.7);
   --cta-text: #333333;
   --cta-border: rgba(0, 0, 0, 0.15);
+  /* Nav active state */
+  --nav-active-bg: rgba(0, 0, 0, 0.08);
+  --nav-hover-bg: rgba(0, 0, 0, 0.04);
+  /* Arrow key flash */
+  --arrow-flash-bg: #000000;
+  --arrow-flash-border: #000000;
+  --arrow-flash-text: #ffffff;
   /* Modal colors */
   --modal-bg: #ffffff;
   --modal-border: #e0e0e0;
