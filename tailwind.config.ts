@@ -28,7 +28,6 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['General Sans', 'system-ui', 'sans-serif'],
-        serif: ['Source Serif 4', 'Georgia', 'serif'],
         mono: ['IBM Plex Mono', 'monospace'],
       },
       letterSpacing: {

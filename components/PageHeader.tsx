@@ -11,15 +11,15 @@ export default function PageHeader({ filter }: PageHeaderProps) {
   return (
     <div className="min-h-[35vh] flex flex-col justify-end p-4 lg:p-12 pt-24">
       <div className="max-w-[800px]">
-        <span className="font-mono text-[11px] text-subtle tracking-[0.15em] uppercase block mb-6">
+        <span className="font-mono font-bold text-[11px] text-subtle tracking-[0.15em] uppercase block mb-6">
           {isEverything ? "I'm Sam" : filter}
         </span>
 
-        <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-medium tracking-tighter text-foreground mb-4 leading-tight">
+        <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-normal tracking-tighter text-foreground mb-4 leading-tight">
           {h.title}
         </h1>
 
-        <p className="font-serif text-[17px] text-muted leading-relaxed">
+        <p className="font-sans text-[17px] font-medium text-muted leading-relaxed">
           {h.subtitle}
         </p>
       </div>

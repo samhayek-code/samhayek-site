@@ -240,11 +240,11 @@ export default function Card({ item, onClick, onHoverSound, index = 0, theme = '
       {/* Top row */}
       <div className="relative z-10 flex justify-between items-start p-5">
         <div className="flex-1 pr-4">
-          <span className="font-sans text-[15px] text-foreground font-medium tracking-tighter leading-tight block">
+          <span className="font-sans text-[15px] text-foreground font-normal tracking-tighter leading-tight block">
             {item.title}
           </span>
           {item.year && (
-            <span className="font-mono text-[11px] text-subtle mt-1 block">
+            <span className="font-mono font-bold text-[11px] text-subtle mt-1 block">
               {item.year}
             </span>
           )}
@@ -262,7 +262,7 @@ export default function Card({ item, onClick, onHoverSound, index = 0, theme = '
             className="w-1.5 h-1.5 rounded-full"
             style={{ background: colors.dot, opacity: 0.9 }}
           />
-          <span className="font-mono text-[10px] text-muted uppercase tracking-wide">
+          <span className="font-mono font-bold text-[10px] text-muted uppercase tracking-wide">
             {item.label}
           </span>
         </div>
@@ -274,7 +274,7 @@ export default function Card({ item, onClick, onHoverSound, index = 0, theme = '
       {/* Bottom row */}
       <div className="relative z-10 flex justify-between items-end p-5">
         {item.price ? (
-          <span className="font-mono text-[13px] text-foreground font-medium">
+          <span className="font-mono font-bold text-[13px] text-foreground font-medium">
             {item.price}
           </span>
         ) : (
