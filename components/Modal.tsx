@@ -344,9 +344,9 @@ export default function Modal({ item, onClose }: ModalProps) {
       onClick={onClose}
       className="fixed inset-0 z-[2000] flex items-center justify-center p-4 lg:p-12 cursor-pointer modal-backdrop"
     >
-      <div 
+      <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-[#0f0f0f] rounded-xl border border-[#222] max-w-[800px] w-full max-h-[85vh] overflow-auto cursor-default"
+        className={`bg-[#0f0f0f] rounded-xl border border-[#222] max-w-[800px] w-full overflow-auto cursor-default ${showWhopCheckout ? 'max-h-[95vh]' : 'max-h-[85vh]'}`}
       >
         {/* Hero image - hide for embed modals, gallery types (Art, Design), Writing, and checkout */}
         {!isEmbedModal && !isGalleryType && !isWriting && !showWhopCheckout && item.coverImage && (
@@ -733,11 +733,13 @@ export default function Modal({ item, onClose }: ModalProps) {
                 src={getWhopCheckoutUrl(item.whopPlanId)}
                 style={{
                   width: '100%',
-                  height: '700px',
+                  minHeight: '900px',
+                  height: 'auto',
                   border: 'none',
                   borderRadius: '8px',
                 }}
                 allow="payment; clipboard-write"
+                sandbox="allow-forms allow-modals allow-popups allow-same-origin allow-scripts allow-top-navigation"
               />
             </div>
           )}
