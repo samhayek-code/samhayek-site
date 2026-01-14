@@ -1,219 +1,248 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Project guide for Claude Code when working with this repository.
 
 ## Project Overview
 
-Personal website for **Sam Hayek** — artist, musician, and brand designer.
+Personal portfolio site for **Sam Hayek** - artist, musician, and brand designer.
+
 - **Live site**: https://samhayek.com
 - **Sanity Studio**: https://samhayek.sanity.studio
 - **Repo**: https://github.com/samhayek-code/samhayek-site
 
 ## Tech Stack
 
-- **Framework**: Next.js 14 (App Router) + React 18 + TypeScript
-- **Styling**: Tailwind CSS + `@tailwindcss/typography`
-- **CMS**: Sanity v3 with GROQ queries
-- **Rich Text**: `@portabletext/react`
-- **Images**: `@sanity/image-url` for transforms
-- **Video**: MUX (`sanity-plugin-mux-input` + `@mux/mux-player-react`)
-- **Deployment**: Vercel (auto-deploys on push to main)
+| Layer | Technology |
+|-------|------------|
+| Framework | Next.js 14 (App Router) + React 18 + TypeScript |
+| Styling | Tailwind CSS + CSS variables for theming |
+| Fonts | Google Sans Flex (sans), IBM Plex Mono Medium (mono) |
+| CMS | Sanity v3 with GROQ queries |
+| Rich Text | @portabletext/react |
+| Images | @sanity/image-url |
+| Video | MUX (sanity-plugin-mux-input + @mux/mux-player-react) |
+| Animations | anime.js |
+| Deployment | Vercel (auto-deploys on push to main) |
 
-## Common Commands
+## Commands
 
 ```bash
-# Development
-npm run dev          # Start Next.js (localhost:3000)
+npm run dev          # Start dev server (localhost:3000)
+npm run build        # Production build
 npm run sanity       # Start Sanity Studio locally
+npx sanity deploy    # Deploy Sanity Studio
 
-# Deploy
+# Deploy site
 git add . && git commit -m "message" && git push origin main
-
-# Deploy Sanity Studio (after schema changes)
-npx sanity deploy
-
-# Backup Sanity content
-npx sanity dataset export production ./backups/sanity-backup.tar.gz
 ```
 
-## Sanity CMS
+## Project Structure
 
-**Project ID**: `jpxmevq8`
-**Dataset**: `production`
+```
+├── app/
+│   ├── globals.css      # CSS variables, theme definitions
+│   ├── layout.tsx       # Root layout with theme flash prevention
+│   └── page.tsx         # Home page (fetches from Sanity)
+├── components/
+│   ├── HomeClient.tsx   # Main client component (state, filtering, sound)
+│   ├── NavBar.tsx       # Navigation with filter tabs + theme toggle
+│   ├── PageHeader.tsx   # Dynamic header based on active filter
+│   ├── ArchiveGrid.tsx  # Card grid layout
+│   ├── Card.tsx         # Individual card with hover effects
+│   ├── Modal.tsx        # Detail view with embeds, galleries, checkout
+│   ├── CustomCursor.tsx # Custom cursor element
+│   ├── LiveClock.tsx    # Footer clock display
+│   └── WalletButton.tsx # Crypto wallet copy button (Support modal)
+├── lib/
+│   ├── sanity.ts        # Sanity client + GROQ queries
+│   └── types.ts         # TypeScript types + constants
+└── sanity/
+    └── schemaTypes/     # Sanity schema definitions
+```
 
-### Schema Fields (archiveItem)
+## Theming
 
-| Field | Type | Description |
-|-------|------|-------------|
-| title | string | Required |
-| slug | slug | Auto-generated from title |
-| type | string | Music, Art, Writing, Downloads, Tools, Shop, Design, Connect, Lab |
-| label | string | E.g., "Branding", "Single", "Product", "Collection" |
-| cta | string | Button text |
-| order | number | Sort priority (lower = first, 100+ = end) |
-| date | date | For chronological sorting |
-| year | string | Display year on card |
-| price | string | For Shop/Design items |
-| description | text | Shown in modal |
-| body | portable text | Rich text content |
-| coverImage | image | Card thumbnail + modal display |
-| gallery | image[] | Additional images for collections |
-| embedUrl | url | Spotify/YouTube embed |
-| externalUrl | url | External link (Tools) |
-| lemonSqueezyUrl | url | Checkout overlay (Shop) |
-| muxVideo | mux.video | Video upload via MUX |
-| figmaUrl | url | Figma file embed |
-| prototypeUrl | url | Figma prototype link |
-| fileAsset | file | Downloadable file (PDF, etc.) |
-| collectionPieces | array | Poetry/art collections with image + text |
-| collectionBanner | image | Banner for collection intro |
-| merchGallery | image[] | Merch photos for collections |
+The site supports dark and light modes via CSS variables.
 
-### Content Types
+**Theme toggle**: NavBar sun/moon button
+**Persistence**: localStorage + system preference fallback
+**Flash prevention**: Inline script in layout.tsx `<head>`
 
-| Type | Label Examples | CTA | Color | Modal Behavior |
-|------|----------------|-----|-------|----------------|
-| Design | Branding, Product | View | #60a5fa | Gallery, Figma embed, no CTA |
-| Music | Single, EP, Album | Listen | #ffffff | Spotify/YouTube embed |
-| Art | Digital, Collection | View | #a3e635 | Gallery with lightbox |
-| Writing | Essay, Poetry | Read | #fbbf24 | Body text, CTA hidden |
-| Tools | Generator, Utility | Use Tool | #f472b6 | External URL |
-| Downloads | Wallpaper, Preset | Download | #a78bfa | File download |
-| Shop | Print, Merch | Buy | #f87171 | Lemon Squeezy checkout |
-| Connect | 30 min, Async | Schedule | #34d399 | Cal.com/YouForm embed |
-| Lab | Experiment | View | #06b6d4 | Cross-disciplinary work |
+### Key CSS Variables (globals.css)
 
-### Navigation Order
+| Variable | Dark | Light |
+|----------|------|-------|
+| --background | #0a0a0a | #f5f5f5 |
+| --foreground | #f0f0f0 | #0a0a0a |
+| --surface | #131313 | #ffffff |
+| --border | #1a1a1a | #e0e0e0 |
+| --muted | #777777 | #666666 |
+| --subtle | #555555 | #888888 |
 
-Everything → Design → Music → Art → Writing → Tools → Downloads → Shop → Connect
+Theme class is applied to `<html>` element: `:root` (dark) or `:root.light`
 
-(Lab exists in schema but hidden from navigation)
+## Content Types
 
-## Key Features
+Cards are stored as `archiveItem` in Sanity. Each type has unique modal behavior:
 
-### Modal System
+| Type | Color | Modal Behavior |
+|------|-------|----------------|
+| Design | #60a5fa | Gallery with lightbox, Figma embed, prototype link |
+| Music | #ffffff | Spotify/YouTube embed |
+| Art | #a3e635 | Gallery with lightbox |
+| Writing | #fbbf24 | Body text (Portable Text), no CTA |
+| Tools | #f472b6 | External URL |
+| Downloads | #a78bfa | File download |
+| Shop | #f87171 | Lemon Squeezy checkout overlay |
+| Connect | #34d399 | Cal.com booking or YouForm embed |
+| Lab | #06b6d4 | Cross-disciplinary (hidden from nav) |
 
-**Art & Design types:**
-- Full-width gallery display (no cropped hero)
-- Cover image + gallery images shown in sequence
-- Lightbox: click any image to zoom full-screen
-- Arrow key navigation between images
-- Image counter ("3 / 10") for collections
-- CTA button hidden
+### Special Slugs
 
-**Figma embeds (Design type):**
-- `figmaUrl` renders interactive file viewer (500px height)
-- `prototypeUrl` shows "View Prototype" button in footer
-- File must be set to "Anyone with the link can view"
+- `send-message` - YouForm contact embed
+- `book-a-call` - Cal.com booking embed
+- `support` - Crypto wallet QR codes
+- `samhayek-com` - Case study with rich text body
 
-**Collection modals (Writing):**
-- Intro screen with description
-- Carousel of pieces (image + poem text)
-- Optional merch gallery grid at end
-- Keyboard navigation (arrow keys)
+## Card Ordering
 
-**Embed support:**
-- Spotify: Auto-converts URLs to embed format (height: 152px)
-- YouTube: Supports youtube.com/watch, youtu.be, youtube.com/shorts (height: 315px)
+Cards sort by `order` ASC, then `date` DESC.
 
-**Video support:**
-- MUX integration via `muxVideo` field
-- Upload videos directly in Sanity Studio
-- MuxPlayer component with streaming + adaptive quality
-
-**Special slugs:**
-- `send-message`: YouForm contact embed
-- `book-a-call`: Cal.com booking embed
-- `samhayek-com`: Case study with rich text
-- `support`: Crypto wallet addresses with QR codes
-- `resume`: PDF download + formatted resume text
-
-### Cards
-
-- Full-bleed background images with blur effect
-- Blur removes + brightness increases on hover
-- Type-colored accent gradients on hover
-- Writing cards: Blurred text preview as background
-- Connect cards: Custom icons with unique hover colors
-
-### Card Ordering
-
-Cards sort by `order` ASC, then `date` DESC (newest first).
-
-| Order Value | Behavior |
-|-------------|----------|
+| Order Value | Effect |
+|-------------|--------|
 | -10 | Pinned to top |
 | 0 (default) | Sorts by date |
 | 100+ | Pushed to bottom |
 
-### Responsive Design
+## Key Patterns
 
-- Breakpoint: `lg:` (1024px)
-- Desktop: Nav row, keyboard navigation
-- Mobile: 3x3 nav grid, touch-friendly sizing
-- Modal: `p-4 lg:p-12` backdrop, `p-5 lg:p-8` content
+### Modal Content Rendering
+
+```tsx
+// Gallery types (Art, Design) - full-width images
+{isGalleryType && <GalleryDisplay />}
+
+// Collections (Writing) - carousel with pieces
+{isCollection && <CollectionCarousel />}
+
+// Embeds (Music) - iframe
+{item.embedUrl && <EmbedIframe />}
+
+// Rich text (Case studies)
+{item.body && <PortableText value={item.body} />}
+```
+
+### Theme-Aware Components
+
+Components receive `theme` prop from HomeClient:
+```tsx
+<Card item={item} theme={theme} />
+```
+
+Use CSS variables for colors:
+```tsx
+style={{ color: 'var(--foreground)' }}
+className="text-foreground bg-background"
+```
+
+### Card Animations
+
+- Entrance: Staggered fade-up via CSS animation with `--entrance-delay`
+- Hover: Border glow via anime.js SVG animation
+- Images: Blur/opacity transition on hover
+
+## Sanity Schema Fields
+
+| Field | Type | Usage |
+|-------|------|-------|
+| title | string | Card title |
+| slug | slug | URL/identifier |
+| type | string | Content category |
+| label | string | Badge text (e.g., "Branding") |
+| cta | string | Button text |
+| order | number | Sort priority |
+| date | date | Chronological sort |
+| year | string | Display year |
+| price | string | For Shop items |
+| description | text | Modal description |
+| body | portable text | Rich content |
+| coverImage | image | Card + modal hero |
+| gallery | image[] | Additional images |
+| embedUrl | url | Spotify/YouTube |
+| externalUrl | url | External link |
+| lemonSqueezyUrl | url | Checkout overlay |
+| whopPlanId | string | Whop checkout |
+| muxVideo | mux.video | Video content |
+| figmaUrl | url | Figma file embed |
+| prototypeUrl | url | Prototype link |
+| collectionPieces | array | Poetry/art pieces |
+| merchGallery | image[] | Merch photos |
 
 ## Environment Variables
 
 ```bash
-# .env.local (gitignored)
+# .env.local
 NEXT_PUBLIC_SANITY_PROJECT_ID=jpxmevq8
 NEXT_PUBLIC_SANITY_DATASET=production
 SANITY_API_TOKEN=<token>
 
 # MUX Video
-MUX_TOKEN_ID=<mux-token-id>
-MUX_TOKEN_SECRET=<mux-token-secret>
-SANITY_STUDIO_MUX_TOKEN_ID=<mux-token-id>
-SANITY_STUDIO_MUX_TOKEN_SECRET=<mux-token-secret>
+MUX_TOKEN_ID=<token>
+MUX_TOKEN_SECRET=<secret>
+SANITY_STUDIO_MUX_TOKEN_ID=<token>
+SANITY_STUDIO_MUX_TOKEN_SECRET=<secret>
 ```
 
 ## External Services
 
-- **Vercel**: Hosting + auto-deploy from main branch
-- **Sanity**: Headless CMS (samhayek.sanity.studio)
-- **MUX**: Video hosting + streaming
-- **Lemon Squeezy**: Checkout overlay for Shop items
-- **Cal.com**: Booking embed
-- **YouForm**: Contact form embed
-- **Figma**: Design file embeds
+| Service | Purpose |
+|---------|---------|
+| Vercel | Hosting + auto-deploy |
+| Sanity | Headless CMS |
+| MUX | Video hosting |
+| Lemon Squeezy | Shop checkout |
+| Cal.com | Booking embed |
+| YouForm | Contact form |
+| Figma | Design embeds |
 
-## Design Tokens
+## Typography
 
-- **Background**: #0a0a0a
-- **Surface**: #131313
-- **Border**: #1a1a1a / #2a2a2a (hover)
-- **Text**: #f0f0f0
-- **Muted**: #777
-- **Subtle**: #555
-- **Fonts**: Plus Jakarta Sans (sans), IBM Plex Mono (mono)
+| Element | Font | Weight |
+|---------|------|--------|
+| Headings | Google Sans Flex | Regular (400) |
+| Body | Google Sans Flex | Light (300) / Regular (400) |
+| Nav name | Google Sans Flex | Medium (500) |
+| Labels/Mono | IBM Plex Mono | Medium (500) |
+| Card titles | Google Sans Flex | Regular (400) |
+
+Letter spacing: `-0.03em` (tracking-tighter) on headings
+
+## Responsive Breakpoints
+
+- Desktop: `lg:` (1024px+) - horizontal nav, keyboard navigation hints
+- Mobile/Tablet: Below 1024px - 3x3 nav grid, touch-friendly sizing
+
+## Common Tasks
+
+### Adding a new content item
+1. Open Sanity Studio (samhayek.sanity.studio)
+2. Create new archiveItem
+3. Set type, label, CTA, and relevant fields
+4. Publish - site auto-updates via revalidation
+
+### Modifying theme colors
+1. Edit `app/globals.css`
+2. Update both `:root` (dark) and `:root.light` sections
+3. Use existing variable names where possible
+
+### Adding a new filter category
+1. Add to `filterCategories` array in `lib/types.ts`
+2. Add color entry to `typeColors` object
+3. Add header content to `headerContent` object
+4. Add to Sanity schema if needed
 
 ## Wallet Addresses (Support card)
 
 - **SOL**: HCvLdXCkmN4CFMwjPYAuvdLduNJYP53ziiQuCYiKdzkJ
 - **ETH**: 0x35ccffF3e9bA23EA6FD6030aE24C4fc7032E23d1
 - **BTC**: bc1qwsr58r24ckt2dc0p2aa2qc8gp6punt7t4tdsea
-
-## CLI Content Management
-
-```bash
-# Get token
-TOKEN=$(grep SANITY_API_TOKEN .env.local | cut -d= -f2)
-
-# Upload image
-curl -s "https://jpxmevq8.api.sanity.io/v2024-01-01/assets/images/production" \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Content-Type: image/jpeg" \
-  --data-binary @image.jpg
-
-# Create item
-curl -s "https://jpxmevq8.api.sanity.io/v2024-01-01/data/mutate/production" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $TOKEN" \
-  -d '{"mutations": [{"create": {...}}]}'
-
-# Query items
-curl -s "https://jpxmevq8.api.sanity.io/v2024-01-01/data/query/production" \
-  -G --data-urlencode "query=*[_type == 'archiveItem']{title, slug}" \
-  -H "Authorization: Bearer $TOKEN"
-```
