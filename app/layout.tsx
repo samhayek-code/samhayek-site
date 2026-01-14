@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import CustomCursor from '@/components/CustomCursor'
+import SplashCursor from '@/components/SplashCursor'
 
 export const metadata: Metadata = {
   title: 'Sam Hayek | Artist + Designer',
@@ -40,6 +41,7 @@ export default function RootLayout({
       <body className="font-sans">
         <CustomCursor />
         <div className="iso-grid" />
+        <SplashCursor />
         <div className="noise-overlay" />
         {children}
       </body>

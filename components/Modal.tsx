@@ -348,8 +348,8 @@ export default function Modal({ item, onClose }: ModalProps) {
         onClick={(e) => e.stopPropagation()}
         className="bg-[#0f0f0f] rounded-xl border border-[#222] max-w-[800px] w-full max-h-[85vh] overflow-auto cursor-default"
       >
-        {/* Hero image - hide for embed modals, gallery types (Art, Design), and Writing */}
-        {!isEmbedModal && !isGalleryType && !isWriting && item.coverImage && (
+        {/* Hero image - hide for embed modals, gallery types (Art, Design), Writing, and checkout */}
+        {!isEmbedModal && !isGalleryType && !isWriting && !showWhopCheckout && item.coverImage && (
           <div className="w-full aspect-video bg-[#151515] rounded-t-xl flex items-center justify-center relative">
             {item.coverImage ? (
               <Image
@@ -397,8 +397,8 @@ export default function Modal({ item, onClose }: ModalProps) {
             </div>
           </div>
           
-          {/* Description - hide for collections (shown in intro screen) */}
-          {!isCollection && (
+          {/* Description - hide for collections (shown in intro screen) and checkout */}
+          {!isCollection && !showWhopCheckout && (
             <p className="font-sans text-[15px] text-[#888] leading-relaxed mb-6">
               {item.description}
             </p>
@@ -733,10 +733,9 @@ export default function Modal({ item, onClose }: ModalProps) {
                 src={getWhopCheckoutUrl(item.whopPlanId)}
                 style={{
                   width: '100%',
-                  height: '500px',
+                  height: '700px',
                   border: 'none',
                   borderRadius: '8px',
-                  overflow: 'hidden',
                 }}
                 allow="payment; clipboard-write"
               />
