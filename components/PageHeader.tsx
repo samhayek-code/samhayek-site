@@ -15,11 +15,11 @@ export default function PageHeader({ filter }: PageHeaderProps) {
           {isEverything ? "I'm Sam" : filter}
         </span>
 
-        <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-light tracking-tighter text-foreground mb-4 leading-tight">
+        <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-normal tracking-tighter text-foreground mb-4 leading-tight">
           {h.title}
         </h1>
 
-        <p className="font-sans text-[17px] font-medium text-muted leading-relaxed">
+        <p className="font-sans text-[17px] font-light text-muted leading-relaxed">
           {h.subtitle}
         </p>
       </div>
