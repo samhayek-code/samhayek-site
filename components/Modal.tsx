@@ -169,6 +169,9 @@ export default function Modal({ item, onClose }: ModalProps) {
   const [activeQR, setActiveQR] = useState<{ currency: string; address: string } | null>(null)
   // Collection state: -1 = intro, 0 to n-1 = pieces, n = merch (if exists)
   const [collectionIndex, setCollectionIndex] = useState(-1)
+  // Whop checkout state
+  const [showWhopCheckout, setShowWhopCheckout] = useState(false)
+  const whopCheckoutRef = useRef<HTMLDivElement>(null)
 
   // Check if this is a special modal type
   const isContactForm = item.slug?.current === 'send-message'
@@ -311,6 +314,24 @@ export default function Modal({ item, onClose }: ModalProps) {
       (window as any).createLemonSqueezy?.()
     }
   }, [item.lemonSqueezyUrl])
+
+  // Load Whop checkout script when showing checkout
+  useEffect(() => {
+    if (!showWhopCheckout || !item.whopPlanId) return
+
+    const loadWhopCheckout = () => {
+      const existingScript = document.querySelector('script[src*="whop.com"][src*="checkout"]')
+      if (!existingScript) {
+        const script = document.createElement('script')
+        script.src = 'https://whop.com/static/checkout/loader.js'
+        script.async = true
+        script.defer = true
+        document.head.appendChild(script)
+      }
+    }
+
+    loadWhopCheckout()
+  }, [showWhopCheckout, item.whopPlanId])
 
   const handleAction = () => {
     // Handle non-Lemon Squeezy CTAs (Lemon Squeezy uses anchor with class)
@@ -706,6 +727,28 @@ export default function Modal({ item, onClose }: ModalProps) {
             </div>
           )}
 
+          {/* Whop Checkout Embed */}
+          {showWhopCheckout && item.whopPlanId && (
+            <div className="mb-8">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-sans text-lg font-medium text-foreground">Checkout</h3>
+                <button
+                  onClick={() => setShowWhopCheckout(false)}
+                  className="text-muted hover:text-foreground transition-colors text-sm"
+                >
+                  Back
+                </button>
+              </div>
+              <div
+                ref={whopCheckoutRef}
+                data-whop-checkout-plan-id={item.whopPlanId}
+                data-whop-checkout-theme="dark"
+                data-whop-checkout-skip-redirect="true"
+                style={{ minHeight: '500px' }}
+              />
+            </div>
+          )}
+
           {/* Footer */}
           <div className="flex justify-between items-center pt-6 border-t border-[#1a1a1a]">
             {item.price ? (
@@ -743,16 +786,14 @@ export default function Modal({ item, onClose }: ModalProps) {
                   View
                 </button>
               )}
-              {!hideCtaButton && (
+              {!hideCtaButton && !showWhopCheckout && (
                 item.whopPlanId ? (
-                  <a
-                    href={`https://whop.com/checkout/${item.whopPlanId}/`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => setShowWhopCheckout(true)}
                     className="px-6 py-3 rounded-md font-sans text-sm font-medium bg-foreground text-background hover:bg-white transition-colors"
                   >
                     {item.cta}
-                  </a>
+                  </button>
                 ) : item.lemonSqueezyUrl ? (
                   <a
                     href={item.lemonSqueezyUrl}
