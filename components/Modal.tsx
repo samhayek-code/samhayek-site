@@ -373,11 +373,11 @@ export default function Modal({ item, onClose }: ModalProps) {
           {/* Header */}
           <div className="flex justify-between items-start mb-6">
             <div>
-              <h2 className="font-sans text-xl lg:text-2xl font-normal tracking-tighter text-foreground mb-2">
+              <h2 className="font-sans text-[22px] lg:text-[26px] font-normal tracking-tighter text-foreground mb-2">
                 {item.title}
               </h2>
               {item.year && (
-                <span className="font-mono font-medium text-xs text-subtle">
+                <span className="font-mono font-medium text-[14px] text-subtle">
                   {item.year}
                 </span>
               )}
@@ -403,7 +403,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           
           {/* Description - hide for collections (shown in intro screen) and checkout */}
           {!isCollection && !showWhopCheckout && (
-            <p className="font-sans text-[15px] leading-relaxed mb-6" style={{ color: 'var(--modal-text-secondary)' }}>
+            <p className="font-sans text-[17px] leading-relaxed mb-6" style={{ color: 'var(--modal-text-secondary)' }}>
               {item.description}
             </p>
           )}
@@ -469,7 +469,7 @@ export default function Modal({ item, onClose }: ModalProps) {
               {/* Intro screen */}
               {collectionIndex === -1 && (
                 <div className="text-center py-4">
-                  <p className="font-sans text-[15px] leading-relaxed max-w-lg mx-auto" style={{ color: 'var(--modal-text-secondary)' }}>
+                  <p className="font-sans text-[17px] leading-relaxed max-w-lg mx-auto" style={{ color: 'var(--modal-text-secondary)' }}>
                     {item.description}
                   </p>
                 </div>
@@ -524,14 +524,14 @@ export default function Modal({ item, onClose }: ModalProps) {
                     </div>
 
                     {/* Piece title */}
-                    <h3 className="font-sans text-xl font-normal tracking-tighter text-foreground text-center">
+                    <h3 className="font-sans text-[22px] font-normal tracking-tighter text-foreground text-center">
                       {piece.title}
                     </h3>
 
                     {/* Poem text */}
                     {piece.poemText && (
                       <div className="max-w-md mx-auto">
-                        <p className="font-sans text-[15px] leading-[1.8] whitespace-pre-line text-center" style={{ color: 'var(--modal-text-tertiary)' }}>
+                        <p className="font-sans text-[17px] leading-[1.8] whitespace-pre-line text-center" style={{ color: 'var(--modal-text-tertiary)' }}>
                           {piece.poemText}
                         </p>
                       </div>
@@ -543,7 +543,7 @@ export default function Modal({ item, onClose }: ModalProps) {
               {/* Merch grid */}
               {collectionIndex === totalPieces && hasMerch && (
                 <div className="space-y-6">
-                  <h3 className="font-sans text-xl font-normal tracking-tighter text-foreground text-center">
+                  <h3 className="font-sans text-[22px] font-normal tracking-tighter text-foreground text-center">
                     The Collection
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -626,7 +626,7 @@ export default function Modal({ item, onClose }: ModalProps) {
 
           {/* Body (rich text) - hide for Support card */}
           {item.body && item.body.length > 0 && !isSupport && (
-            <div className="prose prose-sm max-w-full w-full mb-8 overflow-hidden break-words [&>p]:mb-4 [&>p]:leading-relaxed" style={{ color: 'var(--modal-text-body)' }}>
+            <div className="prose prose-base max-w-full w-full mb-8 overflow-hidden break-words [&>p]:mb-4 [&>p]:leading-relaxed [&>p]:text-[17px] [&_a]:text-foreground [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:opacity-70" style={{ color: 'var(--modal-text-body)' }}>
               <PortableText value={item.body} />
             </div>
           )}
@@ -725,10 +725,10 @@ export default function Modal({ item, onClose }: ModalProps) {
           {showWhopCheckout && item.whopPlanId && (
             <div className="mb-8">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-sans text-lg font-normal tracking-tighter text-foreground">Checkout</h3>
+                <h3 className="font-sans text-[20px] font-normal tracking-tighter text-foreground">Checkout</h3>
                 <button
                   onClick={() => setShowWhopCheckout(false)}
-                  className="text-muted hover:text-foreground transition-colors text-sm"
+                  className="text-muted hover:text-foreground transition-colors text-[16px]"
                 >
                   Back
                 </button>
@@ -751,7 +751,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           {/* Footer */}
           <div className="flex justify-between items-center pt-6 border-t border-border">
             {item.price ? (
-              <span className="font-mono font-medium text-lg text-foreground">
+              <span className="font-mono font-medium text-[20px] text-foreground">
                 {item.price}
               </span>
             ) : (
@@ -761,7 +761,7 @@ export default function Modal({ item, onClose }: ModalProps) {
             <div className="flex gap-3">
               <button
                 onClick={onClose}
-                className="px-5 py-3 rounded-md font-sans text-sm font-medium text-muted border border-border hover:border-border-hover transition-colors"
+                className="px-5 py-3 rounded-md font-sans text-[16px] font-medium text-muted border border-border hover:border-border-hover transition-colors"
               >
                 Close
               </button>
@@ -771,7 +771,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   href={item.prototypeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-md font-sans text-sm font-medium bg-foreground text-background hover:bg-white transition-colors"
+                  className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:bg-white transition-colors"
                 >
                   View Prototype
                 </a>
@@ -780,7 +780,7 @@ export default function Modal({ item, onClose }: ModalProps) {
               {isCollection && collectionIndex === -1 && (
                 <button
                   onClick={goNextCollection}
-                  className="px-6 py-3 rounded-md font-sans text-sm font-medium bg-foreground text-background hover:bg-white transition-colors"
+                  className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:bg-white transition-colors"
                 >
                   View
                 </button>
@@ -789,7 +789,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 item.whopPlanId ? (
                   <button
                     onClick={() => setShowWhopCheckout(true)}
-                    className="px-6 py-3 rounded-md font-sans text-sm font-medium bg-foreground text-background hover:bg-white transition-colors"
+                    className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:bg-white transition-colors"
                   >
                     {item.cta}
                   </button>
@@ -797,14 +797,14 @@ export default function Modal({ item, onClose }: ModalProps) {
                   <a
                     href={item.lemonSqueezyUrl}
                     onClick={handleLemonSqueezyClick}
-                    className="lemonsqueezy-button px-6 py-3 rounded-md font-sans text-sm font-medium bg-foreground text-background hover:bg-white transition-colors"
+                    className="lemonsqueezy-button px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:bg-white transition-colors"
                   >
                     {item.cta}
                   </a>
                 ) : (
                   <button
                     onClick={handleAction}
-                    className="px-6 py-3 rounded-md font-sans text-sm font-medium bg-foreground text-background hover:bg-white transition-colors"
+                    className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:bg-white transition-colors"
                   >
                     {item.cta}
                   </button>

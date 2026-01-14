@@ -53,7 +53,7 @@ export default function NavBar({
         <button
           onClick={() => setActiveFilter('Everything')}
           onMouseEnter={onHoverSound}
-          className="font-sans text-sm font-normal text-foreground tracking-widest uppercase hover:opacity-80 transition-opacity"
+          className="font-sans text-sm font-medium text-foreground tracking-widest uppercase hover:opacity-80 transition-opacity"
         >
           Sam Hayek
         </button>
@@ -189,7 +189,7 @@ export default function NavBar({
         <button
           onClick={() => setActiveFilter('Everything')}
           onMouseEnter={onHoverSound}
-          className="font-sans text-sm font-normal text-foreground tracking-widest uppercase text-center whitespace-nowrap"
+          className="font-sans text-sm font-medium text-foreground tracking-widest uppercase text-center whitespace-nowrap"
         >
           Sam Hayek
         </button>
