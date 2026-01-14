@@ -29,7 +29,7 @@ export default function LiveClock() {
   
   return (
     <span 
-      className="font-mono text-[11px] text-subtle tracking-wide"
+      className="font-mono font-medium text-[11px] text-subtle tracking-wide"
       style={{ fontVariantNumeric: 'tabular-nums' }}
     >
       {time}

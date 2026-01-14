@@ -53,7 +53,7 @@ export default function NavBar({
         <button
           onClick={() => setActiveFilter('Everything')}
           onMouseEnter={onHoverSound}
-          className="font-sans text-sm font-medium text-foreground tracking-widest uppercase hover:opacity-80 transition-opacity"
+          className="font-serif text-sm font-semibold text-foreground tracking-widest uppercase hover:opacity-80 transition-opacity"
         >
           Sam Hayek
         </button>
@@ -74,7 +74,7 @@ export default function NavBar({
                   onHoverSound()
                 }}
                 onMouseLeave={() => setHoveredFilter(null)}
-                className="flex items-center gap-1.5 px-3 py-2 rounded font-mono text-[11px] uppercase tracking-wide transition-all duration-200"
+                className="flex items-center gap-1.5 px-3 py-2 rounded font-mono font-medium text-[11px] uppercase tracking-wide transition-all duration-200"
                 style={{
                   background: isActive
                     ? 'var(--nav-active-bg)'
@@ -102,7 +102,7 @@ export default function NavBar({
         <div className="flex items-center gap-4">
           {/* Navigate arrows */}
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[10px] text-[#444] uppercase tracking-wide">
+            <span className="font-mono font-medium text-[10px] text-[#444] uppercase tracking-wide">
               Navigate
             </span>
             <div className="flex gap-1">
@@ -189,7 +189,7 @@ export default function NavBar({
         <button
           onClick={() => setActiveFilter('Everything')}
           onMouseEnter={onHoverSound}
-          className="font-sans text-sm font-medium text-foreground tracking-widest uppercase text-center whitespace-nowrap"
+          className="font-serif text-sm font-semibold text-foreground tracking-widest uppercase text-center whitespace-nowrap"
         >
           Sam Hayek
         </button>
@@ -210,7 +210,7 @@ export default function NavBar({
                   onHoverSound()
                 }}
                 onMouseLeave={() => setHoveredFilter(null)}
-                className="flex items-center justify-center gap-1.5 px-2 py-3 rounded font-mono text-[10px] uppercase tracking-wide transition-all duration-200"
+                className="flex items-center justify-center gap-1.5 px-2 py-3 rounded font-mono font-medium text-[10px] uppercase tracking-wide transition-all duration-200"
                 style={{
                   background: isActive
                     ? 'var(--nav-active-bg)'
