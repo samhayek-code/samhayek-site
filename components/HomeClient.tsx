@@ -158,7 +158,7 @@ export default function HomeClient({ items }: HomeClientProps) {
   }, [activeFilter, selectedItem, soundEnabled])
   
   return (
-    <main className="min-h-screen bg-background text-foreground relative z-10">
+    <main className="min-h-screen bg-background text-foreground">
       <PageHeader filter={activeFilter} />
 
       <NavBar
