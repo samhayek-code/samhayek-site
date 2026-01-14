@@ -5,11 +5,11 @@ import CustomCursor from '@/components/CustomCursor'
 export const metadata: Metadata = {
   title: 'Sam Hayek | Artist + Designer',
   description: 'Building with sound, light, language, and code.',
-  metadataBase: new URL('https://samhayek-site.vercel.app'),
+  metadataBase: new URL('https://samhayek.com'),
   openGraph: {
     title: 'Sam Hayek | Artist + Designer',
     description: 'Building with sound, light, language, and code.',
-    url: 'https://samhayek-site.vercel.app',
+    url: 'https://samhayek.com',
     siteName: 'Sam Hayek',
     images: [
       {

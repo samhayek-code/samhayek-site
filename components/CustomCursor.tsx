@@ -1,22 +1,32 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 
 export default function CustomCursor() {
-  const [position, setPosition] = useState({ x: -100, y: -100 })
+  const cursorRef = useRef<HTMLDivElement>(null)
   const [isPointer, setIsPointer] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
+  const [isOverIframe, setIsOverIframe] = useState(false)
 
   const updateCursor = useCallback((e: MouseEvent) => {
-    setPosition({ x: e.clientX, y: e.clientY })
+    // Update position directly via ref (no re-render needed)
+    if (cursorRef.current) {
+      cursorRef.current.style.left = `${e.clientX}px`
+      cursorRef.current.style.top = `${e.clientY}px`
+    }
+
+    const target = e.target as HTMLElement
+
+    // Check if hovering over iframe - hide custom cursor so native one takes over cleanly
+    const iframe = target.closest('iframe')
+    setIsOverIframe(!!iframe)
 
     // Check if hovering over interactive element
-    const target = e.target as HTMLElement
     const interactive = target.closest(
       'a, button, [role="button"], input, select, textarea, label, ' +
       '.card-hover, .cursor-pointer, [onclick], summary, .lemonsqueezy-button'
     )
-    setIsPointer(!!interactive)
+    setIsPointer(!!interactive && !iframe)
   }, [])
 
   useEffect(() => {
@@ -44,39 +54,51 @@ export default function CustomCursor() {
     return null
   }
 
+  // Sizes: filled outer circle with contrasting center dot (bullseye)
+  // Both scale down together on hover
+  const defaultSize = 15 // ~10% bigger than 14
+  const hoverSize = 9    // ~10% smaller than 10
+  const dotRatio = 0.4 // Center dot is 40% of outer circle
+
   return (
     <div
-      className="pointer-events-none fixed z-[9999] transition-transform duration-150 ease-out"
+      ref={cursorRef}
+      className="pointer-events-none fixed z-[9999]"
       style={{
-        left: position.x,
-        top: position.y,
-        transform: `translate(-50%, -50%) scale(${isPointer ? 0.7 : 1})`,
-        opacity: isVisible ? 1 : 0,
+        left: -100,
+        top: -100,
+        transform: 'translate(-50%, -50%)',
+        opacity: isVisible && !isOverIframe ? 1 : 0,
+        transition: 'opacity 150ms ease-out',
       }}
     >
-      {/* Outer ring */}
+      {/* Cursor container - scales as a group */}
       <div
-        className="absolute inset-0 rounded-full border transition-all duration-150 ease-out"
+        className="relative transition-all duration-150 ease-out"
         style={{
-          width: isPointer ? '6px' : '12px',
-          height: isPointer ? '6px' : '12px',
-          borderColor: 'var(--cursor-color)',
-          borderWidth: isPointer ? '1px' : '2.5px',
+          width: isPointer ? `${hoverSize}px` : `${defaultSize}px`,
+          height: isPointer ? `${hoverSize}px` : `${defaultSize}px`,
           transform: 'translate(-50%, -50%)',
         }}
-      />
-      {/* Center dot - only visible on pointer state */}
-      <div
-        className="absolute rounded-full transition-all duration-150 ease-out"
-        style={{
-          width: '3px',
-          height: '3px',
-          backgroundColor: 'var(--cursor-color)',
-          transform: 'translate(-50%, -50%)',
-          opacity: isPointer ? 1 : 0,
-          scale: isPointer ? 1 : 0,
-        }}
-      />
+      >
+        {/* Outer filled circle */}
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{ backgroundColor: 'var(--cursor-ring)' }}
+        />
+        {/* Center dot - on top */}
+        <div
+          className="absolute rounded-full"
+          style={{
+            width: `${dotRatio * 100}%`,
+            height: `${dotRatio * 100}%`,
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'var(--cursor-fill)',
+          }}
+        />
+      </div>
     </div>
   )
 }

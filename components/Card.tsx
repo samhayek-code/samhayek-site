@@ -274,7 +274,7 @@ export default function Card({ item, onClick, onHoverSound, index = 0, theme = '
       {/* Bottom row */}
       <div className="relative z-10 flex justify-between items-end p-5">
         {item.price ? (
-          <span className="font-mono font-medium text-[13px] text-foreground font-medium">
+          <span className="font-mono font-medium text-[13px] text-foreground">
             {item.price}
           </span>
         ) : (
