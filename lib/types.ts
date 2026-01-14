@@ -96,7 +96,7 @@ export function extractPlainText(blocks: any[]): string {
 export const headerContent: Record<string, { title: string; subtitle: string }> = {
   Everything: {
     title: 'Artist + Designer',
-    subtitle: 'Building with sound, light, language, and code.',
+    subtitle: 'I build with pixels, ink, audio, and code.',
   },
   Music: {
     title: 'Soundwaves.',
