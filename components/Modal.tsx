@@ -387,8 +387,8 @@ export default function Modal({ item, onClose }: ModalProps) {
             <div
               className="flex items-center gap-1.5 px-3 py-1.5 rounded shrink-0"
               style={{
-                background: 'rgba(255,255,255,0.03)',
-                border: '1px solid rgba(255,255,255,0.06)',
+                background: 'var(--card-pill-bg)',
+                border: '1px solid var(--card-pill-border)',
               }}
             >
               <div
@@ -626,7 +626,7 @@ export default function Modal({ item, onClose }: ModalProps) {
 
           {/* Body (rich text) - hide for Support card */}
           {item.body && item.body.length > 0 && !isSupport && (
-            <div className="prose prose-base max-w-full w-full mb-8 overflow-hidden break-words [&>p]:mb-4 [&>p]:leading-relaxed [&>p]:text-[17px] [&_a]:text-foreground [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:opacity-70" style={{ color: 'var(--modal-text-body)' }}>
+            <div className="prose prose-base max-w-full w-full mb-8 overflow-hidden break-words [&>p]:mb-4 [&>p]:leading-relaxed [&>p]:text-[17px] [&_a]:text-foreground [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:opacity-70 [&_h1]:text-foreground [&_h2]:text-foreground [&_h3]:text-foreground [&_h4]:text-foreground [&_strong]:text-foreground [&_code]:text-foreground [&_blockquote]:text-muted [&_blockquote]:border-border" style={{ color: 'var(--modal-text-body)' }}>
               <PortableText value={item.body} />
             </div>
           )}
