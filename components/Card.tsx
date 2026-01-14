@@ -40,6 +40,20 @@ const connectIcons: Record<string, JSX.Element> = {
   ),
 }
 
+// Shop type icons
+const shopIconColors: Record<string, string> = {
+  'brand-audit': '#f87171', // red (Shop color)
+}
+
+const shopIcons: Record<string, JSX.Element> = {
+  'brand-audit': (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="w-24 h-24">
+      <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm6 9.09c0 4-2.55 7.7-6 8.83-3.45-1.13-6-4.82-6-8.83V6.31l6-2.25 6 2.25v4.78z"/>
+      <path d="M11 7h2v5h-2zm0 6h2v2h-2z"/>
+    </svg>
+  ),
+}
+
 interface CardProps {
   item: ArchiveItem
   onClick: (item: ArchiveItem) => void
@@ -61,9 +75,13 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
   const colors = typeColors[item.type] || typeColors.Everything
   const isWritingType = item.type === 'Writing'
   const isConnectType = item.type === 'Connect'
+  const isShopType = item.type === 'Shop'
   const bodyText = isWritingType ? (item.body ? extractPlainText(item.body) : item.description || '') : ''
   const connectIcon = isConnectType ? connectIcons[item.slug?.current] : null
   const connectColor = isConnectType ? connectIconColors[item.slug?.current] || colors.dot : colors.dot
+  const shopIcon = isShopType ? shopIcons[item.slug?.current] : null
+  const shopColor = isShopType ? shopIconColors[item.slug?.current] || colors.dot : colors.dot
+  const hasIconDisplay = (isConnectType && connectIcon) || (isShopType && shopIcon)
 
   // Calculate stagger delay (40ms per card, max 400ms)
   const entranceDelay = Math.min(index * 40, 400)
@@ -136,8 +154,8 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
         />
       </svg>
 
-      {/* Background image - spans entire card (hidden for Writing and Connect types) */}
-      {item.coverImage && !isWritingType && !isConnectType && (
+      {/* Background image - spans entire card (hidden for Writing, Connect, and Shop with icons) */}
+      {item.coverImage && !isWritingType && !hasIconDisplay && (
         <div className="absolute inset-0 z-0">
           <Image
             src={urlFor(item.coverImage).width(600).height(600).url()}
@@ -162,6 +180,19 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
           }}
         >
           {connectIcon}
+        </div>
+      )}
+
+      {/* Shop type icon */}
+      {isShopType && shopIcon && (
+        <div
+          className="absolute inset-0 z-[1] flex items-center justify-center transition-all duration-300"
+          style={{
+            color: isHovered ? shopColor : '#444',
+            opacity: isHovered ? 0.9 : 0.5,
+          }}
+        >
+          {shopIcon}
         </div>
       )}
 
