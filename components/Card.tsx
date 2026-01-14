@@ -126,8 +126,8 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
       onClick={() => onClick(item)}
       className="card-hover card-noise card-entrance relative overflow-hidden rounded-lg cursor-pointer flex flex-col aspect-square"
       style={{
-        background: '#0a0a0a',
-        border: `1px solid ${isHovered ? '#2a2a2a' : '#1a1a1a'}`,
+        background: 'var(--background)',
+        border: `1px solid ${isHovered ? 'var(--border-hover)' : 'var(--border)'}`,
         '--entrance-delay': `${entranceDelay}ms`,
       } as React.CSSProperties}
     >
@@ -175,7 +175,7 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
         <div
           className="absolute inset-0 z-[1] flex items-center justify-center transition-all duration-300"
           style={{
-            color: isHovered ? connectColor : '#444',
+            color: isHovered ? connectColor : 'var(--subtle)',
             opacity: isHovered ? 0.9 : 0.5,
           }}
         >
@@ -188,7 +188,7 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
         <div
           className="absolute inset-0 z-[1] flex items-center justify-center transition-all duration-300"
           style={{
-            color: isHovered ? shopColor : '#444',
+            color: isHovered ? shopColor : 'var(--subtle)',
             opacity: isHovered ? 0.9 : 0.5,
           }}
         >
@@ -216,13 +216,13 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
         </div>
       )}
 
-      {/* Dark overlay for better text readability */}
+      {/* Overlay for better text readability */}
       <div
         className="absolute inset-0 z-[2] transition-all duration-300 ease-out"
         style={{
           background: isHovered
-            ? 'linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.1) 40%, rgba(10,10,10,0.5) 100%)'
-            : 'linear-gradient(to bottom, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.4) 40%, rgba(10,10,10,0.7) 100%)',
+            ? 'linear-gradient(to bottom, rgba(var(--card-overlay-rgb),0.5) 0%, rgba(var(--card-overlay-rgb),0.1) 40%, rgba(var(--card-overlay-rgb),0.5) 100%)'
+            : 'linear-gradient(to bottom, rgba(var(--card-overlay-rgb),0.7) 0%, rgba(var(--card-overlay-rgb),0.4) 40%, rgba(var(--card-overlay-rgb),0.7) 100%)',
         }}
       />
 
@@ -253,8 +253,8 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
         <div
           className="flex items-center gap-1.5 px-2.5 py-1 rounded flex-shrink-0"
           style={{
-            background: 'rgba(0,0,0,0.5)',
-            border: '1px solid rgba(255,255,255,0.1)',
+            background: 'var(--card-pill-bg)',
+            border: '1px solid var(--card-pill-border)',
           }}
         >
           <div
@@ -283,9 +283,9 @@ export default function Card({ item, onClick, onHoverSound, index = 0 }: CardPro
         <button
           className="px-3.5 py-2 rounded text-xs font-medium font-sans transition-all duration-200"
           style={{
-            background: isHovered ? '#e5e5e5' : 'rgba(0,0,0,0.5)',
-            color: isHovered ? '#0a0a0a' : '#ccc',
-            border: `1px solid ${isHovered ? '#e5e5e5' : 'rgba(255,255,255,0.15)'}`,
+            background: isHovered ? '#e5e5e5' : 'var(--cta-bg)',
+            color: isHovered ? '#0a0a0a' : 'var(--cta-text)',
+            border: `1px solid ${isHovered ? '#e5e5e5' : 'var(--cta-border)'}`,
           }}
         >
           {item.cta}

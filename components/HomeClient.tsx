@@ -41,6 +41,7 @@ export default function HomeClient({ items }: HomeClientProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [selectedItem, setSelectedItem] = useState<ArchiveItem | null>(null)
   const [soundEnabled, setSoundEnabled] = useState(true) // Sound on by default
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark')
   const [leftKeyPressed, setLeftKeyPressed] = useState(false)
   const [rightKeyPressed, setRightKeyPressed] = useState(false)
 
@@ -80,6 +81,21 @@ export default function HomeClient({ items }: HomeClientProps) {
     // If nothing saved, keep default (true)
   }, [])
 
+  // Load theme preference from localStorage (respects system preference on first visit)
+  useEffect(() => {
+    const saved = localStorage.getItem('theme')
+    if (saved === 'light' || saved === 'dark') {
+      setTheme(saved)
+      document.documentElement.classList.toggle('light', saved === 'light')
+    } else {
+      // Check system preference on first visit
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      const initialTheme = prefersDark ? 'dark' : 'light'
+      setTheme(initialTheme)
+      document.documentElement.classList.toggle('light', initialTheme === 'light')
+    }
+  }, [])
+
   // Save sound preference
   const toggleSound = useCallback(async () => {
     // Ensure audio context is running before toggling
@@ -95,6 +111,16 @@ export default function HomeClient({ items }: HomeClientProps) {
         playClickSound(audioContextRef.current)
       }
       return newValue
+    })
+  }, [])
+
+  // Toggle theme
+  const toggleTheme = useCallback(() => {
+    setTheme(prev => {
+      const newTheme = prev === 'dark' ? 'light' : 'dark'
+      localStorage.setItem('theme', newTheme)
+      document.documentElement.classList.toggle('light', newTheme === 'light')
+      return newTheme
     })
   }, [])
 
@@ -170,6 +196,8 @@ export default function HomeClient({ items }: HomeClientProps) {
         onHoverSound={playSound}
         leftKeyPressed={leftKeyPressed}
         rightKeyPressed={rightKeyPressed}
+        theme={theme}
+        onToggleTheme={toggleTheme}
       />
 
       <ArchiveGrid
@@ -196,7 +224,7 @@ export default function HomeClient({ items }: HomeClientProps) {
               href="https://github.com/samhayek-code"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#444] hover:text-foreground transition-colors"
+              className="text-subtle hover:text-foreground transition-colors"
               aria-label="GitHub"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -207,7 +235,7 @@ export default function HomeClient({ items }: HomeClientProps) {
               href="https://x.com/samhayek_"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#444] hover:text-foreground transition-colors"
+              className="text-subtle hover:text-foreground transition-colors"
               aria-label="X (Twitter)"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -218,7 +246,7 @@ export default function HomeClient({ items }: HomeClientProps) {
               href="https://instagram.com/samhayek_"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#444] hover:text-foreground transition-colors"
+              className="text-subtle hover:text-foreground transition-colors"
               aria-label="Instagram"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -229,7 +257,7 @@ export default function HomeClient({ items }: HomeClientProps) {
               href="https://youtube.com/@samhayek_"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#444] hover:text-foreground transition-colors"
+              className="text-subtle hover:text-foreground transition-colors"
               aria-label="YouTube"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -239,7 +267,7 @@ export default function HomeClient({ items }: HomeClientProps) {
           </div>
 
           {/* Copyright - right side */}
-          <span className="font-mono text-[10px] text-[#333] tracking-wide">
+          <span className="font-mono text-[10px] text-subtle tracking-wide">
             © 2026
           </span>
         </div>

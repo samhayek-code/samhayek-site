@@ -60,17 +60,18 @@ export default function CustomCursor() {
         style={{
           width: isPointer ? '6px' : '12px',
           height: isPointer ? '6px' : '12px',
-          borderColor: 'white',
+          borderColor: 'var(--cursor-color)',
           borderWidth: isPointer ? '1px' : '2.5px',
           transform: 'translate(-50%, -50%)',
         }}
       />
       {/* Center dot - only visible on pointer state */}
       <div
-        className="absolute rounded-full bg-white transition-all duration-150 ease-out"
+        className="absolute rounded-full transition-all duration-150 ease-out"
         style={{
           width: '3px',
           height: '3px',
+          backgroundColor: 'var(--cursor-color)',
           transform: 'translate(-50%, -50%)',
           opacity: isPointer ? 1 : 0,
           scale: isPointer ? 1 : 0,

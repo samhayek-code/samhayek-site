@@ -349,11 +349,12 @@ export default function Modal({ item, onClose }: ModalProps) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`bg-[#0f0f0f] rounded-xl border border-[#222] max-w-[800px] w-full overflow-auto cursor-default ${showWhopCheckout ? 'max-h-[95vh]' : 'max-h-[85vh]'}`}
+        className={`rounded-xl max-w-[800px] w-full overflow-auto cursor-default ${showWhopCheckout ? 'max-h-[95vh]' : 'max-h-[85vh]'}`}
+        style={{ background: 'var(--modal-bg)', border: '1px solid var(--modal-border)' }}
       >
         {/* Hero image - hide for embed modals, gallery types (Art, Design), Writing, and checkout */}
         {!isEmbedModal && !isGalleryType && !isWriting && !showWhopCheckout && item.coverImage && (
-          <div className="w-full aspect-video bg-[#151515] rounded-t-xl flex items-center justify-center relative">
+          <div className="w-full aspect-video rounded-t-xl flex items-center justify-center relative" style={{ background: 'var(--modal-surface)' }}>
             {item.coverImage ? (
               <Image
                 src={urlFor(item.coverImage).width(1600).height(900).url()}
@@ -402,7 +403,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           
           {/* Description - hide for collections (shown in intro screen) and checkout */}
           {!isCollection && !showWhopCheckout && (
-            <p className="font-sans text-[15px] text-[#888] leading-relaxed mb-6">
+            <p className="font-sans text-[15px] leading-relaxed mb-6" style={{ color: 'var(--modal-text-secondary)' }}>
               {item.description}
             </p>
           )}
@@ -468,7 +469,7 @@ export default function Modal({ item, onClose }: ModalProps) {
               {/* Intro screen */}
               {collectionIndex === -1 && (
                 <div className="text-center py-4">
-                  <p className="font-sans text-[15px] text-[#888] leading-relaxed max-w-lg mx-auto">
+                  <p className="font-sans text-[15px] leading-relaxed max-w-lg mx-auto" style={{ color: 'var(--modal-text-secondary)' }}>
                     {item.description}
                   </p>
                 </div>
@@ -494,7 +495,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                     )}
 
                     {/* Navigation between image and text */}
-                    <div className="flex items-center justify-between py-4 border-y border-[#1a1a1a]">
+                    <div className="flex items-center justify-between py-4 border-y border-border">
                       <button
                         onClick={goPrevCollection}
                         disabled={collectionIndex === 0}
@@ -530,7 +531,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                     {/* Poem text */}
                     {piece.poemText && (
                       <div className="max-w-md mx-auto">
-                        <p className="font-sans text-[15px] text-[#999] leading-[1.8] whitespace-pre-line text-center">
+                        <p className="font-sans text-[15px] leading-[1.8] whitespace-pre-line text-center" style={{ color: 'var(--modal-text-tertiary)' }}>
                           {piece.poemText}
                         </p>
                       </div>
@@ -547,7 +548,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     {item.merchGallery!.map((image, i) => (
-                      <div key={i} className="aspect-square relative rounded-lg overflow-hidden bg-[#151515]">
+                      <div key={i} className="aspect-square relative rounded-lg overflow-hidden" style={{ background: 'var(--modal-surface)' }}>
                         <Image
                           src={urlFor(image).width(600).height(600).url()}
                           alt={`Merch ${i + 1}`}
@@ -625,7 +626,7 @@ export default function Modal({ item, onClose }: ModalProps) {
 
           {/* Body (rich text) - hide for Support card */}
           {item.body && item.body.length > 0 && !isSupport && (
-            <div className="prose prose-invert prose-sm max-w-full w-full mb-8 text-[#aaa] overflow-hidden break-words [&>p]:mb-4 [&>p]:leading-relaxed">
+            <div className="prose prose-sm max-w-full w-full mb-8 overflow-hidden break-words [&>p]:mb-4 [&>p]:leading-relaxed" style={{ color: 'var(--modal-text-body)' }}>
               <PortableText value={item.body} />
             </div>
           )}
@@ -698,8 +699,8 @@ export default function Modal({ item, onClose }: ModalProps) {
                 width="100%"
                 height="500"
                 allowFullScreen
-                className="rounded-lg border border-[#1a1a1a]"
-                style={{ background: '#0a0a0a' }}
+                className="rounded-lg border border-border"
+                style={{ background: 'var(--background)' }}
               />
             </div>
           )}
@@ -708,7 +709,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           {!isGalleryType && item.gallery && item.gallery.length > 0 && (
             <div className="grid grid-cols-3 gap-3 mb-8">
               {item.gallery.map((image, i) => (
-                <div key={i} className="aspect-square relative rounded-md overflow-hidden bg-[#151515] border border-[#1a1a1a]">
+                <div key={i} className="aspect-square relative rounded-md overflow-hidden border border-border" style={{ background: 'var(--modal-surface)' }}>
                   <Image
                     src={urlFor(image).width(400).height(400).url()}
                     alt={`${item.title} gallery ${i + 1}`}
@@ -748,7 +749,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           )}
 
           {/* Footer */}
-          <div className="flex justify-between items-center pt-6 border-t border-[#1a1a1a]">
+          <div className="flex justify-between items-center pt-6 border-t border-border">
             {item.price ? (
               <span className="font-mono text-lg text-foreground">
                 {item.price}
@@ -760,7 +761,7 @@ export default function Modal({ item, onClose }: ModalProps) {
             <div className="flex gap-3">
               <button
                 onClick={onClose}
-                className="px-5 py-3 rounded-md font-sans text-sm font-medium text-muted border border-[#333] hover:border-[#444] transition-colors"
+                className="px-5 py-3 rounded-md font-sans text-sm font-medium text-muted border border-border hover:border-border-hover transition-colors"
               >
                 Close
               </button>

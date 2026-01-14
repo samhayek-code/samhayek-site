@@ -7,8 +7,65 @@
 :root {
   --background: #0a0a0a;
   --foreground: #f0f0f0;
+  --surface: #131313;
   --border: #1a1a1a;
   --border-hover: #2a2a2a;
+  --muted: #777777;
+  --subtle: #555555;
+  --cursor-color: #ffffff;
+  --selection-bg: rgba(255, 255, 255, 0.15);
+  --scrollbar-thumb: #2a2a2a;
+  --scrollbar-thumb-hover: #3a3a3a;
+  --grid-color: %23ffffff;
+  --grid-opacity: 0.05;
+  --noise-opacity: 0.015;
+  --modal-backdrop: rgba(0, 0, 0, 0.85);
+  /* Card overlay colors */
+  --card-overlay-rgb: 10, 10, 10;
+  --card-pill-bg: rgba(0, 0, 0, 0.5);
+  --card-pill-border: rgba(255, 255, 255, 0.1);
+  --cta-bg: rgba(0, 0, 0, 0.5);
+  --cta-text: #cccccc;
+  --cta-border: rgba(255, 255, 255, 0.15);
+  /* Modal colors */
+  --modal-bg: #0f0f0f;
+  --modal-border: #222222;
+  --modal-surface: #151515;
+  --modal-text-secondary: #888888;
+  --modal-text-tertiary: #999999;
+  --modal-text-body: #aaaaaa;
+}
+
+:root.light {
+  --background: #f5f5f5;
+  --foreground: #0a0a0a;
+  --surface: #ffffff;
+  --border: #e0e0e0;
+  --border-hover: #d0d0d0;
+  --muted: #666666;
+  --subtle: #888888;
+  --cursor-color: #000000;
+  --selection-bg: rgba(0, 0, 0, 0.12);
+  --scrollbar-thumb: #cccccc;
+  --scrollbar-thumb-hover: #aaaaaa;
+  --grid-color: %23000000;
+  --grid-opacity: 0.06;
+  --noise-opacity: 0.025;
+  --modal-backdrop: rgba(0, 0, 0, 0.5);
+  /* Card overlay colors */
+  --card-overlay-rgb: 255, 255, 255;
+  --card-pill-bg: rgba(255, 255, 255, 0.7);
+  --card-pill-border: rgba(0, 0, 0, 0.1);
+  --cta-bg: rgba(255, 255, 255, 0.7);
+  --cta-text: #333333;
+  --cta-border: rgba(0, 0, 0, 0.15);
+  /* Modal colors */
+  --modal-bg: #ffffff;
+  --modal-border: #e0e0e0;
+  --modal-surface: #f5f5f5;
+  --modal-text-secondary: #666666;
+  --modal-text-tertiary: #555555;
+  --modal-text-body: #444444;
 }
 
 * {
@@ -29,7 +86,7 @@ body {
 }
 
 ::selection {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--selection-bg);
 }
 
 /* Scrollbar */
@@ -42,23 +99,32 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-hover);
+  background: var(--scrollbar-thumb);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a3a3a;
+  background: var(--scrollbar-thumb-hover);
 }
 
 /* Grid background */
 .iso-grid {
   position: fixed;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M0 0 H32 M0 0 V32' fill='none' stroke='%23ffffff' stroke-width='0.5'/%3E%3C/svg%3E");
   background-size: 32px 32px;
-  opacity: 0.05;
+  opacity: var(--grid-opacity);
   pointer-events: none;
   z-index: 0;
+}
+
+/* Dark mode grid (default) */
+:root:not(.light) .iso-grid {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M0 0 H32 M0 0 V32' fill='none' stroke='%23ffffff' stroke-width='0.5'/%3E%3C/svg%3E");
+}
+
+/* Light mode grid */
+:root.light .iso-grid {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M0 0 H32 M0 0 V32' fill='none' stroke='%23000000' stroke-width='0.5'/%3E%3C/svg%3E");
 }
 
 /* Noise overlay */
@@ -66,7 +132,7 @@ body {
   position: fixed;
   inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  opacity: 0.015;
+  opacity: var(--noise-opacity);
   pointer-events: none;
   z-index: 1000;
 }
@@ -79,7 +145,7 @@ body {
 .card-hover:hover {
   transform: translateY(-2px);
   border-color: var(--border-hover);
-  background: #131313;
+  background: var(--surface);
 }
 
 /* Staggered card entrance animation */
@@ -102,7 +168,7 @@ body {
 
 /* Modal backdrop */
 .modal-backdrop {
-  background: rgba(0, 0, 0, 0.85);
+  background: var(--modal-backdrop);
   backdrop-filter: blur(8px);
 }
 

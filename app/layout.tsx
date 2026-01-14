@@ -30,13 +30,31 @@ export const metadata: Metadata = {
   },
 }
 
+// Script to prevent flash of wrong theme on load
+const themeScript = `
+  (function() {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light') {
+      document.documentElement.classList.add('light');
+    } else if (!saved) {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (!prefersDark) {
+        document.documentElement.classList.add('light');
+      }
+    }
+  })();
+`;
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="font-sans">
         <CustomCursor />
         <div className="iso-grid" />
