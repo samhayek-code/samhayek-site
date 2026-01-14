@@ -92,7 +92,7 @@ function Lightbox({
 
       {/* Image counter */}
       {hasMultiple && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 font-mono font-bold text-sm text-white/60">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 font-mono font-medium text-sm text-white/60">
           {currentIndex + 1} / {images.length}
         </div>
       )}
@@ -377,7 +377,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 {item.title}
               </h2>
               {item.year && (
-                <span className="font-mono font-bold text-xs text-subtle">
+                <span className="font-mono font-medium text-xs text-subtle">
                   {item.year}
                 </span>
               )}
@@ -395,7 +395,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 className="w-1.5 h-1.5 rounded-full shrink-0"
                 style={{ background: colors.dot }}
               />
-              <span className="font-mono font-bold text-[11px] text-muted uppercase tracking-wide whitespace-nowrap">
+              <span className="font-mono font-medium text-[11px] text-muted uppercase tracking-wide whitespace-nowrap">
                 {item.label}
               </span>
             </div>
@@ -507,7 +507,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                         Prev
                       </button>
 
-                      <div className="font-mono font-bold text-xs text-subtle">
+                      <div className="font-mono font-medium text-xs text-subtle">
                         {collectionIndex + 1} / {totalPieces}
                       </div>
 
@@ -615,7 +615,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                       height={160}
                       className="rounded-lg"
                     />
-                    <div className="text-center mt-2 font-mono font-bold text-xs text-muted">
+                    <div className="text-center mt-2 font-mono font-medium text-xs text-muted">
                       {activeQR.currency}
                     </div>
                   </div>
@@ -751,7 +751,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           {/* Footer */}
           <div className="flex justify-between items-center pt-6 border-t border-border">
             {item.price ? (
-              <span className="font-mono font-bold text-lg text-foreground">
+              <span className="font-mono font-medium text-lg text-foreground">
                 {item.price}
               </span>
             ) : (

@@ -11,7 +11,7 @@ export default function PageHeader({ filter }: PageHeaderProps) {
   return (
     <div className="min-h-[35vh] flex flex-col justify-end p-4 lg:p-12 pt-24">
       <div className="max-w-[800px]">
-        <span className="font-mono font-bold text-[11px] text-subtle tracking-[0.15em] uppercase block mb-6">
+        <span className="font-mono font-medium text-[11px] text-subtle tracking-[0.15em] uppercase block mb-6">
           {isEverything ? "I'm Sam" : filter}
         </span>
 

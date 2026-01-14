@@ -268,7 +268,7 @@ export default function HomeClient({ items }: HomeClientProps) {
           </div>
 
           {/* Copyright - right side */}
-          <span className="font-mono font-bold text-[10px] text-subtle tracking-wide">
+          <span className="font-mono font-medium text-[10px] text-subtle tracking-wide">
             © 2026
           </span>
         </div>

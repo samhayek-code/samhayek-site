@@ -75,8 +75,8 @@ export default function WalletButton({ currency, address, onShowQR, showQRButton
 
         {/* Address */}
         <div className="flex-1 min-w-0">
-          <div className="font-mono font-bold text-xs text-muted mb-1">{currency}</div>
-          <div className="font-mono font-bold text-[11px] text-foreground/70 truncate">
+          <div className="font-mono font-medium text-xs text-muted mb-1">{currency}</div>
+          <div className="font-mono font-medium text-[11px] text-foreground/70 truncate">
             {address}
           </div>
         </div>
