@@ -744,7 +744,16 @@ export default function Modal({ item, onClose }: ModalProps) {
                 </button>
               )}
               {!hideCtaButton && (
-                item.lemonSqueezyUrl ? (
+                item.whopPlanId ? (
+                  <a
+                    href={`https://whop.com/checkout/${item.whopPlanId}/`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-6 py-3 rounded-md font-sans text-sm font-medium bg-foreground text-background hover:bg-white transition-colors"
+                  >
+                    {item.cta}
+                  </a>
+                ) : item.lemonSqueezyUrl ? (
                   <a
                     href={item.lemonSqueezyUrl}
                     onClick={handleLemonSqueezyClick}

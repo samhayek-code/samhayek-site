@@ -133,7 +133,13 @@ export default defineType({
       name: 'lemonSqueezyUrl',
       title: 'Lemon Squeezy URL',
       type: 'url',
-      description: 'For Shop/Design items — checkout link',
+      description: 'For Shop/Design items — checkout link (legacy)',
+    }),
+    defineField({
+      name: 'whopPlanId',
+      title: 'Whop Plan ID',
+      type: 'string',
+      description: 'For Shop/Design items — Whop checkout plan ID (e.g., plan_XXXXXXXXX)',
     }),
     defineField({
       name: 'muxVideo',

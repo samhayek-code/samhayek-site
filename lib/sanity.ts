@@ -34,6 +34,7 @@ export async function getArchiveItems() {
       embedUrl,
       externalUrl,
       lemonSqueezyUrl,
+      whopPlanId,
       muxVideo {
         asset-> {
           playbackId,
@@ -69,6 +70,7 @@ export async function getItemBySlug(slug: string) {
       embedUrl,
       externalUrl,
       lemonSqueezyUrl,
+      whopPlanId,
       muxVideo {
         asset-> {
           playbackId,

@@ -44,6 +44,7 @@ export interface ArchiveItem {
   embedUrl?: string
   externalUrl?: string
   lemonSqueezyUrl?: string
+  whopPlanId?: string // Whop checkout plan ID
   muxVideo?: MuxVideo // MUX video asset
   figmaUrl?: string
   prototypeUrl?: string
