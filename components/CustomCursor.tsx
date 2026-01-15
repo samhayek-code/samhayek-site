@@ -55,10 +55,10 @@ export default function CustomCursor() {
   }
 
   // Sizes: filled outer circle with contrasting center dot (bullseye)
-  // Both scale down together on hover
-  const defaultSize = 15 // ~10% bigger than 14
-  const hoverSize = 9    // ~10% smaller than 10
-  const dotRatio = 0.4 // Center dot is 40% of outer circle
+  const defaultSize = 15
+  const hoverSize = 9
+  const size = isPointer ? hoverSize : defaultSize
+  const dotSize = Math.round(size * 0.4)
 
   return (
     <div
@@ -67,38 +67,32 @@ export default function CustomCursor() {
       style={{
         left: -100,
         top: -100,
-        transform: 'translate(-50%, -50%)',
         opacity: isVisible && !isOverIframe ? 1 : 0,
         transition: 'opacity 150ms ease-out',
       }}
     >
-      {/* Cursor container - scales as a group */}
+      {/* Outer filled circle - centered on cursor position */}
       <div
-        className="relative transition-all duration-150 ease-out"
+        className="absolute rounded-full transition-all duration-150 ease-out"
         style={{
-          width: isPointer ? `${hoverSize}px` : `${defaultSize}px`,
-          height: isPointer ? `${hoverSize}px` : `${defaultSize}px`,
-          transform: 'translate(-50%, -50%)',
+          width: size,
+          height: size,
+          top: -size / 2,
+          left: -size / 2,
+          backgroundColor: 'var(--cursor-ring)',
         }}
-      >
-        {/* Outer filled circle */}
-        <div
-          className="absolute inset-0 rounded-full"
-          style={{ backgroundColor: 'var(--cursor-ring)' }}
-        />
-        {/* Center dot - on top */}
-        <div
-          className="absolute rounded-full"
-          style={{
-            width: `${dotRatio * 100}%`,
-            height: `${dotRatio * 100}%`,
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            backgroundColor: 'var(--cursor-fill)',
-          }}
-        />
-      </div>
+      />
+      {/* Center dot - centered on cursor position */}
+      <div
+        className="absolute rounded-full transition-all duration-150 ease-out"
+        style={{
+          width: dotSize,
+          height: dotSize,
+          top: -dotSize / 2,
+          left: -dotSize / 2,
+          backgroundColor: 'var(--cursor-fill)',
+        }}
+      />
     </div>
   )
 }

@@ -72,6 +72,7 @@ export default defineType({
       title: 'Display Year',
       type: 'string',
       description: 'Shown on the card (e.g., "2024", "2023-2024")',
+      initialValue: '2026',
     }),
     defineField({
       name: 'price',
@@ -91,8 +92,28 @@ export default defineType({
       name: 'body',
       title: 'Full Content',
       type: 'array',
-      of: [{ type: 'block' }],
-      description: 'For Writing items — full text content',
+      of: [
+        { type: 'block' },
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            {
+              name: 'alt',
+              title: 'Alt Text',
+              type: 'string',
+              description: 'Description for accessibility',
+            },
+            {
+              name: 'caption',
+              title: 'Caption',
+              type: 'string',
+              description: 'Optional caption below image',
+            },
+          ],
+        },
+      ],
+      description: 'For Writing items — full text content with inline images',
     }),
     defineField({
       name: 'coverImage',

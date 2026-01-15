@@ -27,7 +27,13 @@ export async function getArchiveItems() {
       price,
       year,
       description,
-      body,
+      body[] {
+        ...,
+        _type == "image" => {
+          ...,
+          asset->
+        }
+      },
       cta,
       coverImage,
       gallery,

@@ -15,6 +15,54 @@ const WALLET_ADDRESSES = {
   BTC: 'bc1qwsr58r24ckt2dc0p2aa2qc8gp6punt7t4tdsea',
 }
 
+// PortableText components for rendering images and links inline
+const portableTextComponents = {
+  types: {
+    image: ({ value }: { value: { asset?: { _ref?: string; _id?: string; url?: string }; alt?: string; caption?: string } }) => {
+      // Handle both referenced and expanded asset structures
+      if (!value?.asset) return null
+      const hasValidAsset = value.asset._ref || value.asset._id || value.asset.url
+      if (!hasValidAsset) return null
+
+      return (
+        <figure className="my-8">
+          <div className="relative w-full overflow-hidden rounded-lg">
+            <Image
+              src={urlFor(value).width(1200).quality(90).url()}
+              alt={value.alt || ''}
+              width={1200}
+              height={675}
+              className="w-full h-auto"
+              style={{ maxWidth: '100%', height: 'auto' }}
+            />
+          </div>
+          {value.caption && (
+            <figcaption className="mt-3 text-center text-sm text-muted">
+              {value.caption}
+            </figcaption>
+          )}
+        </figure>
+      )
+    },
+  },
+  marks: {
+    link: ({ children, value }: { children: React.ReactNode; value?: { href?: string } }) => {
+      const href = value?.href || ''
+      const isExternal = href.startsWith('http')
+      return (
+        <a
+          href={href}
+          target={isExternal ? '_blank' : undefined}
+          rel={isExternal ? 'noopener noreferrer' : undefined}
+          className="text-foreground underline underline-offset-2 hover:opacity-70 transition-opacity"
+        >
+          {children}
+        </a>
+      )
+    },
+  },
+}
+
 // Lightbox component for full-screen image viewing with navigation
 function Lightbox({
   images,
@@ -627,7 +675,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           {/* Body (rich text) - hide for Support card */}
           {item.body && item.body.length > 0 && !isSupport && (
             <div className="prose prose-base max-w-full w-full mb-8 overflow-hidden break-words [&>p]:mb-4 [&>p]:leading-relaxed [&>p]:text-[17px] [&_a]:text-foreground [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:opacity-70 [&_h1]:text-foreground [&_h2]:text-foreground [&_h3]:text-foreground [&_h4]:text-foreground [&_strong]:text-foreground [&_code]:text-foreground [&_blockquote]:text-muted [&_blockquote]:border-border" style={{ color: 'var(--modal-text-body)' }}>
-              <PortableText value={item.body} />
+              <PortableText value={item.body} components={portableTextComponents} />
             </div>
           )}
 
