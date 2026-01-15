@@ -54,11 +54,12 @@ export default function CustomCursor() {
     return null
   }
 
-  // Sizes: filled outer circle with contrasting center dot (bullseye)
-  const defaultSize = 15
-  const hoverSize = 9
-  const size = isPointer ? hoverSize : defaultSize
-  const dotSize = Math.round(size * 0.4)
+  // Sizes: hollow ring that shrinks to solid circle on hover
+  const ringSize = 24
+  const solidSize = 12
+  const strokeWidth = 3
+
+  const size = isPointer ? solidSize : ringSize
 
   return (
     <div
@@ -71,7 +72,6 @@ export default function CustomCursor() {
         transition: 'opacity 150ms ease-out',
       }}
     >
-      {/* Outer filled circle - centered on cursor position */}
       <div
         className="absolute rounded-full transition-all duration-150 ease-out"
         style={{
@@ -79,18 +79,8 @@ export default function CustomCursor() {
           height: size,
           top: -size / 2,
           left: -size / 2,
-          backgroundColor: 'var(--cursor-ring)',
-        }}
-      />
-      {/* Center dot - centered on cursor position */}
-      <div
-        className="absolute rounded-full transition-all duration-150 ease-out"
-        style={{
-          width: dotSize,
-          height: dotSize,
-          top: -dotSize / 2,
-          left: -dotSize / 2,
-          backgroundColor: 'var(--cursor-fill)',
+          backgroundColor: isPointer ? 'var(--cursor-ring)' : 'transparent',
+          border: isPointer ? 'none' : `${strokeWidth}px solid var(--cursor-ring)`,
         }}
       />
     </div>
