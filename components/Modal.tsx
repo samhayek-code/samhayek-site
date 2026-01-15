@@ -468,18 +468,26 @@ export default function Modal({ item, onClose }: ModalProps) {
             </p>
           )}
 
-          {/* OASIS - Downloads Organizer */}
+          {/* Oasis - Downloads Organizer */}
           {isOasis && (
             <div className="space-y-6 mb-8">
-              {/* Thoughtful description */}
+              {/* Subtitle */}
+              <p className="font-sans text-[15px]" style={{ color: 'var(--modal-text-tertiary)' }}>
+                Download folders can get chaotic, this helps.
+              </p>
+
+              {/* Main description */}
               <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
-                Your Downloads folder accumulates chaos. Files pile up with no sense of when they arrived or why.
+                Oasis is a small script that runs automatically every night at midnight.
               </p>
               <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
-                OASIS is a small script that runs automatically every night at midnight. It takes any new files in your Downloads folder and sorts them into folders by date and type — images in one place, documents in another. At the end of each week, those daily folders get grouped together. At the end of each month, the weeks get archived. You never have to think about it.
+                It takes any new files in your Downloads folder and sorts them into folders by date and type — images in one place, documents in another.
+              </p>
+              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
+                At the end of each week, those daily folders get grouped together. At the end of each month, the weeks get archived. You never have to think about it.
               </p>
               <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
-                Open source. No tracking. macOS only.
+                macOS only.
               </p>
 
               {/* Install command */}
@@ -488,26 +496,26 @@ export default function Modal({ item, onClose }: ModalProps) {
                   Install
                 </span>
                 <div
-                  onClick={() => handleCopyInstall('curl -fsSL https://raw.githubusercontent.com/samhayek-code/OASIS/main/install.sh | bash')}
-                  className="group relative cursor-pointer rounded-lg p-4 font-mono text-[13px] leading-relaxed transition-all"
+                  className="rounded-lg p-4 font-mono text-[13px] leading-relaxed"
                   style={{
                     background: 'var(--surface)',
                     border: '1px solid var(--border)',
                   }}
                 >
-                  <code className="text-foreground break-all">
+                  <code className="text-foreground break-all block mb-3">
                     curl -fsSL https://raw.githubusercontent.com/samhayek-code/OASIS/main/install.sh | bash
                   </code>
-                  <div
-                    className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2 transition-opacity"
-                    style={{ opacity: copied ? 1 : 0.6 }}
+                  <button
+                    onClick={() => handleCopyInstall('curl -fsSL https://raw.githubusercontent.com/samhayek-code/OASIS/main/install.sh | bash')}
+                    className="px-3 py-1.5 rounded-md font-mono text-[11px] font-medium transition-all"
+                    style={{
+                      background: copied ? 'rgba(74, 222, 128, 0.15)' : 'var(--cta-bg)',
+                      border: copied ? '1px solid rgba(74, 222, 128, 0.3)' : '1px solid var(--border)',
+                      color: copied ? 'rgb(74, 222, 128)' : 'var(--cta-text)',
+                    }}
                   >
-                    {copied ? (
-                      <span className="font-mono text-[11px] text-green-400">Copied</span>
-                    ) : (
-                      <span className="font-mono text-[11px] text-muted group-hover:text-foreground transition-colors">Click to copy</span>
-                    )}
-                  </div>
+                    {copied ? 'Copied' : 'Copy'}
+                  </button>
                 </div>
               </div>
 
