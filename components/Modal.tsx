@@ -496,22 +496,37 @@ export default function Modal({ item, onClose }: ModalProps) {
                   Install
                 </span>
                 <div
-                  className="rounded-lg p-4 font-mono text-[13px] leading-relaxed"
+                  className="flex items-center gap-3 rounded-lg px-4 py-3"
                   style={{
                     background: 'var(--surface)',
                     border: '1px solid var(--border)',
                   }}
                 >
-                  <code className="text-foreground break-all block mb-3">
+                  <code className="font-mono text-[13px] text-foreground truncate flex-1 select-all" title="curl -fsSL https://raw.githubusercontent.com/samhayek-code/OASIS/main/install.sh | bash">
                     curl -fsSL https://raw.githubusercontent.com/samhayek-code/OASIS/main/install.sh | bash
                   </code>
                   <button
                     onClick={() => handleCopyInstall('curl -fsSL https://raw.githubusercontent.com/samhayek-code/OASIS/main/install.sh | bash')}
-                    className="px-3 py-1.5 rounded-md font-mono text-[11px] font-medium transition-all"
+                    className="shrink-0 px-3 py-1.5 rounded-md font-mono text-[12px] font-medium transition-all"
                     style={{
-                      background: copied ? 'rgba(74, 222, 128, 0.15)' : 'var(--cta-bg)',
-                      border: copied ? '1px solid rgba(74, 222, 128, 0.3)' : '1px solid var(--border)',
-                      color: copied ? 'rgb(74, 222, 128)' : 'var(--cta-text)',
+                      background: copied ? 'var(--foreground)' : 'var(--cta-bg)',
+                      border: '1px solid',
+                      borderColor: copied ? 'var(--foreground)' : 'var(--border)',
+                      color: copied ? 'var(--background)' : 'var(--cta-text)',
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!copied) {
+                        e.currentTarget.style.background = 'var(--cta-hover-bg)'
+                        e.currentTarget.style.borderColor = 'var(--cta-hover-border)'
+                        e.currentTarget.style.color = 'var(--cta-hover-text)'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!copied) {
+                        e.currentTarget.style.background = 'var(--cta-bg)'
+                        e.currentTarget.style.borderColor = 'var(--border)'
+                        e.currentTarget.style.color = 'var(--cta-text)'
+                      }
                     }}
                   >
                     {copied ? 'Copied' : 'Copy'}
@@ -932,7 +947,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   View Prototype
                 </a>
               )}
-              {/* OASIS GitHub link */}
+              {/* Oasis GitHub link */}
               {isOasis && (
                 <a
                   href="https://github.com/samhayek-code/OASIS"
@@ -940,7 +955,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   rel="noopener noreferrer"
                   className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:bg-white transition-colors"
                 >
-                  View Source
+                  View on GitHub
                 </a>
               )}
               {/* View button for collection intro */}
