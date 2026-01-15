@@ -76,9 +76,27 @@ body[] {
 - `0` = default (by date)
 - `100+` = pushed to bottom
 
+## Custom Modal Handling
+
+Some items have custom modal layouts based on their slug. Pattern:
+```tsx
+const isOasis = item.slug?.current === 'oasis'
+```
+
+| Slug | Custom Behavior |
+|------|-----------------|
+| `oasis` | Click-to-copy install command, custom copy, GitHub CTA |
+| `send-message` | YouForm embed |
+| `book-a-call` | Cal.com embed |
+| `samhayek-com` | Case study (hides CTA) |
+| `support` | Crypto wallet buttons with QR codes |
+
+To add custom modal behavior: check slug in Modal.tsx, add to `hideCtaButton` if needed.
+
 ## Key Files to Know
 
 - **Modal.tsx:19-64** — PortableText components (image + link rendering)
+- **Modal.tsx:225-237** — Custom modal slug checks (isOasis, isContactForm, etc.)
 - **sanity.ts:19-52** — Main GROQ query
 - **types.ts** — `typeColors`, `filterCategories`, `headerContent`
 - **globals.css** — All CSS variables and theme definitions
