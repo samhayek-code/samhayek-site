@@ -219,8 +219,10 @@ export default function Modal({ item, onClose }: ModalProps) {
   const [collectionIndex, setCollectionIndex] = useState(-1)
   // Whop checkout state
   const [showWhopCheckout, setShowWhopCheckout] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   // Check if this is a special modal type
+  const isOasis = item.slug?.current === 'oasis'
   const isContactForm = item.slug?.current === 'send-message'
   const isBookingForm = item.slug?.current === 'book-a-call'
   const isCaseStudy = item.slug?.current === 'samhayek-com'
@@ -232,7 +234,7 @@ export default function Modal({ item, onClose }: ModalProps) {
   const hasMerch = item.merchGallery && item.merchGallery.length > 0
   const isGalleryType = (isArt || isDesign) && !isCollection  // Types that use full-width gallery display (but not collections)
   const isEmbedModal = isContactForm || isBookingForm
-  const hideCtaButton = isEmbedModal || isCaseStudy || isGalleryType || isSupport || isCollection || isWriting
+  const hideCtaButton = isEmbedModal || isCaseStudy || isGalleryType || isSupport || isCollection || isWriting || isOasis
 
   // Collection navigation
   const collectionPieces = item.collectionPieces || []
@@ -383,6 +385,16 @@ export default function Modal({ item, onClose }: ModalProps) {
     }
   }
 
+  const handleCopyInstall = async (command: string) => {
+    try {
+      await navigator.clipboard.writeText(command)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
+  }
+
   const handleLemonSqueezyClick = () => {
     // Keep body scroll locked for Lemon Squeezy overlay
     // The ref prevents the cleanup from restoring overflow
@@ -449,11 +461,99 @@ export default function Modal({ item, onClose }: ModalProps) {
             </div>
           </div>
           
-          {/* Description - hide for collections (shown in intro screen) and checkout */}
-          {!isCollection && !showWhopCheckout && (
+          {/* Description - hide for collections (shown in intro screen), checkout, and OASIS */}
+          {!isCollection && !showWhopCheckout && !isOasis && (
             <p className="font-sans text-[17px] leading-relaxed mb-6" style={{ color: 'var(--modal-text-secondary)' }}>
               {item.description}
             </p>
+          )}
+
+          {/* OASIS - Downloads Organizer */}
+          {isOasis && (
+            <div className="space-y-6 mb-8">
+              {/* Thoughtful description */}
+              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
+                Your Downloads folder accumulates chaos. Files pile up with no sense of when they arrived or why.
+              </p>
+              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
+                OASIS is a small script that runs automatically every night at midnight. It takes any new files in your Downloads folder and sorts them into folders by date and type — images in one place, documents in another. At the end of each week, those daily folders get grouped together. At the end of each month, the weeks get archived. You never have to think about it.
+              </p>
+              <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
+                Open source. No tracking. macOS only.
+              </p>
+
+              {/* Install command */}
+              <div className="space-y-3">
+                <span className="font-mono font-medium text-[11px] text-muted uppercase tracking-wide">
+                  Install
+                </span>
+                <div
+                  onClick={() => handleCopyInstall('curl -fsSL https://raw.githubusercontent.com/samhayek-code/OASIS/main/install.sh | bash')}
+                  className="group relative cursor-pointer rounded-lg p-4 font-mono text-[13px] leading-relaxed transition-all"
+                  style={{
+                    background: 'var(--surface)',
+                    border: '1px solid var(--border)',
+                  }}
+                >
+                  <code className="text-foreground break-all">
+                    curl -fsSL https://raw.githubusercontent.com/samhayek-code/OASIS/main/install.sh | bash
+                  </code>
+                  <div
+                    className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2 transition-opacity"
+                    style={{ opacity: copied ? 1 : 0.6 }}
+                  >
+                    {copied ? (
+                      <span className="font-mono text-[11px] text-green-400">Copied</span>
+                    ) : (
+                      <span className="font-mono text-[11px] text-muted group-hover:text-foreground transition-colors">Click to copy</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Simple steps */}
+              <div className="space-y-3">
+                <span className="font-mono font-medium text-[11px] text-muted uppercase tracking-wide">
+                  How it works
+                </span>
+                <ol className="space-y-2 font-sans text-[15px]" style={{ color: 'var(--modal-text-tertiary)' }}>
+                  <li className="flex gap-3">
+                    <span className="font-mono text-[13px] text-muted shrink-0">1.</span>
+                    <span>Open Terminal (search &ldquo;Terminal&rdquo; in Spotlight)</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="font-mono text-[13px] text-muted shrink-0">2.</span>
+                    <span>Paste the command above and press Enter</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="font-mono text-[13px] text-muted shrink-0">3.</span>
+                    <span>Done. OASIS runs automatically every night.</span>
+                  </li>
+                </ol>
+              </div>
+
+              {/* What you get */}
+              <div
+                className="rounded-lg p-4 font-mono text-[12px] leading-relaxed"
+                style={{
+                  background: 'var(--surface)',
+                  border: '1px solid var(--border)',
+                  color: 'var(--modal-text-tertiary)',
+                }}
+              >
+                <div className="text-muted mb-2">~/Downloads/</div>
+                <div className="pl-4 space-y-0.5">
+                  <div>January 2026/</div>
+                  <div className="pl-4 space-y-0.5">
+                    <div className="text-muted">Week 1 (Jan 1-5)/</div>
+                    <div className="pl-4 space-y-0.5">
+                      <div className="text-muted">Jan 1/</div>
+                      <div className="pl-4 text-subtle">Images/ Documents/ Videos/ Audio/ Other/</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           )}
 
           {/* Gallery display - full-width images with lightbox (Art, Design) */}
@@ -822,6 +922,17 @@ export default function Modal({ item, onClose }: ModalProps) {
                   className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:bg-white transition-colors"
                 >
                   View Prototype
+                </a>
+              )}
+              {/* OASIS GitHub link */}
+              {isOasis && (
+                <a
+                  href="https://github.com/samhayek-code/OASIS"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:bg-white transition-colors"
+                >
+                  View Source
                 </a>
               )}
               {/* View button for collection intro */}
