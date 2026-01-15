@@ -932,7 +932,7 @@ export default function Modal({ item, onClose }: ModalProps) {
             <div className="flex gap-3">
               <button
                 onClick={onClose}
-                className="px-5 py-3 rounded-md font-sans text-[16px] font-medium text-muted border border-border hover:border-border-hover transition-colors"
+                className="px-5 py-3 rounded-md font-sans text-[16px] font-medium text-muted border border-border hover:border-border-hover hover:text-foreground transition-colors"
               >
                 Close
               </button>
@@ -942,7 +942,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   href={item.prototypeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:bg-white transition-colors"
+                  className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:opacity-80 transition-opacity"
                 >
                   View Prototype
                 </a>
@@ -953,7 +953,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   href="https://github.com/samhayek-code/OASIS"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:bg-white transition-colors"
+                  className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:opacity-80 transition-opacity"
                 >
                   View on GitHub
                 </a>
@@ -962,7 +962,7 @@ export default function Modal({ item, onClose }: ModalProps) {
               {isCollection && collectionIndex === -1 && (
                 <button
                   onClick={goNextCollection}
-                  className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:bg-white transition-colors"
+                  className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:opacity-80 transition-opacity"
                 >
                   View
                 </button>
@@ -971,7 +971,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 item.whopPlanId ? (
                   <button
                     onClick={() => setShowWhopCheckout(true)}
-                    className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:bg-white transition-colors"
+                    className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:opacity-80 transition-opacity"
                   >
                     {item.cta}
                   </button>
@@ -979,14 +979,14 @@ export default function Modal({ item, onClose }: ModalProps) {
                   <a
                     href={item.lemonSqueezyUrl}
                     onClick={handleLemonSqueezyClick}
-                    className="lemonsqueezy-button px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:bg-white transition-colors"
+                    className="lemonsqueezy-button px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:opacity-80 transition-opacity"
                   >
                     {item.cta}
                   </a>
                 ) : (
                   <button
                     onClick={handleAction}
-                    className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:bg-white transition-colors"
+                    className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:opacity-80 transition-opacity"
                   >
                     {item.cta}
                   </button>
