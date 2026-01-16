@@ -994,8 +994,8 @@ export default function Modal({ item, onClose }: ModalProps) {
             </div>
           )}
 
-          {/* Body (rich text) - hide for Support card */}
-          {item.body && item.body.length > 0 && !isSupport && (
+          {/* Body (rich text) - hide for Support card and Resume */}
+          {item.body && item.body.length > 0 && !isSupport && !isResume && (
             <div className="prose prose-base max-w-full w-full mb-8 overflow-hidden break-words [&>p]:mb-4 [&>p]:leading-relaxed [&>p]:text-[17px] [&_a]:text-foreground [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:opacity-70 [&_h1]:text-foreground [&_h2]:text-foreground [&_h3]:text-foreground [&_h4]:text-foreground [&_strong]:text-foreground [&_code]:text-foreground [&_blockquote]:text-muted [&_blockquote]:border-border" style={{ color: 'var(--modal-text-body)' }}>
               <PortableText value={item.body} components={portableTextComponents} />
             </div>
