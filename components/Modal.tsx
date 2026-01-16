@@ -160,13 +160,18 @@ function Lightbox({
 }
 
 // Convert media URLs to embed URLs
-function getEmbedUrl(url: string): { src: string; type: 'spotify' | 'youtube' | 'other' } {
+function getEmbedUrl(url: string): { src: string; type: 'spotify' | 'youtube' | 'audius' | 'other' } {
   if (!url) return { src: '', type: 'other' }
 
   // Already an embed URL
   if (url.includes('/embed/')) {
-    const type = url.includes('youtube') ? 'youtube' : url.includes('spotify') ? 'spotify' : 'other'
+    const type = url.includes('youtube') ? 'youtube' : url.includes('spotify') ? 'spotify' : url.includes('audius.co') ? 'audius' : 'other'
     return { src: url, type }
+  }
+
+  // Audius
+  if (url.includes('audius.co')) {
+    return { src: url, type: 'audius' }
   }
 
   // Spotify
@@ -1024,10 +1029,10 @@ export default function Modal({ item, onClose }: ModalProps) {
             </div>
           )}
 
-          {/* Media embed (Spotify, YouTube, etc.) */}
+          {/* Media embed (Spotify, YouTube, Audius, etc.) */}
           {item.embedUrl && (() => {
             const embed = getEmbedUrl(item.embedUrl)
-            const height = embed.type === 'youtube' ? '315' : '152'
+            const height = embed.type === 'audius' ? '480' : embed.type === 'youtube' ? '315' : '152'
             return (
               <div className="mb-8">
                 <iframe
