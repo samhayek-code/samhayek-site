@@ -34,10 +34,11 @@ function playClickSound(audioContext: AudioContext | null) {
 
 interface HomeClientProps {
   items: ArchiveItem[]
+  initialFilter?: string
 }
 
-export default function HomeClient({ items }: HomeClientProps) {
-  const [activeFilter, setActiveFilter] = useState('Everything')
+export default function HomeClient({ items, initialFilter = 'Everything' }: HomeClientProps) {
+  const [activeFilter, setActiveFilter] = useState(initialFilter)
   const [isScrolled, setIsScrolled] = useState(false)
   const [selectedItem, setSelectedItem] = useState<ArchiveItem | null>(null)
   const [soundEnabled, setSoundEnabled] = useState(true) // Sound on by default
@@ -131,6 +132,38 @@ export default function HomeClient({ items }: HomeClientProps) {
     }
   }, [soundEnabled])
 
+  // Update filter with URL sync
+  const updateFilter = useCallback((filter: string, updateUrl = true) => {
+    setActiveFilter(filter)
+    if (updateUrl && typeof window !== 'undefined') {
+      const url = filter === 'Everything' ? '/' : `/${filter.toLowerCase()}`
+      window.history.pushState({ filter }, '', url)
+    }
+  }, [])
+
+  // Handle browser back/forward navigation
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      if (event.state?.filter) {
+        setActiveFilter(event.state.filter)
+      } else {
+        // Parse filter from URL path
+        const path = window.location.pathname.slice(1).toLowerCase()
+        const matchedFilter = filterCategories.find(
+          c => c.toLowerCase() === path
+        )
+        setActiveFilter(matchedFilter || 'Everything')
+      }
+    }
+
+    // Set initial history state
+    const currentFilter = activeFilter
+    window.history.replaceState({ filter: currentFilter }, '', window.location.pathname)
+
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, []) // Run once on mount
+
   // Handle card click - play sound and open modal
   const handleCardClick = useCallback((item: ArchiveItem) => {
     playSound()
@@ -164,7 +197,7 @@ export default function HomeClient({ items }: HomeClientProps) {
         setLeftKeyPressed(true)
         setTimeout(() => setLeftKeyPressed(false), 150)
         const newIndex = currentIndex <= 0 ? filterCategories.length - 1 : currentIndex - 1
-        setActiveFilter(filterCategories[newIndex])
+        updateFilter(filterCategories[newIndex])
         if (soundEnabled && audioContextRef.current) {
           playClickSound(audioContextRef.current)
         }
@@ -172,7 +205,7 @@ export default function HomeClient({ items }: HomeClientProps) {
         setRightKeyPressed(true)
         setTimeout(() => setRightKeyPressed(false), 150)
         const newIndex = currentIndex >= filterCategories.length - 1 ? 0 : currentIndex + 1
-        setActiveFilter(filterCategories[newIndex])
+        updateFilter(filterCategories[newIndex])
         if (soundEnabled && audioContextRef.current) {
           playClickSound(audioContextRef.current)
         }
@@ -181,7 +214,7 @@ export default function HomeClient({ items }: HomeClientProps) {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [activeFilter, selectedItem, soundEnabled])
+  }, [activeFilter, selectedItem, soundEnabled, updateFilter])
   
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -189,7 +222,7 @@ export default function HomeClient({ items }: HomeClientProps) {
 
       <NavBar
         activeFilter={activeFilter}
-        setActiveFilter={setActiveFilter}
+        setActiveFilter={updateFilter}
         isScrolled={isScrolled}
         soundEnabled={soundEnabled}
         onToggleSound={toggleSound}

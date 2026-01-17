@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://samhayek-site.vercel.app/sitemap.xml',
+    sitemap: 'https://samhayek.com/sitemap.xml',
   }
 }
