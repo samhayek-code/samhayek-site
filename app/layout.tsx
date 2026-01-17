@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
 import CustomCursor from '@/components/CustomCursor'
 
@@ -60,6 +61,7 @@ export default function RootLayout({
         <div className="iso-grid" />
         <div className="noise-overlay" />
         {children}
+        <Analytics />
       </body>
     </html>
   )
