@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 import CustomCursor from '@/components/CustomCursor'
 
@@ -62,6 +63,7 @@ export default function RootLayout({
         <div className="noise-overlay" />
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
