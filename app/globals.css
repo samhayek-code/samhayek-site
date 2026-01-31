@@ -313,6 +313,7 @@ body {
 
 .card-hover:hover .card-spec-line {
   opacity: 1;
+  color: #505055;
 }
 
 .card-hover:hover .card-code {
