@@ -54,16 +54,16 @@ export interface ArchiveItem {
 }
 
 export const typeColors: Record<string, { dot: string; bg: string }> = {
-  Everything: { dot: '#e5e5e5', bg: 'rgba(255,255,255,0.05)' },
-  Music: { dot: '#ffffff', bg: 'rgba(255,255,255,0.08)' },
-  Art: { dot: '#a3e635', bg: 'rgba(163,230,53,0.08)' },
-  Writing: { dot: '#fbbf24', bg: 'rgba(251,191,36,0.08)' },
-  Downloads: { dot: '#a78bfa', bg: 'rgba(167,139,250,0.08)' },
-  Tools: { dot: '#f472b6', bg: 'rgba(244,114,182,0.08)' },
-  Shop: { dot: '#f87171', bg: 'rgba(248,113,113,0.08)' },
-  Design: { dot: '#60a5fa', bg: 'rgba(96,165,250,0.08)' },
-  Connect: { dot: '#34d399', bg: 'rgba(52,211,153,0.08)' },
-  Lab: { dot: '#06b6d4', bg: 'rgba(6,182,212,0.08)' },
+  Everything: { dot: '#E8E8E9', bg: 'rgba(232,232,233,0.05)' },
+  Design: { dot: '#E85907', bg: '#E8590720' },
+  Music: { dot: '#8B5CF6', bg: '#8B5CF620' },
+  Art: { dot: '#EC4899', bg: '#EC489920' },
+  Writing: { dot: '#3B82F6', bg: '#3B82F620' },
+  Tools: { dot: '#22C55E', bg: '#22C55E20' },
+  Downloads: { dot: '#F59E0B', bg: '#F59E0B20' },
+  Shop: { dot: '#06B6D4', bg: '#06B6D420' },
+  Connect: { dot: '#EF4444', bg: '#EF444420' },
+  Lab: { dot: '#8B5CF6', bg: '#8B5CF620' },
 }
 
 export const filterCategories = [
@@ -92,6 +92,19 @@ export function extractPlainText(blocks: any[]): string {
     })
     .join('\n')
 }
+
+// Card code prefix per type (e.g., D-001 for Design)
+export const typeInitials: Record<string, string> = {
+  Design: "D",
+  Music: "M",
+  Art: "A",
+  Writing: "W",
+  Tools: "T",
+  Downloads: "L",
+  Shop: "S",
+  Connect: "C",
+  Lab: "X",
+};
 
 export const headerContent: Record<string, { title: string; subtitle: string }> = {
   Everything: {

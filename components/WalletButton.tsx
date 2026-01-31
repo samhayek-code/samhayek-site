@@ -59,7 +59,7 @@ export default function WalletButton({ currency, address, onShowQR, showQRButton
   return (
     <div className="relative">
       <div
-        className="flex items-center gap-3 p-4 rounded-lg border transition-all group"
+        className="flex items-center gap-3 p-4 border transition-all group"
         style={{
           background: 'rgba(255,255,255,0.02)',
           borderColor: 'rgba(255,255,255,0.08)',
@@ -87,7 +87,7 @@ export default function WalletButton({ currency, address, onShowQR, showQRButton
           {showQRButton && onShowQR && (
             <button
               onClick={() => onShowQR(currency, address)}
-              className="p-2 rounded-md transition-all hover:bg-white/10"
+              className="p-2 transition-all hover:bg-white/10"
               style={{ color: '#666' }}
               aria-label="Show QR code"
             >
@@ -106,7 +106,7 @@ export default function WalletButton({ currency, address, onShowQR, showQRButton
           {/* Copy button */}
           <button
             onClick={copyToClipboard}
-            className="p-2 rounded-md transition-all hover:bg-white/10"
+            className="p-2 transition-all hover:bg-white/10"
             style={{ color: copied ? '#34d399' : '#666' }}
             aria-label="Copy address"
           >

@@ -2,6 +2,24 @@
 
 Personal portfolio site — artist, musician, brand designer.
 
+## Current Project: Aesthetic Overhaul
+
+**Branch:** `aesthetic-overhaul` (created from `main`)
+
+**Goal:** Major visual redesign of the entire site. Functionality stays identical — only the aesthetic changes.
+
+**Approach:**
+- All work happens on the `aesthetic-overhaul` branch. `main` is untouched and safe.
+- Sam is building reference designs and a design system in **Pencil.dev** (desktop app with MCP integration)
+- Once Pencil designs are ready, translate them into code component-by-component
+- When the redesign is complete and tested, merge back into `main` and push
+
+**Status:** Branch created, waiting for Pencil.dev designs to be finalized.
+
+**Important:** Do NOT push to `main` or merge until Sam explicitly says the redesign is ready.
+
+---
+
 ## Quick Reference
 
 ```bash

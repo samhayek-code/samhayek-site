@@ -238,7 +238,6 @@ export default function HomeClient({ items, initialFilter = 'Everything' }: Home
         onCardClick={handleCardClick}
         onHoverSound={playSound}
         activeFilter={activeFilter}
-        theme={theme}
       />
 
       {/* Modal */}
@@ -247,7 +246,7 @@ export default function HomeClient({ items, initialFilter = 'Everything' }: Home
       )}
 
       {/* Footer */}
-      <footer className="px-4 lg:px-12 py-8 lg:py-12 border-t border-border">
+      <footer className="px-4 lg:px-12 py-8 lg:py-12 border-t border-border-subtle">
         <div className="max-w-[1600px] mx-auto flex items-center justify-between">
           {/* Left side - Clock */}
           <LiveClock />

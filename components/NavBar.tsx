@@ -36,14 +36,12 @@ export default function NavBar({
       style={{
         background: isScrolled
           ? theme === 'dark'
-            ? 'rgba(10, 10, 10, 0.95)'
-            : 'rgba(245, 245, 245, 0.95)'
+            ? 'rgba(17, 17, 19, 0.95)'
+            : 'rgba(244, 244, 245, 0.95)'
           : 'transparent',
         backdropFilter: isScrolled ? 'blur(20px)' : 'none',
         borderBottom: isScrolled
-          ? theme === 'dark'
-            ? '1px solid #151515'
-            : '1px solid #e0e0e0'
+          ? '1px solid var(--border-subtle)'
           : '1px solid transparent',
       }}
     >
@@ -64,6 +62,10 @@ export default function NavBar({
             const isActive = activeFilter === filter
             const isHovered = hoveredFilter === filter && !isActive
             const colors = typeColors[filter]
+            // "Everything" is a meta-category — use foreground color instead of its near-white dot
+            const isEverything = filter === 'Everything'
+            const activeColor = isEverything ? 'var(--foreground)' : colors.dot
+            const activeBg = isEverything ? 'var(--nav-active-bg)' : colors.bg
 
             return (
               <button
@@ -74,22 +76,22 @@ export default function NavBar({
                   onHoverSound()
                 }}
                 onMouseLeave={() => setHoveredFilter(null)}
-                className="flex items-center gap-1.5 px-3 py-2 rounded font-mono font-medium text-[11px] uppercase tracking-wide transition-all duration-200"
+                className="flex items-center gap-1.5 px-3 py-2 font-mono font-medium text-[11px] uppercase tracking-wide transition-all duration-200"
                 style={{
                   background: isActive
-                    ? 'var(--nav-active-bg)'
+                    ? activeBg
                     : isHovered
                     ? 'var(--nav-hover-bg)'
                     : 'transparent',
-                  color: isActive ? 'var(--foreground)' : isHovered ? 'var(--muted)' : 'var(--subtle)',
+                  color: isActive ? activeColor : isHovered ? 'var(--foreground)' : 'var(--subtle)',
                 }}
               >
                 <div
                   className="w-[5px] h-[5px] rounded-full transition-all duration-200"
                   style={{
-                    background: isActive ? colors.dot : isHovered ? colors.dot : 'transparent',
-                    border: `1px solid ${isActive ? colors.dot : isHovered ? colors.dot : '#444'}`,
-                    opacity: isActive ? 1 : isHovered ? 0.4 : 1,
+                    background: isActive ? activeColor : isHovered ? colors.dot : 'transparent',
+                    border: `1px solid ${isActive ? activeColor : isHovered ? colors.dot : 'var(--subtle)'}`,
+                    opacity: isActive ? 1 : isHovered ? 0.7 : 0.4,
                   }}
                 />
                 {filter}
@@ -102,12 +104,12 @@ export default function NavBar({
         <div className="flex items-center gap-4">
           {/* Navigate arrows */}
           <div className="flex items-center gap-2">
-            <span className="font-mono font-medium text-[10px] text-[#444] uppercase tracking-wide">
+            <span className="font-mono font-medium text-[10px] text-subtle uppercase tracking-wide">
               Navigate
             </span>
             <div className="flex gap-1">
               <div
-                className="w-8 h-8 rounded border flex items-center justify-center transition-all duration-150"
+                className="w-8 h-8 border flex items-center justify-center transition-all duration-150"
                 style={{
                   background: leftKeyPressed ? 'var(--arrow-flash-bg)' : 'transparent',
                   borderColor: leftKeyPressed ? 'var(--arrow-flash-border)' : 'var(--border)',
@@ -119,7 +121,7 @@ export default function NavBar({
                 </svg>
               </div>
               <div
-                className="w-8 h-8 rounded border flex items-center justify-center transition-all duration-150"
+                className="w-8 h-8 border flex items-center justify-center transition-all duration-150"
                 style={{
                   background: rightKeyPressed ? 'var(--arrow-flash-bg)' : 'transparent',
                   borderColor: rightKeyPressed ? 'var(--arrow-flash-border)' : 'var(--border)',
@@ -137,7 +139,7 @@ export default function NavBar({
           <button
             onClick={onToggleSound}
             onMouseEnter={onHoverSound}
-            className="w-8 h-8 rounded border border-[#333] flex items-center justify-center text-[#444] hover:text-foreground hover:border-[#555] transition-colors"
+            className="w-8 h-8 border border-border flex items-center justify-center text-subtle hover:text-foreground hover:border-border-hover transition-colors"
             aria-label={soundEnabled ? 'Disable sound' : 'Enable sound'}
           >
             {soundEnabled ? (
@@ -159,7 +161,7 @@ export default function NavBar({
           <button
             onClick={onToggleTheme}
             onMouseEnter={onHoverSound}
-            className="w-8 h-8 rounded border border-[#333] flex items-center justify-center text-[#444] hover:text-foreground hover:border-[#555] transition-colors"
+            className="w-8 h-8 border border-border flex items-center justify-center text-subtle hover:text-foreground hover:border-border-hover transition-colors"
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {theme === 'dark' ? (
@@ -200,6 +202,9 @@ export default function NavBar({
             const isActive = activeFilter === filter
             const isHovered = hoveredFilter === filter && !isActive
             const colors = typeColors[filter]
+            const isEverything = filter === 'Everything'
+            const activeColor = isEverything ? 'var(--foreground)' : colors.dot
+            const activeBg = isEverything ? 'var(--nav-active-bg)' : colors.bg
 
             return (
               <button
@@ -210,22 +215,22 @@ export default function NavBar({
                   onHoverSound()
                 }}
                 onMouseLeave={() => setHoveredFilter(null)}
-                className="flex items-center justify-center gap-1.5 px-2 py-3 rounded font-mono font-medium text-[10px] uppercase tracking-wide transition-all duration-200"
+                className="flex items-center justify-center gap-1.5 px-2 py-3 font-mono font-medium text-[10px] uppercase tracking-wide transition-all duration-200"
                 style={{
                   background: isActive
-                    ? 'var(--nav-active-bg)'
+                    ? activeBg
                     : isHovered
                     ? 'var(--nav-hover-bg)'
                     : 'transparent',
-                  color: isActive ? 'var(--foreground)' : isHovered ? 'var(--muted)' : 'var(--subtle)',
+                  color: isActive ? activeColor : isHovered ? 'var(--foreground)' : 'var(--subtle)',
                 }}
               >
                 <div
                   className="w-[5px] h-[5px] rounded-full transition-all duration-200"
                   style={{
-                    background: isActive ? colors.dot : isHovered ? colors.dot : 'transparent',
-                    border: `1px solid ${isActive ? colors.dot : isHovered ? colors.dot : '#444'}`,
-                    opacity: isActive ? 1 : isHovered ? 0.4 : 1,
+                    background: isActive ? activeColor : isHovered ? colors.dot : 'transparent',
+                    border: `1px solid ${isActive ? activeColor : isHovered ? colors.dot : 'var(--subtle)'}`,
+                    opacity: isActive ? 1 : isHovered ? 0.7 : 0.4,
                   }}
                 />
                 {filter}

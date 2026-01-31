@@ -5,93 +5,119 @@
 @tailwind utilities;
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #f0f0f0;
-  --surface: #131313;
-  --border: #1a1a1a;
-  --border-hover: #2a2a2a;
-  --muted: #777777;
-  --subtle: #555555;
+  /* Backgrounds */
+  --background: #111113;
+  --foreground: #E8E8E9;
+  --surface: #1A1A1E;
+  --surface-elevated: #222226;
+  --depth: #0D0D0F;
+  --border: #2A2A2F;
+  --border-hover: #3A3A3F;
+  --border-subtle: #1F1F24;
+  --border-accent: #E8590733;
+  /* Text */
+  --muted: #8A8A8F;
+  --subtle: #505055;
+  --text-muted: #3A3A3F;
+  /* Accents */
+  --accent-primary: #E85907;
+  --accent-primary-muted: #E8590720;
+  --accent-secondary: #3B82F6;
+  --accent-tertiary: #22C55E;
+  /* UI chrome */
   --cursor-ring: #ffffff;
   --cursor-fill: #000000;
   --selection-bg: rgba(255, 255, 255, 0.15);
-  --scrollbar-thumb: #2a2a2a;
-  --scrollbar-thumb-hover: #3a3a3a;
+  --scrollbar-thumb: #2A2A2F;
+  --scrollbar-thumb-hover: #3A3A3F;
   --grid-color: %23ffffff;
-  --grid-opacity: 0.05;
+  --grid-opacity: 0.03;
   --noise-opacity: 0.015;
-  --modal-backdrop: rgba(0, 0, 0, 0.85);
+  --modal-backdrop: rgba(0, 0, 0, 0.8);
   /* Card overlay colors */
-  --card-overlay-rgb: 10, 10, 10;
+  --card-overlay-rgb: 13, 13, 15;
   --card-overlay-default: 0.7;
   --card-overlay-hover: 0.5;
-  --card-pill-bg: rgba(0, 0, 0, 0.5);
-  --card-pill-border: rgba(255, 255, 255, 0.1);
-  --cta-bg: rgba(0, 0, 0, 0.5);
-  --cta-text: #cccccc;
-  --cta-border: rgba(255, 255, 255, 0.15);
-  --cta-hover-bg: #e5e5e5;
-  --cta-hover-text: #0a0a0a;
-  --cta-hover-border: #e5e5e5;
+  --card-pill-bg: rgba(13, 13, 15, 0.6);
+  --card-pill-border: rgba(255, 255, 255, 0.08);
+  --cta-bg: rgba(13, 13, 15, 0.6);
+  --cta-text: #8A8A8F;
+  --cta-border: rgba(255, 255, 255, 0.1);
+  --cta-hover-bg: #E85907;
+  --cta-hover-text: #ffffff;
+  --cta-hover-border: #E85907;
   /* Nav active state */
-  --nav-active-bg: rgba(255, 255, 255, 0.1);
-  --nav-hover-bg: rgba(255, 255, 255, 0.04);
-  /* Arrow key flash */
+  --nav-active-bg: rgba(255, 255, 255, 0.08);
+  --nav-hover-bg: rgba(255, 255, 255, 0.03);
+  /* Arrow key flash — white in dark mode */
   --arrow-flash-bg: #ffffff;
   --arrow-flash-border: #ffffff;
   --arrow-flash-text: #000000;
   /* Modal colors */
-  --modal-bg: #0f0f0f;
-  --modal-border: #222222;
-  --modal-surface: #151515;
-  --modal-text-secondary: #888888;
-  --modal-text-tertiary: #999999;
-  --modal-text-body: #aaaaaa;
+  --modal-bg: #1A1A1E;
+  --modal-border: #2A2A2F;
+  --modal-surface: #222226;
+  --modal-text-secondary: #8A8A8F;
+  --modal-text-tertiary: #505055;
+  --modal-text-body: #8A8A8F;
 }
 
 :root.light {
-  --background: #f5f5f5;
-  --foreground: #0a0a0a;
-  --surface: #ffffff;
-  --border: #e0e0e0;
-  --border-hover: #d0d0d0;
-  --muted: #666666;
-  --subtle: #888888;
+  /* Backgrounds */
+  --background: #F4F4F5;
+  --foreground: #111113;
+  --surface: #FFFFFF;
+  --surface-elevated: #FAFAFA;
+  --depth: #E8E8EA;
+  --border: #E0E0E3;
+  --border-hover: #C8C8CC;
+  --border-subtle: #EBEBED;
+  --border-accent: #E8590733;
+  /* Text */
+  --muted: #6B6B70;
+  --subtle: #9C9CA1;
+  --text-muted: #C0C0C5;
+  /* Accents (same as dark) */
+  --accent-primary: #E85907;
+  --accent-primary-muted: #E8590720;
+  --accent-secondary: #3B82F6;
+  --accent-tertiary: #22C55E;
+  /* UI chrome */
   --cursor-ring: #000000;
   --cursor-fill: #ffffff;
   --selection-bg: rgba(0, 0, 0, 0.12);
-  --scrollbar-thumb: #cccccc;
-  --scrollbar-thumb-hover: #aaaaaa;
+  --scrollbar-thumb: #E0E0E3;
+  --scrollbar-thumb-hover: #C8C8CC;
   --grid-color: %23000000;
-  --grid-opacity: 0.06;
+  --grid-opacity: 0.04;
   --noise-opacity: 0.025;
   --modal-backdrop: rgba(0, 0, 0, 0.5);
   /* Card overlay colors */
-  --card-overlay-rgb: 255, 255, 255;
+  --card-overlay-rgb: 244, 244, 245;
   --card-overlay-default: 0.25;
   --card-overlay-hover: 0.15;
-  --card-pill-bg: rgba(255, 255, 255, 0.7);
-  --card-pill-border: rgba(0, 0, 0, 0.1);
-  --cta-bg: rgba(255, 255, 255, 0.7);
-  --cta-text: #333333;
-  --cta-border: rgba(0, 0, 0, 0.15);
-  --cta-hover-bg: #1a1a1a;
-  --cta-hover-text: #f0f0f0;
-  --cta-hover-border: #1a1a1a;
+  --card-pill-bg: rgba(255, 255, 255, 0.75);
+  --card-pill-border: rgba(0, 0, 0, 0.08);
+  --cta-bg: rgba(255, 255, 255, 0.75);
+  --cta-text: #6B6B70;
+  --cta-border: rgba(0, 0, 0, 0.1);
+  --cta-hover-bg: #E85907;
+  --cta-hover-text: #ffffff;
+  --cta-hover-border: #E85907;
   /* Nav active state */
-  --nav-active-bg: rgba(0, 0, 0, 0.08);
-  --nav-hover-bg: rgba(0, 0, 0, 0.04);
-  /* Arrow key flash */
+  --nav-active-bg: rgba(0, 0, 0, 0.06);
+  --nav-hover-bg: rgba(0, 0, 0, 0.03);
+  /* Arrow key flash — black in light mode */
   --arrow-flash-bg: #000000;
   --arrow-flash-border: #000000;
   --arrow-flash-text: #ffffff;
   /* Modal colors */
-  --modal-bg: #ffffff;
-  --modal-border: #e0e0e0;
-  --modal-surface: #f5f5f5;
-  --modal-text-secondary: #666666;
-  --modal-text-tertiary: #555555;
-  --modal-text-body: #444444;
+  --modal-bg: #FFFFFF;
+  --modal-border: #E0E0E3;
+  --modal-surface: #FAFAFA;
+  --modal-text-secondary: #6B6B70;
+  --modal-text-tertiary: #9C9CA1;
+  --modal-text-body: #6B6B70;
 }
 
 * {
@@ -126,7 +152,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
-  border-radius: 3px;
+  border-radius: 1px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -208,6 +234,102 @@ body {
   pointer-events: none;
   border-radius: inherit;
   z-index: 50;
+}
+
+/* Card depth frame — card sits centered inside with 5px padding */
+.card-frame {
+  position: absolute;
+  inset: 0;
+  background: var(--depth);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Corner bracket marks — hidden by default, fade in on hover */
+.card-corner-bracket {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-corner-bracket--tl {
+  top: 6px;
+  left: 6px;
+  border-top: 1px solid #8A8A8F;
+  border-left: 1px solid #8A8A8F;
+}
+
+.card-corner-bracket--tr {
+  top: 6px;
+  right: 6px;
+  border-top: 1px solid #8A8A8F;
+  border-right: 1px solid #8A8A8F;
+}
+
+.card-corner-bracket--bl {
+  bottom: 6px;
+  left: 6px;
+  border-bottom: 1px solid #8A8A8F;
+  border-left: 1px solid #8A8A8F;
+}
+
+.card-corner-bracket--br {
+  bottom: 6px;
+  right: 6px;
+  border-bottom: 1px solid #8A8A8F;
+  border-right: 1px solid #8A8A8F;
+}
+
+/* Spec line — hidden by default, fade in on hover */
+.card-spec-line {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 7px;
+  font-weight: 500;
+  color: #3A3A3F;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Card code — very subtle by default, brighter on hover */
+.card-code {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9px;
+  font-weight: 500;
+  color: #3A3A3F;
+  letter-spacing: 0.06em;
+  transition: color 0.3s ease;
+}
+
+/* Hover: reveal micro-details */
+.card-hover:hover .card-corner-bracket {
+  opacity: 0.4;
+}
+
+.card-hover:hover .card-spec-line {
+  opacity: 1;
+}
+
+.card-hover:hover .card-code {
+  color: #505055;
+}
+
+/* Hide spec line on mobile */
+@media (max-width: 640px) {
+  .card-spec-line {
+    display: none;
+  }
+}
+
+/* Light mode: more visible nav hover states */
+:root.light {
+  --nav-hover-bg: rgba(0, 0, 0, 0.08);
+  --nav-active-bg: rgba(0, 0, 0, 0.1);
 }
 
 /* Hide default cursor - using custom cursor element */

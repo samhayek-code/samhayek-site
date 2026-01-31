@@ -26,7 +26,7 @@ const portableTextComponents = {
 
       return (
         <figure className="my-8">
-          <div className="relative w-full overflow-hidden rounded-lg">
+          <div className="relative w-full overflow-hidden">
             <Image
               src={urlFor(value).width(1200).quality(90).url()}
               alt={value.alt || ''}
@@ -416,7 +416,7 @@ export default function Modal({ item, onClose }: ModalProps) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`rounded-xl max-w-[800px] w-full overflow-auto cursor-default ${showWhopCheckout ? 'max-h-[95vh]' : 'max-h-[85vh]'}`}
+        className={`max-w-[800px] w-full overflow-auto cursor-default ${showWhopCheckout ? 'max-h-[95vh]' : 'max-h-[85vh]'}`}
         style={{ background: 'var(--modal-bg)', border: '1px solid var(--modal-border)' }}
       >
         {/* Hero image - hide for embed modals, gallery types (Art, Design), Writing, testimonials, and checkout */}
@@ -430,7 +430,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 className="object-cover rounded-t-xl"
               />
             ) : (
-              <div className="w-20 h-20 rounded-lg bg-white/[0.03] border border-white/[0.06]" />
+              <div className="w-20 h-20 bg-white/[0.03] border border-white/[0.06]" />
             )}
           </div>
         )}
@@ -452,7 +452,7 @@ export default function Modal({ item, onClose }: ModalProps) {
             
             {/* Label pill */}
             <div
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded shrink-0"
+              className="flex items-center gap-1.5 px-3 py-1.5 shrink-0"
               style={{
                 background: 'var(--card-pill-bg)',
                 border: '1px solid var(--card-pill-border)',
@@ -503,7 +503,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   Install
                 </span>
                 <div
-                  className="flex items-center gap-3 rounded-lg px-4 py-3"
+                  className="flex items-center gap-3 px-4 py-3"
                   style={{
                     background: 'var(--surface)',
                     border: '1px solid var(--border)',
@@ -514,7 +514,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   </code>
                   <button
                     onClick={() => handleCopyInstall('curl -fsSL https://raw.githubusercontent.com/samhayek-code/OASIS/main/install.sh | bash')}
-                    className="shrink-0 px-3 py-1.5 rounded-md font-mono text-[12px] font-medium transition-all"
+                    className="shrink-0 px-3 py-1.5 font-mono text-[12px] font-medium transition-all"
                     style={{
                       background: copied ? 'var(--foreground)' : 'var(--cta-bg)',
                       border: '1px solid',
@@ -564,7 +564,7 @@ export default function Modal({ item, onClose }: ModalProps) {
 
               {/* What you get */}
               <div
-                className="rounded-lg p-4 font-mono text-[12px] leading-relaxed"
+                className="p-4 font-mono text-[12px] leading-relaxed"
                 style={{
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
@@ -825,10 +825,10 @@ export default function Modal({ item, onClose }: ModalProps) {
                       alt={image.alt}
                       width={1600}
                       height={1600}
-                      className="w-full h-auto rounded-lg"
+                      className="w-full h-auto"
                       style={{ maxHeight: '70vh', objectFit: 'contain' }}
                     />
-                    <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors rounded-lg flex items-center justify-center">
+                    <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors flex items-center justify-center">
                       <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white/60 text-sm font-mono">
                         {allImages.length > 1 ? `${i + 1} / ${allImages.length} — Click to expand` : 'Click to expand'}
                       </span>
@@ -864,7 +864,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                           alt={piece.title}
                           width={1600}
                           height={1600}
-                          className="w-full h-auto rounded-lg"
+                          className="w-full h-auto"
                           style={{ maxHeight: '50vh', objectFit: 'contain' }}
                         />
                       </div>
@@ -875,7 +875,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                       <button
                         onClick={goPrevCollection}
                         disabled={collectionIndex === 0}
-                        className="flex items-center gap-2 px-3 py-1.5 rounded-md font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        className="flex items-center gap-2 px-3 py-1.5 font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                       >
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M15 18l-6-6 6-6" />
@@ -890,7 +890,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                       <button
                         onClick={goNextCollection}
                         disabled={collectionIndex === totalPieces - 1 && !hasMerch}
-                        className="flex items-center gap-2 px-3 py-1.5 rounded-md font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        className="flex items-center gap-2 px-3 py-1.5 font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                       >
                         {collectionIndex === totalPieces - 1 && hasMerch ? 'Collection' : 'Next'}
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -924,7 +924,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     {item.merchGallery!.map((image, i) => (
-                      <div key={i} className="aspect-square relative rounded-lg overflow-hidden" style={{ background: 'var(--modal-surface)' }}>
+                      <div key={i} className="aspect-square relative overflow-hidden" style={{ background: 'var(--modal-surface)' }}>
                         <Image
                           src={urlFor(image).width(600).height(600).url()}
                           alt={`Merch ${i + 1}`}
@@ -938,7 +938,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   <div className="flex justify-center pt-4">
                     <button
                       onClick={goPrevCollection}
-                      className="flex items-center gap-2 px-4 py-2 rounded-md font-sans text-sm text-muted hover:text-foreground transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 font-sans text-sm text-muted hover:text-foreground transition-colors"
                     >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M15 18l-6-6 6-6" />
@@ -977,7 +977,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   onClick={() => setActiveQR(null)}
                 >
                   <div
-                    className="p-4 rounded-xl shadow-2xl"
+                    className="p-4 shadow-2xl"
                     style={{
                       background: '#0f0f0f',
                       border: '1px solid rgba(255,255,255,0.15)',
@@ -989,7 +989,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                       alt={`${activeQR.currency} QR code`}
                       width={160}
                       height={160}
-                      className="rounded-lg"
+                      className=""
                     />
                     <div className="text-center mt-2 font-mono font-medium text-xs text-muted">
                       {activeQR.currency}
@@ -1043,7 +1043,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   frameBorder="0"
                   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                   loading="lazy"
-                  className="rounded-lg"
+                  className=""
                   style={{ borderRadius: '12px' }}
                 />
               </div>
@@ -1075,7 +1075,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 width="100%"
                 height="500"
                 allowFullScreen
-                className="rounded-lg border border-border"
+                className="border border-border"
                 style={{ background: 'var(--background)' }}
               />
             </div>
@@ -1085,7 +1085,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           {!isGalleryType && item.gallery && item.gallery.length > 0 && (
             <div className="grid grid-cols-3 gap-3 mb-8">
               {item.gallery.map((image, i) => (
-                <div key={i} className="aspect-square relative rounded-md overflow-hidden border border-border" style={{ background: 'var(--modal-surface)' }}>
+                <div key={i} className="aspect-square relative overflow-hidden border border-border" style={{ background: 'var(--modal-surface)' }}>
                   <Image
                     src={urlFor(image).width(400).height(400).url()}
                     alt={`${item.title} gallery ${i + 1}`}
@@ -1134,10 +1134,10 @@ export default function Modal({ item, onClose }: ModalProps) {
               <span />
             )}
 
-            <div className="flex gap-3">
+            <div className="flex gap-3 items-center">
               <button
                 onClick={onClose}
-                className="px-5 py-3 rounded-md font-sans text-[16px] font-medium text-muted border border-border hover:border-border-hover hover:text-foreground transition-colors"
+                className="px-5 py-3 font-sans text-[16px] font-medium text-muted border border-border hover:border-border-hover hover:text-foreground transition-colors"
               >
                 Close
               </button>
@@ -1147,7 +1147,8 @@ export default function Modal({ item, onClose }: ModalProps) {
                   href={item.prototypeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:opacity-80 transition-opacity"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  style={{ background: colors.dot }}
                 >
                   View Prototype
                 </a>
@@ -1158,7 +1159,8 @@ export default function Modal({ item, onClose }: ModalProps) {
                   href="https://github.com/samhayek-code/OASIS"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:opacity-80 transition-opacity"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  style={{ background: colors.dot }}
                 >
                   View on GitHub
                 </a>
@@ -1168,7 +1170,8 @@ export default function Modal({ item, onClose }: ModalProps) {
                 <a
                   href="/Sam-Hayek-Resume-2026.pdf"
                   download="Sam-Hayek-Resume-2026.pdf"
-                  className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:opacity-80 transition-opacity"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  style={{ background: colors.dot }}
                 >
                   Download PDF
                 </a>
@@ -1177,7 +1180,8 @@ export default function Modal({ item, onClose }: ModalProps) {
               {isCollection && collectionIndex === -1 && (
                 <button
                   onClick={goNextCollection}
-                  className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:opacity-80 transition-opacity"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  style={{ background: colors.dot }}
                 >
                   View
                 </button>
@@ -1186,7 +1190,8 @@ export default function Modal({ item, onClose }: ModalProps) {
                 item.whopPlanId ? (
                   <button
                     onClick={() => setShowWhopCheckout(true)}
-                    className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:opacity-80 transition-opacity"
+                    className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                    style={{ background: colors.dot }}
                   >
                     {item.cta}
                   </button>
@@ -1194,14 +1199,16 @@ export default function Modal({ item, onClose }: ModalProps) {
                   <a
                     href={item.lemonSqueezyUrl}
                     onClick={handleLemonSqueezyClick}
-                    className="lemonsqueezy-button px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:opacity-80 transition-opacity"
+                    className="lemonsqueezy-button px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                    style={{ background: colors.dot }}
                   >
                     {item.cta}
                   </a>
                 ) : (
                   <button
                     onClick={handleAction}
-                    className="px-6 py-3 rounded-md font-sans text-[16px] font-medium bg-foreground text-background hover:opacity-80 transition-opacity"
+                    className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                    style={{ background: colors.dot }}
                   >
                     {item.cta}
                   </button>
