@@ -19,7 +19,7 @@ export default function PageHeader({ filter }: PageHeaderProps) {
           {isEverything ? "I'm Sam" : filter}
         </span>
 
-        <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-normal tracking-tighter text-foreground mb-4 leading-tight">
+        <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-medium tracking-tighter text-foreground mb-4 leading-tight">
           {h.title}
         </h1>
 
