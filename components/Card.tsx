@@ -275,7 +275,7 @@ export default function Card({
         {/* Top row */}
         <div className="relative z-10 flex justify-between items-start p-5">
           <div className="flex-1 pr-4">
-            <span className="font-sans text-[15px] text-[#E8E8E9] font-normal tracking-tighter leading-tight block">
+            <span className="font-sans text-[15px] text-[#E8E8E9] font-medium tracking-[-0.01em] leading-tight block">
               {item.title}
             </span>
             {item.year && (

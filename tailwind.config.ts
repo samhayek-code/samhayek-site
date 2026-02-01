@@ -32,7 +32,7 @@ const config: Config = {
         'type-connect': '#EF4444',
       },
       fontFamily: {
-        sans: ['Google Sans Flex', 'system-ui', 'sans-serif'],
+        sans: ['PP Neue Montreal', 'system-ui', 'sans-serif'],
         mono: ['IBM Plex Mono', 'monospace'],
       },
       letterSpacing: {

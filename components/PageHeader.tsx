@@ -23,7 +23,7 @@ export default function PageHeader({ filter }: PageHeaderProps) {
           {h.title}
         </h1>
 
-        <p className="font-sans text-[17px] font-light text-muted leading-relaxed">
+        <p className="font-sans text-[17px] font-normal text-muted leading-relaxed tracking-[0.02em]">
           {h.subtitle}
         </p>
       </div>
