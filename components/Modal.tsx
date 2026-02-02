@@ -239,7 +239,8 @@ export default function Modal({ item, onClose }: ModalProps) {
   const isTestimonial = item.label === 'Testimonial'
   const isCollection = item.collectionPieces && item.collectionPieces.length > 0
   const hasMerch = item.merchGallery && item.merchGallery.length > 0
-  const isGalleryType = (isArt || isDesign) && !isCollection && !isTestimonial  // Types that use full-width gallery display (but not collections or testimonials)
+  const isReferences = item.slug?.current === 'references'
+  const isGalleryType = (isArt || isDesign) && !isCollection && !isTestimonial && !isReferences  // Types that use full-width gallery display (but not collections, testimonials, or references)
   const isEmbedModal = isContactForm || isBookingForm
   const hideCtaButton = isEmbedModal || isCaseStudy || isGalleryType || isSupport || isCollection || isWriting || isOasis || isResume
 
@@ -420,7 +421,7 @@ export default function Modal({ item, onClose }: ModalProps) {
         style={{ background: 'var(--modal-bg)', border: '1px solid var(--modal-border)' }}
       >
         {/* Hero image - hide for embed modals, gallery types (Art, Design), Writing, testimonials, and checkout */}
-        {!isEmbedModal && !isGalleryType && !isWriting && !isTestimonial && !showWhopCheckout && item.coverImage && (
+        {!isEmbedModal && !isGalleryType && !isWriting && !isTestimonial && !showWhopCheckout && !isReferences && item.coverImage && (
           <div className="w-full aspect-video rounded-t-xl flex items-center justify-center relative" style={{ background: 'var(--modal-surface)' }}>
             {item.coverImage ? (
               <Image
