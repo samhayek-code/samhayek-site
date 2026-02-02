@@ -768,7 +768,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   <div>
                     <span className="font-medium text-foreground">Tools</span>
                     <span className="text-muted"> — </span>
-                    <span style={{ color: 'var(--modal-text-secondary)' }}>Figma, Framer, Adobe, Jitter, Paper, Flora, Procreate, Spline</span>
+                    <span style={{ color: 'var(--modal-text-secondary)' }}>Figma, Flora, Procreate, Pencil, Framer, Adobe, Paper, Jitter, Spline</span>
                   </div>
                   <div>
                     <span className="font-medium text-foreground">Code</span>
