@@ -243,7 +243,7 @@ export default function Modal({ item, onClose }: ModalProps) {
   const isReferences = item.slug?.current === 'references'
   const isGalleryType = (isArt || isDesign) && !isCollection && !isTestimonial && !isReferences && !isCaseStudy  // Types that use full-width gallery display (but not collections, testimonials, case studies, or references)
   const isEmbedModal = isContactForm || isBookingForm
-  const hideCtaButton = isEmbedModal || isCaseStudy || isGalleryType || isSupport || isCollection || isWriting || isOasis || isResume
+  const hideCtaButton = isEmbedModal || isGalleryType || isSupport || isCollection || isWriting || isOasis || isResume || isCaseStudy
 
   // Collection navigation
   const collectionPieces = item.collectionPieces || []
@@ -421,8 +421,8 @@ export default function Modal({ item, onClose }: ModalProps) {
         className={`max-w-[800px] w-full overflow-auto cursor-default ${showWhopCheckout ? 'max-h-[95vh]' : 'max-h-[85vh]'}`}
         style={{ background: 'var(--modal-bg)', border: '1px solid var(--modal-border)' }}
       >
-        {/* Hero image - hide for embed modals, gallery types (Art, Design), Writing, testimonials, and checkout */}
-        {!isEmbedModal && !isGalleryType && !isWriting && !isTestimonial && !showWhopCheckout && !isReferences && item.coverImage && (
+        {/* Hero image - hide for embed modals, gallery types (Art, Design), Writing, testimonials, case studies, and checkout */}
+        {!isEmbedModal && !isGalleryType && !isWriting && !isTestimonial && !isCaseStudy && !showWhopCheckout && !isReferences && item.coverImage && (
           <div className="w-full aspect-video rounded-t-xl flex items-center justify-center relative" style={{ background: 'var(--modal-surface)' }}>
             {item.coverImage ? (
               <Image
@@ -470,13 +470,6 @@ export default function Modal({ item, onClose }: ModalProps) {
             </div>
           </div>
           
-          {/* Description - hide for collections (shown in intro screen), checkout, and OASIS */}
-          {!isCollection && !showWhopCheckout && !isOasis && (
-            <p className="font-sans text-[17px] leading-relaxed mb-6" style={{ color: 'var(--modal-text-secondary)' }}>
-              {item.description}
-            </p>
-          )}
-
           {/* Case study: MUX video at top, then meta + overview, then Figma embed, then remaining sections */}
           {isCaseStudy && (() => {
             const overviewSection = item.caseStudySections!.filter(s => s.sectionTitle === 'Overview')
@@ -535,6 +528,13 @@ export default function Modal({ item, onClose }: ModalProps) {
               </>
             )
           })()}
+
+          {/* Description - hide for collections, checkout, OASIS, and case studies */}
+          {!isCollection && !showWhopCheckout && !isOasis && !isCaseStudy && (
+            <p className="font-sans text-[17px] leading-relaxed mb-6" style={{ color: 'var(--modal-text-secondary)' }}>
+              {item.description}
+            </p>
+          )}
 
           {/* Oasis - Downloads Organizer */}
           {isOasis && (
@@ -1224,6 +1224,18 @@ export default function Modal({ item, onClose }: ModalProps) {
                   style={{ background: colors.dot }}
                 >
                   View on GitHub
+                </a>
+              )}
+              {/* Case study: View Figma button */}
+              {isCaseStudy && item.figmaUrl && (
+                <a
+                  href={item.figmaUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  style={{ background: colors.dot }}
+                >
+                  View Figma
                 </a>
               )}
               {/* Resume download button */}
