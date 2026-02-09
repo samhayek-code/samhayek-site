@@ -52,7 +52,22 @@ export async function getArchiveItems() {
       prototypeUrl,
       collectionPieces,
       collectionBanner,
-      merchGallery
+      merchGallery,
+      caseStudyMeta,
+      caseStudySections[] {
+        ...,
+        sectionBody[] {
+          ...,
+          _type == "image" => {
+            ...,
+            asset->
+          }
+        },
+        sectionGallery[] {
+          ...,
+          asset->
+        }
+      }
     }
   `)
 }

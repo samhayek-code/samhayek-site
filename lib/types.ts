@@ -28,6 +28,20 @@ export interface MuxVideo {
   asset: MuxVideoAsset
 }
 
+export interface CaseStudyMeta {
+  _key: string
+  key: string
+  value: string
+}
+
+export interface CaseStudySection {
+  _key: string
+  sectionTitle: string
+  sectionBody?: any // Portable Text
+  sectionGallery?: any[] // Array of Sanity images with alt + caption
+  layout?: 'text-first' | 'images-first' | 'full-width' | 'side-by-side'
+}
+
 export interface ArchiveItem {
   _id: string
   title: string
@@ -51,6 +65,8 @@ export interface ArchiveItem {
   collectionPieces?: CollectionPiece[]
   collectionBanner?: any // Sanity image for collection intro
   merchGallery?: any[] // Array of Sanity images
+  caseStudyMeta?: CaseStudyMeta[]
+  caseStudySections?: CaseStudySection[]
 }
 
 export const typeColors: Record<string, { dot: string; bg: string }> = {

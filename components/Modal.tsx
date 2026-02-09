@@ -7,6 +7,7 @@ import MuxPlayer from '@mux/mux-player-react'
 import { ArchiveItem, typeColors } from '@/lib/types'
 import { urlFor } from '@/lib/sanity'
 import WalletButton from './WalletButton'
+import CaseStudyContent from './CaseStudyContent'
 
 // Crypto wallet addresses for Support card
 const WALLET_ADDRESSES = {
@@ -230,7 +231,7 @@ export default function Modal({ item, onClose }: ModalProps) {
   const isOasis = item.slug?.current === 'oasis'
   const isContactForm = item.slug?.current === 'send-message'
   const isBookingForm = item.slug?.current === 'book-a-call'
-  const isCaseStudy = item.slug?.current === 'samhayek-com'
+  const isCaseStudy = (item.caseStudySections?.length ?? 0) > 0
   const isSupport = item.slug?.current === 'support'
   const isResume = item.slug?.current === 'resume'
   const isArt = item.type === 'Art'
@@ -240,7 +241,7 @@ export default function Modal({ item, onClose }: ModalProps) {
   const isCollection = item.collectionPieces && item.collectionPieces.length > 0
   const hasMerch = item.merchGallery && item.merchGallery.length > 0
   const isReferences = item.slug?.current === 'references'
-  const isGalleryType = (isArt || isDesign) && !isCollection && !isTestimonial && !isReferences  // Types that use full-width gallery display (but not collections, testimonials, or references)
+  const isGalleryType = (isArt || isDesign) && !isCollection && !isTestimonial && !isReferences && !isCaseStudy  // Types that use full-width gallery display (but not collections, testimonials, case studies, or references)
   const isEmbedModal = isContactForm || isBookingForm
   const hideCtaButton = isEmbedModal || isCaseStudy || isGalleryType || isSupport || isCollection || isWriting || isOasis || isResume
 
@@ -474,6 +475,18 @@ export default function Modal({ item, onClose }: ModalProps) {
             <p className="font-sans text-[17px] leading-relaxed mb-6" style={{ color: 'var(--modal-text-secondary)' }}>
               {item.description}
             </p>
+          )}
+
+          {/* Case study content */}
+          {isCaseStudy && (
+            <CaseStudyContent
+              meta={item.caseStudyMeta}
+              sections={item.caseStudySections!}
+              portableTextComponents={portableTextComponents}
+              onImageClick={(images, index) => {
+                setLightboxState({ images, currentIndex: index })
+              }}
+            />
           )}
 
           {/* Oasis - Downloads Organizer */}

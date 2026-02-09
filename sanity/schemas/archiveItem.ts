@@ -219,6 +219,91 @@ export default defineType({
       description: 'Portfolio images of merchandise/physical items',
       of: [{ type: 'image', options: { hotspot: true } }],
     }),
+    defineField({
+      name: 'caseStudyMeta',
+      title: 'Case Study Meta',
+      type: 'array',
+      description: 'Key-value pairs for project metadata (Role, Client, Timeline, Tools, etc.)',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'key', title: 'Key', type: 'string', validation: (Rule) => Rule.required() },
+            { name: 'value', title: 'Value', type: 'string', validation: (Rule) => Rule.required() },
+          ],
+          preview: {
+            select: { title: 'key', subtitle: 'value' },
+          },
+        },
+      ],
+    }),
+    defineField({
+      name: 'caseStudySections',
+      title: 'Case Study Sections',
+      type: 'array',
+      description: 'Structured sections for long-form case study content',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'sectionTitle',
+              title: 'Section Title',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: 'sectionBody',
+              title: 'Section Body',
+              type: 'array',
+              of: [
+                { type: 'block' },
+                {
+                  type: 'image',
+                  options: { hotspot: true },
+                  fields: [
+                    { name: 'alt', title: 'Alt Text', type: 'string' },
+                    { name: 'caption', title: 'Caption', type: 'string' },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'sectionGallery',
+              title: 'Section Gallery',
+              type: 'array',
+              of: [
+                {
+                  type: 'image',
+                  options: { hotspot: true },
+                  fields: [
+                    { name: 'alt', title: 'Alt Text', type: 'string' },
+                    { name: 'caption', title: 'Caption', type: 'string' },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'layout',
+              title: 'Layout',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'Text First', value: 'text-first' },
+                  { title: 'Images First', value: 'images-first' },
+                  { title: 'Full Width', value: 'full-width' },
+                  { title: 'Side by Side', value: 'side-by-side' },
+                ],
+              },
+              initialValue: 'text-first',
+            },
+          ],
+          preview: {
+            select: { title: 'sectionTitle', subtitle: 'layout' },
+          },
+        },
+      ],
+    }),
   ],
   preview: {
     select: {
