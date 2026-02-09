@@ -477,17 +477,64 @@ export default function Modal({ item, onClose }: ModalProps) {
             </p>
           )}
 
-          {/* Case study content */}
-          {isCaseStudy && (
-            <CaseStudyContent
-              meta={item.caseStudyMeta}
-              sections={item.caseStudySections!}
-              portableTextComponents={portableTextComponents}
-              onImageClick={(images, index) => {
-                setLightboxState({ images, currentIndex: index })
-              }}
-            />
-          )}
+          {/* Case study: MUX video at top, then meta + overview, then Figma embed, then remaining sections */}
+          {isCaseStudy && (() => {
+            const overviewSection = item.caseStudySections!.filter(s => s.sectionTitle === 'Overview')
+            const remainingSections = item.caseStudySections!.filter(s => s.sectionTitle !== 'Overview')
+
+            return (
+              <>
+                {/* Video at top */}
+                {item.muxVideo?.asset?.playbackId && (
+                  <div className="mb-8">
+                    <MuxPlayer
+                      playbackId={item.muxVideo.asset.playbackId}
+                      streamType="on-demand"
+                      accentColor="#CC7B42"
+                      style={{
+                        width: '100%',
+                        maxHeight: '70vh',
+                        aspectRatio: '16/9'
+                      }}
+                    />
+                  </div>
+                )}
+
+                {/* Meta + overview */}
+                <CaseStudyContent
+                  meta={item.caseStudyMeta}
+                  sections={overviewSection}
+                  portableTextComponents={portableTextComponents}
+                  onImageClick={(images, index) => {
+                    setLightboxState({ images, currentIndex: index })
+                  }}
+                />
+
+                {/* Figma embed after overview */}
+                {item.figmaUrl && (
+                  <div className="mb-8">
+                    <iframe
+                      src={`https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(item.figmaUrl)}`}
+                      width="100%"
+                      height="500"
+                      allowFullScreen
+                      className="border border-border"
+                      style={{ background: 'var(--background)' }}
+                    />
+                  </div>
+                )}
+
+                {/* Remaining sections */}
+                <CaseStudyContent
+                  sections={remainingSections}
+                  portableTextComponents={portableTextComponents}
+                  onImageClick={(images, index) => {
+                    setLightboxState({ images, currentIndex: index })
+                  }}
+                />
+              </>
+            )
+          })()}
 
           {/* Oasis - Downloads Organizer */}
           {isOasis && (
@@ -1064,8 +1111,8 @@ export default function Modal({ item, onClose }: ModalProps) {
             )
           })()}
 
-          {/* MUX Video Player */}
-          {item.muxVideo?.asset?.playbackId && (
+          {/* MUX Video Player (skip for case studies — rendered in case study block above) */}
+          {!isCaseStudy && item.muxVideo?.asset?.playbackId && (
             <div className="mb-8">
               <MuxPlayer
                 playbackId={item.muxVideo.asset.playbackId}
@@ -1081,8 +1128,8 @@ export default function Modal({ item, onClose }: ModalProps) {
             </div>
           )}
 
-          {/* Figma embed */}
-          {item.figmaUrl && (
+          {/* Figma embed (skip for case studies — rendered in case study block above) */}
+          {!isCaseStudy && item.figmaUrl && (
             <div className="mb-8">
               <iframe
                 src={`https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(item.figmaUrl)}`}

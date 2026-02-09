@@ -141,9 +141,8 @@ function SectionRenderer({
       {/* Layout variants */}
       {layout === "full-width" && (
         <>
-          {bodyBlock}
           {hasGallery && (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {galleryImages.map((img, i) => (
                 <div key={i} className="relative group">
                   <div
@@ -159,12 +158,12 @@ function SectionRenderer({
                     }
                   >
                     <Image
-                      src={img.thumbnail}
+                      src={img.src}
                       alt={img.alt}
-                      width={1600}
-                      height={900}
+                      width={2400}
+                      height={1350}
                       className="w-full h-auto"
-                      style={{ maxHeight: "70vh", objectFit: "contain" }}
+                      style={{ objectFit: "contain" }}
                     />
                     <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors" />
                   </div>
@@ -177,6 +176,7 @@ function SectionRenderer({
               ))}
             </div>
           )}
+          {bodyBlock}
         </>
       )}
 
