@@ -653,46 +653,22 @@ export default function Modal({ item, onClose }: ModalProps) {
             <div className="space-y-6 mb-8">
               {/* Subtitle */}
               <p className="font-sans text-[15px]" style={{ color: 'var(--modal-text-tertiary)' }}>
-                Plays random StarCraft 2 voice lines when things happen in your terminal.
+                StarCraft 2 sound effects for Claude Code.
               </p>
 
               {/* Main description */}
               <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
-                Uses Claude Code hooks to trigger sound effects on four events — session starts, task completions, permission prompts, and errors. Choose your faction: Terran, Protoss, or Zerg.
+                Hooks into four Claude Code events and plays random SC2 voice lines — unit ready confirmations when a session starts, completion announcements when a task finishes, alert lines when permission is needed, and resource warnings on errors.
+              </p>
+              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
+                Choose your faction — Terran, Protoss, or Zerg — and switch anytime. 75 sounds across all three, with a random pick each time so it never gets repetitive.
+              </p>
+              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
+                Error sounds are smart-filtered so routine command failures stay silent. Only genuinely interesting errors trigger a sound, with a 15-second cooldown to prevent rapid-fire.
               </p>
               <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
-                Error sounds are smart-filtered — they only fire on genuinely interesting failures. A 15-second cooldown prevents rapid-fire.
+                macOS only.
               </p>
-
-              {/* Event table */}
-              <div className="space-y-3">
-                <span className="font-mono font-medium text-[11px] text-muted uppercase tracking-wide">
-                  Events
-                </span>
-                <div
-                  className="font-mono text-[12px] leading-relaxed"
-                  style={{
-                    background: 'var(--surface)',
-                    border: '1px solid var(--border)',
-                  }}
-                >
-                  {[
-                    { event: 'Session starts', sound: '"Battlecruiser operational"' },
-                    { event: 'Task completes', sound: '"Evolution complete"' },
-                    { event: 'Needs permission', sound: '"Nuclear launch detected"' },
-                    { event: 'Error occurs', sound: '"Not enough minerals"' },
-                  ].map((row, i) => (
-                    <div
-                      key={i}
-                      className="flex justify-between px-4 py-2.5"
-                      style={{ borderTop: i > 0 ? '1px solid var(--border)' : 'none' }}
-                    >
-                      <span style={{ color: 'var(--modal-text-secondary)' }}>{row.event}</span>
-                      <span style={{ color: 'var(--modal-text-tertiary)' }}>{row.sound}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
 
               {/* Install command */}
               <div className="space-y-3">
@@ -707,7 +683,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   }}
                 >
                   <code className="font-mono text-[13px] text-foreground truncate flex-1 select-all" title="bash <(curl -fsSL https://raw.githubusercontent.com/samhayek-code/sc2-claude-hooks/main/install.sh)">
-                    bash &lt;(curl -fsSL https://raw.githubusercontent.com/.../install.sh)
+                    bash &lt;(curl -fsSL https://raw.githubusercontent.com/samhayek-code/sc2-claude-hooks/main/install.sh)
                   </code>
                   <button
                     onClick={() => handleCopyInstall('bash <(curl -fsSL https://raw.githubusercontent.com/samhayek-code/sc2-claude-hooks/main/install.sh)')}
@@ -738,9 +714,44 @@ export default function Modal({ item, onClose }: ModalProps) {
                 </div>
               </div>
 
-              <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
-                macOS only. 75 sounds across 3 factions.
-              </p>
+              {/* How it works */}
+              <div className="space-y-3">
+                <span className="font-mono font-medium text-[11px] text-muted uppercase tracking-wide">
+                  How it works
+                </span>
+                <ol className="space-y-2 font-sans text-[15px]" style={{ color: 'var(--modal-text-tertiary)' }}>
+                  <li className="flex gap-3">
+                    <span className="font-mono text-[13px] text-muted shrink-0">1.</span>
+                    <span>Run the command above in Terminal</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="font-mono text-[13px] text-muted shrink-0">2.</span>
+                    <span>Pick your faction (Terran, Protoss, or Zerg)</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="font-mono text-[13px] text-muted shrink-0">3.</span>
+                    <span>Start a new Claude Code session and you&rsquo;ll hear it</span>
+                  </li>
+                </ol>
+              </div>
+
+              {/* Events preview */}
+              <div
+                className="p-4 font-mono text-[12px] leading-relaxed"
+                style={{
+                  background: 'var(--surface)',
+                  border: '1px solid var(--border)',
+                  color: 'var(--modal-text-tertiary)',
+                }}
+              >
+                <div className="text-muted mb-2">Events</div>
+                <div className="pl-4 space-y-0.5">
+                  <div><span className="text-muted">Session starts →</span> {'"Battlecruiser operational"'}</div>
+                  <div><span className="text-muted">Task completes →</span> {'"Evolution complete"'}</div>
+                  <div><span className="text-muted">Needs permission →</span> {'"Nuclear launch detected"'}</div>
+                  <div><span className="text-muted">Error occurs →</span> {'"Not enough minerals"'}</div>
+                </div>
+              </div>
             </div>
           )}
 
