@@ -58,10 +58,13 @@ export default async function Page({ params }: PageProps) {
   const { category } = await params
   const categorySlug = category?.[0]
 
-  // Handle invalid or nested paths
-  if (category && category.length > 1) {
+  // Handle paths with more than 2 segments
+  if (category && category.length > 2) {
     redirect('/')
   }
+
+  // Extract slug if present (e.g. /tools/oasis → slug = "oasis")
+  const itemSlug = category?.[1] || null
 
   // Determine initial filter
   let initialFilter = 'Everything'
@@ -73,13 +76,18 @@ export default async function Page({ params }: PageProps) {
     )
 
     if (!matchedCategory) {
-      // Invalid category - redirect to root
-      redirect('/')
+      // Not a valid category — might be a slug on root (e.g. /oasis)
+      // Treat as "Everything" with a slug
+      const items = await getArchiveItems()
+      return <HomeClient items={items} initialFilter="Everything" initialSlug={categorySlug} />
     }
 
     // Redirect if case doesn't match (enforce lowercase URLs)
     if (categorySlug !== categorySlug.toLowerCase()) {
-      redirect(`/${categorySlug.toLowerCase()}`)
+      const redirectPath = itemSlug
+        ? `/${categorySlug.toLowerCase()}/${itemSlug}`
+        : `/${categorySlug.toLowerCase()}`
+      redirect(redirectPath)
     }
 
     initialFilter = matchedCategory
@@ -87,5 +95,5 @@ export default async function Page({ params }: PageProps) {
 
   const items = await getArchiveItems()
 
-  return <HomeClient items={items} initialFilter={initialFilter} />
+  return <HomeClient items={items} initialFilter={initialFilter} initialSlug={itemSlug} />
 }

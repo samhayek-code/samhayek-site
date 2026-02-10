@@ -35,9 +35,10 @@ function playClickSound(audioContext: AudioContext | null) {
 interface HomeClientProps {
   items: ArchiveItem[]
   initialFilter?: string
+  initialSlug?: string | null
 }
 
-export default function HomeClient({ items, initialFilter = 'Everything' }: HomeClientProps) {
+export default function HomeClient({ items, initialFilter = 'Everything', initialSlug }: HomeClientProps) {
   const [activeFilter, setActiveFilter] = useState(initialFilter)
   const [isScrolled, setIsScrolled] = useState(false)
   const [selectedItem, setSelectedItem] = useState<ArchiveItem | null>(null)
@@ -72,6 +73,14 @@ export default function HomeClient({ items, initialFilter = 'Everything' }: Home
       window.removeEventListener('mousemove', resumeAudio)
     }
   }, [])
+
+  // Auto-open modal if initialSlug is provided (shareable URLs)
+  useEffect(() => {
+    if (initialSlug) {
+      const match = items.find(i => i.slug?.current === initialSlug)
+      if (match) setSelectedItem(match)
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Load sound preference from localStorage (defaults to true if not set)
   useEffect(() => {
@@ -164,11 +173,21 @@ export default function HomeClient({ items, initialFilter = 'Everything' }: Home
     return () => window.removeEventListener('popstate', handlePopState)
   }, []) // Run once on mount
 
+  // Build the URL path for a given item (or null to clear)
+  const getItemUrl = useCallback((item: ArchiveItem | null) => {
+    if (!item?.slug?.current) {
+      return activeFilter === 'Everything' ? '/' : `/${activeFilter.toLowerCase()}`
+    }
+    const base = activeFilter === 'Everything' ? '' : `/${activeFilter.toLowerCase()}`
+    return `${base}/${item.slug.current}`
+  }, [activeFilter])
+
   // Handle card click - play sound and open modal
   const handleCardClick = useCallback((item: ArchiveItem) => {
     playSound()
     setSelectedItem(item)
-  }, [playSound])
+    window.history.replaceState(null, '', getItemUrl(item))
+  }, [playSound, getItemUrl])
 
   // Scroll detection
   useEffect(() => {
@@ -242,7 +261,10 @@ export default function HomeClient({ items, initialFilter = 'Everything' }: Home
 
       {/* Modal */}
       {selectedItem && (
-        <Modal item={selectedItem} onClose={() => setSelectedItem(null)} />
+        <Modal item={selectedItem} onClose={() => {
+          setSelectedItem(null)
+          window.history.replaceState(null, '', getItemUrl(null))
+        }} />
       )}
 
       {/* Footer */}
