@@ -229,6 +229,7 @@ export default function Modal({ item, onClose }: ModalProps) {
 
   // Check if this is a special modal type
   const isOasis = item.slug?.current === 'oasis'
+  const isSC2 = item.slug?.current === 'sc2-audio-hooks'
   const isContactForm = item.slug?.current === 'send-message'
   const isBookingForm = item.slug?.current === 'book-a-call'
   const isCaseStudy = (item.caseStudySections?.length ?? 0) > 0
@@ -243,7 +244,7 @@ export default function Modal({ item, onClose }: ModalProps) {
   const isReferences = item.slug?.current === 'references'
   const isGalleryType = (isArt || isDesign) && !isCollection && !isTestimonial && !isReferences && !isCaseStudy  // Types that use full-width gallery display (but not collections, testimonials, case studies, or references)
   const isEmbedModal = isContactForm || isBookingForm
-  const hideCtaButton = isEmbedModal || isGalleryType || isSupport || isCollection || isWriting || isOasis || isResume || isCaseStudy
+  const hideCtaButton = isEmbedModal || isGalleryType || isSupport || isCollection || isWriting || isOasis || isSC2 || isResume || isCaseStudy
 
   // Collection navigation
   const collectionPieces = item.collectionPieces || []
@@ -530,7 +531,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           })()}
 
           {/* Description - hide for collections, checkout, OASIS, and case studies */}
-          {!isCollection && !showWhopCheckout && !isOasis && !isCaseStudy && (
+          {!isCollection && !showWhopCheckout && !isOasis && !isSC2 && !isCaseStudy && (
             <p className="font-sans text-[17px] leading-relaxed mb-6" style={{ color: 'var(--modal-text-secondary)' }}>
               {item.description}
             </p>
@@ -644,6 +645,102 @@ export default function Modal({ item, onClose }: ModalProps) {
                   </div>
                 </div>
               </div>
+            </div>
+          )}
+
+          {/* SC2 Audio-Hooks */}
+          {isSC2 && (
+            <div className="space-y-6 mb-8">
+              {/* Subtitle */}
+              <p className="font-sans text-[15px]" style={{ color: 'var(--modal-text-tertiary)' }}>
+                Plays random StarCraft 2 voice lines when things happen in your terminal.
+              </p>
+
+              {/* Main description */}
+              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
+                Uses Claude Code hooks to trigger sound effects on four events — session starts, task completions, permission prompts, and errors. Choose your faction: Terran, Protoss, or Zerg.
+              </p>
+              <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
+                Error sounds are smart-filtered — they only fire on genuinely interesting failures. A 15-second cooldown prevents rapid-fire.
+              </p>
+
+              {/* Event table */}
+              <div className="space-y-3">
+                <span className="font-mono font-medium text-[11px] text-muted uppercase tracking-wide">
+                  Events
+                </span>
+                <div
+                  className="font-mono text-[12px] leading-relaxed"
+                  style={{
+                    background: 'var(--surface)',
+                    border: '1px solid var(--border)',
+                  }}
+                >
+                  {[
+                    { event: 'Session starts', sound: '"Battlecruiser operational"' },
+                    { event: 'Task completes', sound: '"Evolution complete"' },
+                    { event: 'Needs permission', sound: '"Nuclear launch detected"' },
+                    { event: 'Error occurs', sound: '"Not enough minerals"' },
+                  ].map((row, i) => (
+                    <div
+                      key={i}
+                      className="flex justify-between px-4 py-2.5"
+                      style={{ borderTop: i > 0 ? '1px solid var(--border)' : 'none' }}
+                    >
+                      <span style={{ color: 'var(--modal-text-secondary)' }}>{row.event}</span>
+                      <span style={{ color: 'var(--modal-text-tertiary)' }}>{row.sound}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Install command */}
+              <div className="space-y-3">
+                <span className="font-mono font-medium text-[11px] text-muted uppercase tracking-wide">
+                  Install
+                </span>
+                <div
+                  className="flex items-center gap-3 px-4 py-3"
+                  style={{
+                    background: 'var(--surface)',
+                    border: '1px solid var(--border)',
+                  }}
+                >
+                  <code className="font-mono text-[13px] text-foreground truncate flex-1 select-all" title="bash <(curl -fsSL https://raw.githubusercontent.com/samhayek-code/sc2-claude-hooks/main/install.sh)">
+                    bash &lt;(curl -fsSL https://raw.githubusercontent.com/.../install.sh)
+                  </code>
+                  <button
+                    onClick={() => handleCopyInstall('bash <(curl -fsSL https://raw.githubusercontent.com/samhayek-code/sc2-claude-hooks/main/install.sh)')}
+                    className="shrink-0 px-3 py-1.5 font-mono text-[12px] font-medium transition-all"
+                    style={{
+                      background: copied ? 'var(--foreground)' : 'var(--cta-bg)',
+                      border: '1px solid',
+                      borderColor: copied ? 'var(--foreground)' : 'var(--border)',
+                      color: copied ? 'var(--background)' : 'var(--cta-text)',
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!copied) {
+                        e.currentTarget.style.background = 'var(--cta-hover-bg)'
+                        e.currentTarget.style.borderColor = 'var(--cta-hover-border)'
+                        e.currentTarget.style.color = 'var(--cta-hover-text)'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!copied) {
+                        e.currentTarget.style.background = 'var(--cta-bg)'
+                        e.currentTarget.style.borderColor = 'var(--border)'
+                        e.currentTarget.style.color = 'var(--cta-text)'
+                      }
+                    }}
+                  >
+                    {copied ? 'Copied' : 'Copy'}
+                  </button>
+                </div>
+              </div>
+
+              <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
+                macOS only. 75 sounds across 3 factions.
+              </p>
             </div>
           )}
 
@@ -1218,6 +1315,18 @@ export default function Modal({ item, onClose }: ModalProps) {
               {isOasis && (
                 <a
                   href="https://github.com/samhayek-code/OASIS"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  style={{ background: colors.dot }}
+                >
+                  View on GitHub
+                </a>
+              )}
+              {/* SC2 GitHub link */}
+              {isSC2 && (
+                <a
+                  href="https://github.com/samhayek-code/sc2-claude-hooks"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
