@@ -32,8 +32,18 @@ export default function ArchiveGrid({
   onHoverSound,
   activeFilter,
 }: ArchiveGridProps) {
-  // Memoize card code generation so it only recalculates when items change
   const itemsWithCodes = useMemo(() => generateCardCodes(items), [items]);
+
+  // Card animation params — calibrated via DialKit, now baked in
+  const cardParams = {
+    hover: { liftY: -8, scale: 1, duration: 0.56 },
+    glow: { opacity: 0.7, blur: 3, duration: 0.36 },
+    image: { restOpacity: 0.25, hoverOpacity: 0.9, restBlur: 2.76, hoverBlur: 0 },
+    overlay: { restStrength: 0.7, hoverStrength: 0.5 },
+    details: { bracketOpacity: 0.6, specLineOpacity: 1, showAtRest: false },
+    press: { scale: 0.98, enabled: true },
+    entrance: { distance: 40, duration: 1.94, staggerMs: 150 },
+  };
 
   return (
     <div className="px-4 lg:px-12 pb-20 pt-6">
@@ -46,6 +56,7 @@ export default function ArchiveGrid({
             onHoverSound={onHoverSound}
             index={index}
             cardCode={cardCode}
+            params={cardParams}
           />
         ))}
       </div>

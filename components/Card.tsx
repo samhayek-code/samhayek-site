@@ -43,6 +43,8 @@ interface CardProps {
   onHoverSound?: () => void;
   index?: number;
   cardCode: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  params: any;
 }
 
 export default function Card({
@@ -51,8 +53,10 @@ export default function Card({
   onHoverSound,
   index = 0,
   cardCode,
+  params,
 }: CardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
   const borderRef = useRef<SVGRectElement>(null);
   const animationRef = useRef<JSAnimation | null>(null);
   const colors = typeColors[item.type] || typeColors.Everything;
@@ -80,27 +84,32 @@ export default function Card({
   const hasIconDisplay =
     (isConnectType && connectIcon) || (isShopType && shopIcon);
 
-  // Stagger delay for entrance animation (40ms per card, max 400ms)
-  const entranceDelay = Math.min(index * 40, 400);
+  // Stagger delay for entrance animation
+  const entranceDelay = Math.min(index * params.entrance.staggerMs, 400);
 
-  // Border glow animation on hover
+  // Border glow animation — smooth enter AND exit
   useEffect(() => {
     if (!borderRef.current) return;
 
+    // Cancel any running animation first
+    if (animationRef.current) {
+      animationRef.current.pause();
+      animationRef.current = null;
+    }
+
     if (isHovered) {
       animationRef.current = animate(borderRef.current, {
-        opacity: [0, 0.6],
-        duration: 300,
+        opacity: [0, params.glow.opacity],
+        duration: params.glow.duration * 1000,
         ease: "outCubic",
       });
     } else {
-      if (animationRef.current) {
-        animationRef.current.pause();
-        animationRef.current = null;
-      }
-      if (borderRef.current) {
-        borderRef.current.style.opacity = "0";
-      }
+      // Smooth fade out (60% of fade-in duration for snappier exit)
+      animationRef.current = animate(borderRef.current, {
+        opacity: 0,
+        duration: params.glow.duration * 600,
+        ease: "outCubic",
+      });
     }
 
     return () => {
@@ -108,12 +117,29 @@ export default function Card({
         animationRef.current.pause();
       }
     };
-  }, [isHovered]);
+  }, [isHovered, params.glow.opacity, params.glow.duration]);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
     onHoverSound?.();
   };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setIsPressed(false);
+  };
+
+  // Compute transform from hover + press state
+  const scale = isPressed && params.press.enabled
+    ? params.press.scale
+    : isHovered
+    ? params.hover.scale
+    : 1;
+  const liftY = isHovered ? params.hover.liftY : 0;
+
+  // Easing curve used across all card transitions
+  const ease = "cubic-bezier(0.16, 1, 0.3, 1)";
+  const dur = `${params.hover.duration}s`;
 
   return (
     <div
@@ -122,24 +148,30 @@ export default function Card({
         {
           padding: "5px",
           "--entrance-delay": `${entranceDelay}ms`,
+          "--entrance-distance": `${params.entrance.distance}px`,
+          "--entrance-duration": `${params.entrance.duration}s`,
         } as React.CSSProperties
       }
     >
       {/* Frame border — card sits centered inside this */}
       <div className="card-frame" />
 
-      {/* Main card — inset by 5px from frame */}
+      {/* Main card — all hover transforms driven by DialKit params */}
       <div
         onMouseEnter={handleMouseEnter}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseLeave={handleMouseLeave}
+        onMouseDown={() => params.press.enabled && setIsPressed(true)}
+        onMouseUp={() => setIsPressed(false)}
         onClick={() => onClick(item)}
         className="card-hover card-noise relative overflow-hidden cursor-pointer flex flex-col h-full"
         style={{
-          background: "#111113",
+          background: isHovered ? "#1A1A1E" : "#111113",
           border: `1px solid ${isHovered ? "var(--border-hover)" : "var(--border)"}`,
+          transform: `translateY(${liftY}px) scale(${scale})`,
+          transition: `transform ${dur} ${ease}, border-color ${dur} ${ease}, background ${dur} ${ease}`,
         }}
       >
-        {/* Colored border glow — fades in on hover */}
+        {/* Colored border glow — fades in/out smoothly via anime.js */}
         <svg
           className="absolute inset-0 w-full h-full pointer-events-none z-[100]"
           style={{ overflow: "visible" }}
@@ -157,24 +189,27 @@ export default function Card({
             strokeWidth="1"
             style={{
               opacity: 0,
-              filter: `drop-shadow(0 0 4px ${colors.dot})`,
+              filter: `drop-shadow(0 0 ${params.glow.blur}px ${colors.dot})`,
             }}
           />
         </svg>
 
         {/* ── Background layer (image / icon / text blur) ── */}
 
-        {/* Cover image — spans entire card */}
+        {/* Cover image — opacity & blur driven by params */}
         {item.coverImage && !isWritingType && !hasIconDisplay && (
           <div className="absolute inset-0 z-0">
             <Image
               src={urlFor(item.coverImage).width(600).height(600).url()}
               alt={item.title}
               fill
-              className="object-cover transition-all duration-300 ease-out"
+              className="object-cover"
               style={{
-                opacity: isHovered ? 0.85 : 0.4,
-                filter: isHovered ? "blur(0px)" : "blur(2px)",
+                opacity: isHovered
+                  ? params.image.hoverOpacity
+                  : params.image.restOpacity,
+                filter: `blur(${isHovered ? params.image.hoverBlur : params.image.restBlur}px)`,
+                transition: `opacity ${dur} ease-out, filter ${dur} ease-out`,
               }}
             />
           </div>
@@ -183,10 +218,11 @@ export default function Card({
         {/* Connect type icon */}
         {isConnectType && connectIcon && (
           <div
-            className="absolute inset-0 z-[1] flex items-center justify-center transition-all duration-300"
+            className="absolute inset-0 z-[1] flex items-center justify-center"
             style={{
               color: isHovered ? connectColor : "var(--subtle)",
               opacity: isHovered ? 0.9 : 0.5,
+              transition: `all ${dur} ease`,
             }}
           >
             {connectIcon}
@@ -196,10 +232,11 @@ export default function Card({
         {/* Shop type icon */}
         {isShopType && shopIcon && (
           <div
-            className="absolute inset-0 z-[1] flex items-center justify-center transition-all duration-300"
+            className="absolute inset-0 z-[1] flex items-center justify-center"
             style={{
               color: isHovered ? shopColor : "var(--subtle)",
               opacity: isHovered ? 0.9 : 0.5,
+              transition: `all ${dur} ease`,
             }}
           >
             {shopIcon}
@@ -209,11 +246,12 @@ export default function Card({
         {/* Blurred text preview for Writing cards */}
         {isWritingType && bodyText && (
           <div
-            className="absolute inset-0 z-[1] overflow-hidden flex items-center justify-center transition-all duration-300"
+            className="absolute inset-0 z-[1] overflow-hidden flex items-center justify-center"
             style={{
               padding: "24px",
-              filter: isHovered ? "blur(0px)" : "blur(2px)",
-              opacity: isHovered ? 0.8 : 0.35,
+              filter: `blur(${isHovered ? params.image.hoverBlur : params.image.restBlur}px)`,
+              opacity: isHovered ? 0.8 : params.image.restOpacity * 0.875,
+              transition: `all ${dur} ease`,
             }}
           >
             <div className="w-full max-w-[180px] aspect-square flex items-center justify-center">
@@ -226,33 +264,45 @@ export default function Card({
 
         {/* ── Overlay layers ── */}
 
-        {/* Dark overlay for text readability — always uses dark overlay */}
+        {/* Dark overlay — gradient strength driven by params */}
         <div
-          className="absolute inset-0 z-[2] transition-all duration-300 ease-out"
+          className="absolute inset-0 z-[2]"
           style={{
             background: isHovered
-              ? "linear-gradient(to bottom, rgba(13,13,15,0.5) 0%, rgba(13,13,15,0.1) 40%, rgba(13,13,15,0.5) 100%)"
-              : "linear-gradient(to bottom, rgba(13,13,15,0.7) 0%, rgba(13,13,15,0.4) 40%, rgba(13,13,15,0.7) 100%)",
+              ? `linear-gradient(to bottom, rgba(13,13,15,${params.overlay.hoverStrength}) 0%, rgba(13,13,15,${params.overlay.hoverStrength * 0.2}) 40%, rgba(13,13,15,${params.overlay.hoverStrength}) 100%)`
+              : `linear-gradient(to bottom, rgba(13,13,15,${params.overlay.restStrength}) 0%, rgba(13,13,15,${params.overlay.restStrength * 0.57}) 40%, rgba(13,13,15,${params.overlay.restStrength}) 100%)`,
+            transition: `all ${dur} ease-out`,
           }}
         />
 
-        {/* Hover gradient */}
+        {/* Hover gradient — color wash from top */}
         <div
-          className="absolute inset-0 z-[3] transition-all duration-400 pointer-events-none"
+          className="absolute inset-0 z-[3] pointer-events-none"
           style={{
             background: isHovered
               ? `radial-gradient(ellipse at 50% 0%, ${colors.bg}, transparent 70%)`
               : "transparent",
+            transition: `all ${parseFloat(dur) + 0.1}s ease`,
           }}
         />
 
-        {/* ── Micro-detail overlays (brackets, coordinates) — hidden until hover ── */}
+        {/* ── Micro-detail overlays — controlled by params ── */}
 
-        {/* Corner brackets — opacity controlled by CSS hover */}
-        <div className="card-corner-bracket card-corner-bracket--tl" />
-        <div className="card-corner-bracket card-corner-bracket--tr" />
-        <div className="card-corner-bracket card-corner-bracket--bl" />
-        <div className="card-corner-bracket card-corner-bracket--br" />
+        {/* Corner brackets — opacity from params, visible at rest if showAtRest */}
+        {["tl", "tr", "bl", "br"].map((corner) => (
+          <div
+            key={corner}
+            className={`card-corner-bracket card-corner-bracket--${corner}`}
+            style={{
+              opacity: isHovered
+                ? params.details.bracketOpacity
+                : params.details.showAtRest
+                ? params.details.bracketOpacity * 0.3
+                : 0,
+              transition: `opacity ${dur} ease`,
+            }}
+          />
+        ))}
 
         {/* ── Content layer (top + bottom rows) ── */}
 
@@ -305,23 +355,35 @@ export default function Card({
               <span />
             )}
 
-            {/* CTA button on right */}
+            {/* CTA button — faster transition than card body */}
             <button
-              className="px-3.5 py-2 text-xs font-medium font-mono uppercase tracking-wide transition-all duration-200"
+              className="px-3.5 py-2 text-xs font-medium font-mono uppercase tracking-wide"
               style={{
                 background: isHovered
                   ? colors.dot
                   : "rgba(13, 13, 15, 0.6)",
                 color: isHovered ? "#ffffff" : "#8A8A8F",
                 border: `1px solid ${isHovered ? colors.dot : "rgba(255, 255, 255, 0.1)"}`,
+                transition: `all ${parseFloat(dur) * 0.5}s ease`,
               }}
             >
               {item.cta}
             </button>
           </div>
 
-          {/* Card code + type — always side by side, fade in on hover */}
-          <div className="card-spec-line flex items-center gap-1.5">
+          {/* Card code + type — visibility from params */}
+          <div
+            className="card-spec-line flex items-center gap-1.5"
+            style={{
+              opacity: isHovered
+                ? params.details.specLineOpacity
+                : params.details.showAtRest
+                ? 0.2
+                : 0,
+              color: isHovered ? "#505055" : "#3A3A3F",
+              transition: `opacity ${dur} ease, color ${dur} ease`,
+            }}
+          >
             <span>{cardCode}</span>
             <span>◆</span>
             <span>TYPE:{item.type.toUpperCase()}</span>

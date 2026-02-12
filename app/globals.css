@@ -213,22 +213,13 @@ body {
   z-index: 1000;
 }
 
-/* Card hover transition */
-.card-hover {
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
+/* Card hover transition — transform/border/bg now driven by inline styles via DialKit */
 
-.card-hover:hover {
-  transform: translateY(-2px);
-  border-color: var(--border-hover);
-  background: var(--surface);
-}
-
-/* Staggered card entrance animation */
+/* Staggered card entrance animation — distance & duration parameterized via CSS vars */
 @keyframes cardEntrance {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(var(--entrance-distance, 12px));
   }
   to {
     opacity: 1;
@@ -238,7 +229,7 @@ body {
 
 .card-entrance {
   opacity: 0;
-  animation: cardEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: cardEntrance var(--entrance-duration, 0.5s) cubic-bezier(0.16, 1, 0.3, 1) forwards;
   animation-delay: var(--entrance-delay, 0ms);
 }
 
@@ -269,15 +260,13 @@ body {
   z-index: 0;
 }
 
-/* Corner bracket marks — hidden by default, fade in on hover */
+/* Corner bracket marks — opacity & transition now set inline via DialKit */
 .card-corner-bracket {
   position: absolute;
   width: 10px;
   height: 10px;
   z-index: 5;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
 }
 
 .card-corner-bracket--tl {
@@ -308,40 +297,22 @@ body {
   border-right: 1px solid #8A8A8F;
 }
 
-/* Spec line — hidden by default, fade in on hover */
+/* Spec line — opacity & color now set inline via DialKit */
 .card-spec-line {
   font-family: "IBM Plex Mono", monospace;
   font-size: 7px;
   font-weight: 500;
-  color: #3A3A3F;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  opacity: 0;
-  transition: opacity 0.3s ease;
 }
 
-/* Card code — very subtle by default, brighter on hover */
+/* Card code */
 .card-code {
   font-family: "IBM Plex Mono", monospace;
   font-size: 9px;
   font-weight: 500;
   color: #3A3A3F;
   letter-spacing: 0.06em;
-  transition: color 0.3s ease;
-}
-
-/* Hover: reveal micro-details */
-.card-hover:hover .card-corner-bracket {
-  opacity: 0.4;
-}
-
-.card-hover:hover .card-spec-line {
-  opacity: 1;
-  color: #505055;
-}
-
-.card-hover:hover .card-code {
-  color: #505055;
 }
 
 /* Hide spec line on mobile */
