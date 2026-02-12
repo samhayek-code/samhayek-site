@@ -234,25 +234,20 @@ export default function Modal({ item, onClose }: ModalProps) {
   const [isVisible, setIsVisible] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
 
-  // Trigger entrance animation on mount
+  // Trigger entrance animation on mount — small delay ensures initial state is painted
   useEffect(() => {
-    // requestAnimationFrame ensures the initial state (opacity 0) is painted first
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setIsVisible(true)
-      })
-    })
+    const timer = setTimeout(() => setIsVisible(true), 20)
+    return () => clearTimeout(timer)
   }, [])
 
-  // Animated close — fade out, then unmount
+  // Animated close — fade out, then unmount after transition completes
   const handleClose = useCallback(() => {
     if (isClosing) return
     setIsClosing(true)
     setIsVisible(false)
-    // Wait for transition to finish before unmounting
     setTimeout(() => {
       onClose()
-    }, 240)
+    }, 360)
   }, [isClosing, onClose])
 
   // Collection crossfade — when collectionIndex changes, dip opacity then swap content
@@ -313,14 +308,16 @@ export default function Modal({ item, onClose }: ModalProps) {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [handleClose, isCollection, lightboxState, goNextCollection, goPrevCollection])
 
-  // Prevent body scroll
+  // Prevent body scroll — compensate for scrollbar width to avoid layout shift
   useEffect(() => {
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
     document.body.style.overflow = 'hidden'
+    document.body.style.paddingRight = `${scrollbarWidth}px`
     return () => {
-      // Don't restore overflow if closing for Lemon Squeezy checkout
       if (!closingForCheckoutRef.current) {
         document.body.style.overflow = 'auto'
       }
+      document.body.style.paddingRight = ''
     }
   }, [])
 
@@ -458,7 +455,7 @@ export default function Modal({ item, onClose }: ModalProps) {
       className="fixed inset-0 z-[2000] flex items-center justify-center p-4 lg:p-12 cursor-pointer modal-backdrop"
       style={{
         opacity: isVisible ? 1 : 0,
-        transition: 'opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1)',
+        transition: 'opacity 0.34s ease-out',
       }}
     >
       <div
@@ -467,9 +464,11 @@ export default function Modal({ item, onClose }: ModalProps) {
         style={{
           background: 'var(--modal-bg)',
           border: '1px solid var(--modal-border)',
-          transform: isVisible ? 'translateY(0)' : 'translateY(16px)',
+          transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(12px) scale(0.98)',
           opacity: isVisible ? 1 : 0,
-          transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1)',
+          transition: isVisible
+            ? 'transform 0.46s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.38s ease-out'
+            : 'transform 0.29s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.23s ease-in',
         }}
       >
         {/* Hero image - hide for embed modals, gallery types (Art, Design), Writing, testimonials, case studies, and checkout */}
