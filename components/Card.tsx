@@ -85,7 +85,7 @@ export default function Card({
     (isConnectType && connectIcon) || (isShopType && shopIcon);
 
   // Stagger delay for entrance animation
-  const entranceDelay = Math.min(index * params.entrance.staggerMs, 400);
+  const entranceDelay = index * params.entrance.staggerMs;
 
   // Border glow animation — smooth enter AND exit
   useEffect(() => {
@@ -275,14 +275,13 @@ export default function Card({
           }}
         />
 
-        {/* Hover gradient — color wash from top */}
+        {/* Color wash gradient — fades out on hover via opacity (not background, which can't transition between gradients) */}
         <div
           className="absolute inset-0 z-[3] pointer-events-none"
           style={{
-            background: isHovered
-              ? `radial-gradient(ellipse at 50% 0%, ${colors.bg}, transparent 70%)`
-              : "transparent",
-            transition: `all ${parseFloat(dur) + 0.1}s ease`,
+            background: `radial-gradient(ellipse at 50% 0%, ${colors.bg}, transparent 70%)`,
+            opacity: isHovered ? 0 : 1,
+            transition: `opacity ${isHovered ? parseFloat(dur) * 0.8 : parseFloat(dur) * 1.4}s ease-out`,
           }}
         />
 

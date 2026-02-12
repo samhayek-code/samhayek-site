@@ -55,7 +55,7 @@
   --scrollbar-thumb: #2A2A2F;
   --scrollbar-thumb-hover: #3A3A3F;
   --grid-color: %23ffffff;
-  --grid-opacity: 0.03;
+  --grid-opacity: 0.06;
   --noise-opacity: 0.015;
   --modal-backdrop: rgba(0, 0, 0, 0.8);
   /* Card overlay colors */
@@ -113,7 +113,7 @@
   --scrollbar-thumb: #E0E0E3;
   --scrollbar-thumb-hover: #C8C8CC;
   --grid-color: %23000000;
-  --grid-opacity: 0.04;
+  --grid-opacity: 0.09;
   --noise-opacity: 0.025;
   --modal-backdrop: rgba(0, 0, 0, 0.5);
   /* Card overlay colors */
