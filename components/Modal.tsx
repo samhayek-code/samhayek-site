@@ -223,9 +223,48 @@ export default function Modal({ item, onClose }: ModalProps) {
   const [activeQR, setActiveQR] = useState<{ currency: string; address: string } | null>(null)
   // Collection state: -1 = intro, 0 to n-1 = pieces, n = merch (if exists)
   const [collectionIndex, setCollectionIndex] = useState(-1)
+  // Collection crossfade — tracks the "displayed" index with a brief opacity dip
+  const [displayedIndex, setDisplayedIndex] = useState(-1)
+  const [collectionFade, setCollectionFade] = useState(true)
   // Whop checkout state
   const [showWhopCheckout, setShowWhopCheckout] = useState(false)
   const [copied, setCopied] = useState(false)
+
+  // Entrance/exit animation state
+  const [isVisible, setIsVisible] = useState(false)
+  const [isClosing, setIsClosing] = useState(false)
+
+  // Trigger entrance animation on mount
+  useEffect(() => {
+    // requestAnimationFrame ensures the initial state (opacity 0) is painted first
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setIsVisible(true)
+      })
+    })
+  }, [])
+
+  // Animated close — fade out, then unmount
+  const handleClose = useCallback(() => {
+    if (isClosing) return
+    setIsClosing(true)
+    setIsVisible(false)
+    // Wait for transition to finish before unmounting
+    setTimeout(() => {
+      onClose()
+    }, 240)
+  }, [isClosing, onClose])
+
+  // Collection crossfade — when collectionIndex changes, dip opacity then swap content
+  useEffect(() => {
+    if (collectionIndex === displayedIndex) return
+    setCollectionFade(false) // fade out
+    const timer = setTimeout(() => {
+      setDisplayedIndex(collectionIndex) // swap content while faded
+      setCollectionFade(true) // fade in
+    }, 180)
+    return () => clearTimeout(timer)
+  }, [collectionIndex, displayedIndex])
 
   // Check if this is a special modal type
   const isOasis = item.slug?.current === 'oasis'
@@ -264,7 +303,7 @@ export default function Modal({ item, onClose }: ModalProps) {
   // Close on escape + collection navigation with arrow keys
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
+      if (e.key === 'Escape') handleClose()
       if (isCollection && !lightboxState) {
         if (e.key === 'ArrowRight') goNextCollection()
         if (e.key === 'ArrowLeft') goPrevCollection()
@@ -272,7 +311,7 @@ export default function Modal({ item, onClose }: ModalProps) {
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [onClose, isCollection, lightboxState, goNextCollection, goPrevCollection])
+  }, [handleClose, isCollection, lightboxState, goNextCollection, goPrevCollection])
 
   // Prevent body scroll
   useEffect(() => {
@@ -409,18 +448,29 @@ export default function Modal({ item, onClose }: ModalProps) {
     // Keep body scroll locked for Lemon Squeezy overlay
     // The ref prevents the cleanup from restoring overflow
     closingForCheckoutRef.current = true
+    // Skip animated close — Lemon Squeezy overlay needs instant transition
     onClose()
   }
   
   return (
-    <div 
-      onClick={onClose}
+    <div
+      onClick={handleClose}
       className="fixed inset-0 z-[2000] flex items-center justify-center p-4 lg:p-12 cursor-pointer modal-backdrop"
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transition: 'opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1)',
+      }}
     >
       <div
         onClick={(e) => e.stopPropagation()}
         className={`max-w-[800px] w-full overflow-auto cursor-default ${showWhopCheckout ? 'max-h-[95vh]' : 'max-h-[85vh]'}`}
-        style={{ background: 'var(--modal-bg)', border: '1px solid var(--modal-border)' }}
+        style={{
+          background: 'var(--modal-bg)',
+          border: '1px solid var(--modal-border)',
+          transform: isVisible ? 'translateY(0)' : 'translateY(16px)',
+          opacity: isVisible ? 1 : 0,
+          transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1)',
+        }}
       >
         {/* Hero image - hide for embed modals, gallery types (Art, Design), Writing, testimonials, case studies, and checkout */}
         {!isEmbedModal && !isGalleryType && !isWriting && !isTestimonial && !isCaseStudy && !showWhopCheckout && !isReferences && item.coverImage && (
@@ -1011,112 +1061,120 @@ export default function Modal({ item, onClose }: ModalProps) {
           {/* Collection display - intro, pieces carousel, merch grid */}
           {isCollection && (
             <div className="mb-8">
-              {/* Intro screen */}
-              {collectionIndex === -1 && (
-                <div className="text-center py-4">
-                  <p className="font-sans text-[17px] leading-relaxed max-w-lg mx-auto" style={{ color: 'var(--modal-text-secondary)' }}>
-                    {item.description}
-                  </p>
-                </div>
-              )}
+              {/* Crossfade wrapper — opacity dips when displayedIndex changes */}
+              <div
+                style={{
+                  opacity: collectionFade ? 1 : 0,
+                  transition: 'opacity 0.18s ease-out',
+                }}
+              >
+                {/* Intro screen */}
+                {displayedIndex === -1 && (
+                  <div className="text-center py-4">
+                    <p className="font-sans text-[17px] leading-relaxed max-w-lg mx-auto" style={{ color: 'var(--modal-text-secondary)' }}>
+                      {item.description}
+                    </p>
+                  </div>
+                )}
 
-              {/* Individual pieces */}
-              {collectionIndex >= 0 && collectionIndex < totalPieces && (() => {
-                const piece = collectionPieces[collectionIndex]
-                return (
-                  <div className="space-y-6">
-                    {/* Piece image */}
-                    {piece.image && (
-                      <div className="relative w-full">
-                        <Image
-                          src={urlFor(piece.image).width(1600).quality(90).url()}
-                          alt={piece.title}
-                          width={1600}
-                          height={1600}
-                          className="w-full h-auto"
-                          style={{ maxHeight: '50vh', objectFit: 'contain' }}
-                        />
+                {/* Individual pieces */}
+                {displayedIndex >= 0 && displayedIndex < totalPieces && (() => {
+                  const piece = collectionPieces[displayedIndex]
+                  return (
+                    <div className="space-y-6">
+                      {/* Piece image */}
+                      {piece.image && (
+                        <div className="relative w-full">
+                          <Image
+                            src={urlFor(piece.image).width(1600).quality(90).url()}
+                            alt={piece.title}
+                            width={1600}
+                            height={1600}
+                            className="w-full h-auto"
+                            style={{ maxHeight: '50vh', objectFit: 'contain' }}
+                          />
+                        </div>
+                      )}
+
+                      {/* Navigation between image and text */}
+                      <div className="flex items-center justify-between py-4 border-y border-border">
+                        <button
+                          onClick={goPrevCollection}
+                          disabled={collectionIndex === 0}
+                          className="flex items-center gap-2 px-3 py-1.5 font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        >
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M15 18l-6-6 6-6" />
+                          </svg>
+                          Prev
+                        </button>
+
+                        <div className="font-mono font-medium text-xs text-subtle">
+                          {collectionIndex + 1} / {totalPieces}
+                        </div>
+
+                        <button
+                          onClick={goNextCollection}
+                          disabled={collectionIndex === totalPieces - 1 && !hasMerch}
+                          className="flex items-center gap-2 px-3 py-1.5 font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        >
+                          {collectionIndex === totalPieces - 1 && hasMerch ? 'Collection' : 'Next'}
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M9 18l6-6-6-6" />
+                          </svg>
+                        </button>
                       </div>
-                    )}
 
-                    {/* Navigation between image and text */}
-                    <div className="flex items-center justify-between py-4 border-y border-border">
+                      {/* Piece title */}
+                      <h3 className="font-sans text-[22px] font-normal tracking-tighter text-foreground text-center">
+                        {piece.title}
+                      </h3>
+
+                      {/* Poem text */}
+                      {piece.poemText && (
+                        <div className="max-w-md mx-auto">
+                          <p className="font-sans text-[17px] leading-[1.8] whitespace-pre-line text-center" style={{ color: 'var(--modal-text-tertiary)' }}>
+                            {piece.poemText}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )
+                })()}
+
+                {/* Merch grid */}
+                {displayedIndex === totalPieces && hasMerch && (
+                  <div className="space-y-6">
+                    <h3 className="font-sans text-[22px] font-normal tracking-tighter text-foreground text-center">
+                      The Collection
+                    </h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {item.merchGallery!.map((image, i) => (
+                        <div key={i} className="aspect-square relative overflow-hidden" style={{ background: 'var(--modal-surface)' }}>
+                          <Image
+                            src={urlFor(image).width(600).height(600).url()}
+                            alt={`Merch ${i + 1}`}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    {/* Back button for merch */}
+                    <div className="flex justify-center pt-4">
                       <button
                         onClick={goPrevCollection}
-                        disabled={collectionIndex === 0}
-                        className="flex items-center gap-2 px-3 py-1.5 font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 font-sans text-sm text-muted hover:text-foreground transition-colors"
                       >
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M15 18l-6-6 6-6" />
                         </svg>
-                        Prev
-                      </button>
-
-                      <div className="font-mono font-medium text-xs text-subtle">
-                        {collectionIndex + 1} / {totalPieces}
-                      </div>
-
-                      <button
-                        onClick={goNextCollection}
-                        disabled={collectionIndex === totalPieces - 1 && !hasMerch}
-                        className="flex items-center gap-2 px-3 py-1.5 font-sans text-sm text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                      >
-                        {collectionIndex === totalPieces - 1 && hasMerch ? 'Collection' : 'Next'}
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M9 18l6-6-6-6" />
-                        </svg>
+                        Back to poems
                       </button>
                     </div>
-
-                    {/* Piece title */}
-                    <h3 className="font-sans text-[22px] font-normal tracking-tighter text-foreground text-center">
-                      {piece.title}
-                    </h3>
-
-                    {/* Poem text */}
-                    {piece.poemText && (
-                      <div className="max-w-md mx-auto">
-                        <p className="font-sans text-[17px] leading-[1.8] whitespace-pre-line text-center" style={{ color: 'var(--modal-text-tertiary)' }}>
-                          {piece.poemText}
-                        </p>
-                      </div>
-                    )}
                   </div>
-                )
-              })()}
-
-              {/* Merch grid */}
-              {collectionIndex === totalPieces && hasMerch && (
-                <div className="space-y-6">
-                  <h3 className="font-sans text-[22px] font-normal tracking-tighter text-foreground text-center">
-                    The Collection
-                  </h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {item.merchGallery!.map((image, i) => (
-                      <div key={i} className="aspect-square relative overflow-hidden" style={{ background: 'var(--modal-surface)' }}>
-                        <Image
-                          src={urlFor(image).width(600).height(600).url()}
-                          alt={`Merch ${i + 1}`}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  {/* Back button for merch */}
-                  <div className="flex justify-center pt-4">
-                    <button
-                      onClick={goPrevCollection}
-                      className="flex items-center gap-2 px-4 py-2 font-sans text-sm text-muted hover:text-foreground transition-colors"
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M15 18l-6-6 6-6" />
-                      </svg>
-                      Back to poems
-                    </button>
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           )}
 
@@ -1305,7 +1363,7 @@ export default function Modal({ item, onClose }: ModalProps) {
 
             <div className="flex gap-3 items-center">
               <button
-                onClick={onClose}
+                onClick={handleClose}
                 className="px-5 py-3 font-sans text-[16px] font-medium text-muted border border-border hover:border-border-hover hover:text-foreground transition-colors"
               >
                 Close
