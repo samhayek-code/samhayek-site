@@ -131,6 +131,20 @@ To add custom modal behavior: check slug in Modal.tsx, add to `hideCtaButton` if
 - **types.ts** — `typeColors`, `typeInitials`, `filterCategories`, `headerContent`
 - **globals.css** — All CSS variables, theme definitions, card micro-detail styles
 
+## Entire (Session Tracking)
+
+Entire CLI is enabled in this repo (`manual-commit` strategy). It links Claude Code sessions to git commits via an `Entire-Checkpoint` trailer.
+
+**Agent hooks are installed** in `.claude/settings.json` — they fire on SessionStart, SessionEnd, UserPromptSubmit, Stop, and tool use events. These hooks must exist for checkpoint tracking to work. If checkpoints stop appearing in commits, re-run:
+
+```bash
+ACCESSIBLE=1 entire enable --force --agent claude-code
+```
+
+The `--agent claude-code` flag is critical — without it, only git hooks are installed and Entire can't detect the active session.
+
+**At session start**: Run `entire status` to confirm it says `Enabled (manual-commit)`.
+
 ## External Services
 
 | Service | Purpose |
