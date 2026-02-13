@@ -58,7 +58,6 @@ Current card icon mappings:
 | `send-message` | `RiChat1Fill` | `#60a5fa` |
 | `support` | `RiHandCoinFill` | `#34d399` |
 | `resume` | `RiFileTextFill` | `#a78bfa` |
-| `brand-audit` | `RiShieldCheckFill` | `#f87171` |
 
 ## Content Types
 

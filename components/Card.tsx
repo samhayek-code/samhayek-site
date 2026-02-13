@@ -10,7 +10,6 @@ import {
   RiChat1Fill,
   RiHeartFill,
   RiFileTextFill,
-  RiShieldCheckFill,
 } from "@remixicon/react";
 
 // Filled icons for Connect type cards
@@ -29,13 +28,9 @@ const connectIcons: Record<string, JSX.Element> = {
 };
 
 // Shop type icons
-const shopIconColors: Record<string, string> = {
-  "brand-audit": "#f87171",
-};
+const shopIconColors: Record<string, string> = {};
 
-const shopIcons: Record<string, JSX.Element> = {
-  "brand-audit": <RiShieldCheckFill size={96} />,
-};
+const shopIcons: Record<string, JSX.Element> = {};
 
 interface CardProps {
   item: ArchiveItem;
@@ -64,6 +59,7 @@ export default function Card({
   const isWritingType = item.type === "Writing";
   const isConnectType = item.type === "Connect";
   const isShopType = item.type === "Shop";
+  const isComingSoon = item.slug?.current === "brand-audit";
 
   const bodyText = isWritingType
     ? item.body
@@ -129,13 +125,15 @@ export default function Card({
     setIsPressed(false);
   };
 
-  // Compute transform from hover + press state
-  const scale = isPressed && params.press.enabled
-    ? params.press.scale
-    : isHovered
-    ? params.hover.scale
-    : 1;
-  const liftY = isHovered ? params.hover.liftY : 0;
+  // Compute transform from hover + press state (disabled for coming soon)
+  const scale = isComingSoon
+    ? 1
+    : isPressed && params.press.enabled
+      ? params.press.scale
+      : isHovered
+        ? params.hover.scale
+        : 1;
+  const liftY = isComingSoon ? 0 : isHovered ? params.hover.liftY : 0;
 
   // Easing curve used across all card transitions
   const ease = "cubic-bezier(0.16, 1, 0.3, 1)";
@@ -162,8 +160,8 @@ export default function Card({
         onMouseLeave={handleMouseLeave}
         onMouseDown={() => params.press.enabled && setIsPressed(true)}
         onMouseUp={() => setIsPressed(false)}
-        onClick={() => onClick(item)}
-        className="card-hover card-noise relative overflow-hidden cursor-pointer flex flex-col h-full"
+        onClick={() => !isComingSoon && onClick(item)}
+        className={`card-hover card-noise relative overflow-hidden flex flex-col h-full ${isComingSoon ? "cursor-default" : "cursor-pointer"}`}
         style={{
           background: isHovered ? "#1A1A1E" : "#111113",
           border: `1px solid ${isHovered ? "var(--border-hover)" : "var(--border)"}`,
@@ -308,10 +306,10 @@ export default function Card({
         {/* Top row */}
         <div className="relative z-10 flex justify-between items-start p-5">
           <div className="flex-1 pr-4">
-            <span className="font-sans text-[15px] text-[#E8E8E9] font-normal tracking-[0.02em] leading-tight block">
-              {item.title}
+            <span className={`font-sans text-[15px] font-normal tracking-[0.02em] leading-tight block ${isComingSoon ? "text-[#505055]" : "text-[#E8E8E9]"}`}>
+              {isComingSoon ? "Coming Soon" : item.title}
             </span>
-            {item.year && (
+            {item.year && !isComingSoon && (
               <span className="font-mono font-medium text-[11px] text-[#505055] mt-1 block">
                 {item.year}
               </span>
@@ -334,7 +332,7 @@ export default function Card({
               className="font-mono font-bold text-[9px] uppercase tracking-wider"
               style={{ color: colors.dot }}
             >
-              {item.label}
+              {isComingSoon ? "Product" : item.label}
             </span>
           </div>
         </div>
@@ -346,7 +344,7 @@ export default function Card({
         <div className="relative z-10 flex flex-col gap-2 p-5 pt-0">
           <div className="flex justify-between items-end">
             {/* Price on left (if applicable) */}
-            {item.price ? (
+            {item.price && !isComingSoon ? (
               <span className="font-mono font-medium text-[13px] text-[#E8E8E9]">
                 {item.price}
               </span>
@@ -358,15 +356,18 @@ export default function Card({
             <button
               className="px-3.5 py-2 text-xs font-medium font-mono uppercase tracking-wide"
               style={{
-                background: isHovered
-                  ? colors.dot
-                  : "rgba(13, 13, 15, 0.6)",
-                color: isHovered ? "#ffffff" : "#8A8A8F",
-                border: `1px solid ${isHovered ? colors.dot : "rgba(255, 255, 255, 0.1)"}`,
+                background: isComingSoon
+                  ? "rgba(13, 13, 15, 0.6)"
+                  : isHovered
+                    ? colors.dot
+                    : "rgba(13, 13, 15, 0.6)",
+                color: isComingSoon ? "#3A3A3F" : isHovered ? "#ffffff" : "#8A8A8F",
+                border: `1px solid ${isComingSoon ? "rgba(255, 255, 255, 0.05)" : isHovered ? colors.dot : "rgba(255, 255, 255, 0.1)"}`,
                 transition: `all ${parseFloat(dur) * 0.5}s ease`,
+                cursor: isComingSoon ? "default" : "pointer",
               }}
             >
-              {item.cta}
+              {isComingSoon ? "Coming Soon" : item.cta}
             </button>
           </div>
 
