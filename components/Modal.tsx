@@ -1006,7 +1006,8 @@ export default function Modal({ item, onClose }: ModalProps) {
           {isGalleryType && (() => {
             // Build array of all images for lightbox navigation
             const allImages: { src: string; alt: string; thumbnail: string }[] = []
-            if (item.coverImage) {
+            // Skip cover image for pro2tect — card uses an edited version, first gallery slide is the real one
+            if (item.coverImage && item.slug?.current !== 'pro2tect') {
               allImages.push({
                 src: urlFor(item.coverImage).width(2400).quality(90).url(),
                 alt: item.title,
