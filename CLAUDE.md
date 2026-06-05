@@ -72,7 +72,7 @@ All content lives in `archiveItem` documents in Sanity.
 | Shop | `S-###` | Whop/Lemon Squeezy checkout |
 | Tools | `T-###` | External URL |
 | Downloads | `L-###` | File download |
-| Connect | `C-###` | Cal.com / YouForm embed |
+| Connect | `C-###` | Cal.com embed / custom contact form (Resend) |
 | Lab | `X-###` | Cross-disciplinary experiments |
 
 ## Theming
@@ -114,7 +114,7 @@ const isOasis = item.slug?.current === 'oasis'
 | Slug | Custom Behavior |
 |------|-----------------|
 | `oasis` | Click-to-copy install command, custom copy, GitHub CTA |
-| `send-message` | YouForm embed |
+| `send-message` | Custom contact form (`ContactForm.tsx`) → Resend API |
 | `book-a-call` | Cal.com embed |
 | `samhayek-com` | Case study (hides CTA) |
 | `support` | Crypto wallet buttons with QR codes |
@@ -132,17 +132,11 @@ To add custom modal behavior: check slug in Modal.tsx, add to `hideCtaButton` if
 
 ## Entire (Session Tracking)
 
-Entire CLI is enabled in this repo (`manual-commit` strategy). It links Claude Code sessions to git commits via an `Entire-Checkpoint` trailer.
-
-**Agent hooks are installed** in `.claude/settings.json` — they fire on SessionStart, SessionEnd, UserPromptSubmit, Stop, and tool use events. These hooks must exist for checkpoint tracking to work. If checkpoints stop appearing in commits, re-run:
-
-```bash
-ACCESSIBLE=1 entire enable --force --agent claude-code
-```
-
-The `--agent claude-code` flag is critical — without it, only git hooks are installed and Entire can't detect the active session.
-
-**At session start**: Run `entire status` to confirm it says `Enabled (manual-commit)`.
+**Disabled (2026-06-04). Do not re-enable.** No longer used. The `entire disable` was run
+and its git hooks (`pre-push`, `post-commit`, `commit-msg`, `prepare-commit-msg`) were removed
+because the `pre-push` hook was pushing `entire/checkpoints/*` branches to the GitHub remote.
+If you ever need it back, `ACCESSIBLE=1 entire enable --force --agent claude-code` — but don't
+without explicit ask.
 
 ## External Services
 
@@ -153,4 +147,4 @@ The `--agent claude-code` flag is critical — without it, only git hooks are in
 | MUX | Video hosting |
 | Whop | Shop checkout |
 | Cal.com | Booking |
-| YouForm | Contact form |
+| Resend | Contact form delivery (`RESEND_API_KEY`, sends to inbox) |
