@@ -31,7 +31,7 @@ export default defineType({
           { title: 'Art', value: 'Art' },
           { title: 'Writing', value: 'Writing' },
           { title: 'Downloads', value: 'Downloads' },
-          { title: 'Tools', value: 'Tools' },
+          { title: 'Code', value: 'Code' },
           { title: 'Shop', value: 'Shop' },
           { title: 'Design', value: 'Design' },
           { title: 'Connect', value: 'Connect' },
@@ -148,7 +148,7 @@ export default defineType({
       name: 'externalUrl',
       title: 'External URL',
       type: 'url',
-      description: 'For Tools — link to the tool',
+      description: 'For Code — link to the project or repo',
     }),
     defineField({
       name: 'lemonSqueezyUrl',

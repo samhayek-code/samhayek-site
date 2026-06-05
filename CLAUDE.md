@@ -70,10 +70,10 @@ All content lives in `archiveItem` documents in Sanity.
 | Music | `M-###` | Spotify/YouTube/Audius embed |
 | Writing | `W-###` | Portable Text body with inline images |
 | Shop | `S-###` | Whop/Lemon Squeezy checkout |
-| Tools | `T-###` | External URL |
+| Code | `X-###` | External URL |
 | Downloads | `L-###` | File download |
 | Connect | `C-###` | Cal.com embed / custom contact form (Resend) |
-| Lab | `X-###` | Cross-disciplinary experiments |
+| Lab | `E-###` | Cross-disciplinary experiments |
 
 ## Theming
 

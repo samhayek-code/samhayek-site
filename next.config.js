@@ -8,6 +8,12 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      { source: '/tools', destination: '/code', permanent: true },
+      { source: '/tools/:slug*', destination: '/code/:slug*', permanent: true },
+    ]
+  },
 }
 
 module.exports = nextConfig

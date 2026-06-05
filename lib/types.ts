@@ -3,7 +3,7 @@ export type ItemType =
   | 'Art'
   | 'Writing'
   | 'Downloads'
-  | 'Tools'
+  | 'Code'
   | 'Shop'
   | 'Design'
   | 'Connect'
@@ -75,7 +75,7 @@ export const typeColors: Record<string, { dot: string; bg: string }> = {
   Music: { dot: '#8B5CF6', bg: '#8B5CF620' },
   Art: { dot: '#EC4899', bg: '#EC489920' },
   Writing: { dot: '#3B82F6', bg: '#3B82F620' },
-  Tools: { dot: '#22C55E', bg: '#22C55E20' },
+  Code: { dot: '#22C55E', bg: '#22C55E20' },
   Downloads: { dot: '#F59E0B', bg: '#F59E0B20' },
   Shop: { dot: '#06B6D4', bg: '#06B6D420' },
   Connect: { dot: '#EF4444', bg: '#EF444420' },
@@ -88,7 +88,7 @@ export const filterCategories = [
   'Music',
   'Art',
   'Writing',
-  'Tools',
+  'Code',
   'Downloads',
   'Shop',
   'Connect',
@@ -115,11 +115,11 @@ export const typeInitials: Record<string, string> = {
   Music: "M",
   Art: "A",
   Writing: "W",
-  Tools: "T",
+  Code: "X",
   Downloads: "L",
   Shop: "S",
   Connect: "C",
-  Lab: "X",
+  Lab: "E",
 };
 
 export const headerContent: Record<string, { title: string; subtitle: string }> = {
@@ -143,9 +143,9 @@ export const headerContent: Record<string, { title: string; subtitle: string }> 
     title: 'Take something with you.',
     subtitle: 'Free resources and digital products.',
   },
-  Tools: {
-    title: 'Built to be useful.',
-    subtitle: 'Small utilities for designers and creators.',
+  Code: {
+    title: 'Built with code.',
+    subtitle: 'Apps, experiments, and open source worth shipping.',
   },
   Shop: {
     title: 'Own a piece.',
