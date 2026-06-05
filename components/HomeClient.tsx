@@ -323,7 +323,7 @@ export default function HomeClient({ items, initialFilter = 'Everything', initia
 
           {/* Copyright - right side */}
           <span className="font-mono font-medium text-[10px] text-subtle tracking-wide">
-            © 2026
+            © {new Date().getFullYear()}
           </span>
         </div>
       </footer>

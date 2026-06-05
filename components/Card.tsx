@@ -27,11 +27,6 @@ const connectIcons: Record<string, JSX.Element> = {
   resume: <RiFileTextFill size={96} />,
 };
 
-// Shop type icons
-const shopIconColors: Record<string, string> = {};
-
-const shopIcons: Record<string, JSX.Element> = {};
-
 interface CardProps {
   item: ArchiveItem;
   onClick: (item: ArchiveItem) => void;
@@ -58,7 +53,6 @@ export default function Card({
 
   const isWritingType = item.type === "Writing";
   const isConnectType = item.type === "Connect";
-  const isShopType = item.type === "Shop";
   const isComingSoon = item.slug?.current === "brand-audit";
 
   const bodyText = isWritingType
@@ -73,12 +67,7 @@ export default function Card({
   const connectColor = isConnectType
     ? connectIconColors[item.slug?.current] || colors.dot
     : colors.dot;
-  const shopIcon = isShopType ? shopIcons[item.slug?.current] : null;
-  const shopColor = isShopType
-    ? shopIconColors[item.slug?.current] || colors.dot
-    : colors.dot;
-  const hasIconDisplay =
-    (isConnectType && connectIcon) || (isShopType && shopIcon);
+  const hasIconDisplay = isConnectType && connectIcon;
 
   // Stagger delay for entrance animation
   const entranceDelay = index * params.entrance.staggerMs;
@@ -224,20 +213,6 @@ export default function Card({
             }}
           >
             {connectIcon}
-          </div>
-        )}
-
-        {/* Shop type icon */}
-        {isShopType && shopIcon && (
-          <div
-            className="absolute inset-0 z-[1] flex items-center justify-center"
-            style={{
-              color: isHovered ? shopColor : "var(--subtle)",
-              opacity: isHovered ? 0.9 : 0.5,
-              transition: `all ${dur} ease`,
-            }}
-          >
-            {shopIcon}
           </div>
         )}
 
