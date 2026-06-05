@@ -33,6 +33,12 @@ Read-only scan → cleanup pass. **Nothing pushed or deployed.** Every destructi
 ## Tooling
 
 - ESLint configured (`.eslintrc.json` → `next/core-web-vitals`); run with `npm run lint`.
+  Currently passes (0 errors) and is build-gated: `next build` fails on lint **errors** but not
+  warnings. To stop lint from ever blocking a deploy, set `eslint: { ignoreDuringBuilds: true }`
+  in `next.config.js`.
+  3 known non-blocking warnings left to triage later:
+  - `HomeClient.tsx:174` — useEffect missing dep `activeFilter` (intentional once-on-mount)
+  - `Modal.tsx:109` and `:1214` — raw `<img>`; could use `next/image`
 - Added `.entire/` and `tsconfig.tsbuildinfo` to `.gitignore`.
 
 ## Left untouched (intentional)

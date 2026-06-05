@@ -33,7 +33,6 @@ interface CardProps {
   onHoverSound?: () => void;
   index?: number;
   cardCode: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: any;
 }
 
