@@ -44,3 +44,10 @@ exports/
 
 # Backups
 backups/
+
+# Drafts (shelved components)
+_drafts/
+
+# Stale tooling / caches
+.entire/
+tsconfig.tsbuildinfo
