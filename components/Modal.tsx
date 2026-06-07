@@ -501,19 +501,17 @@ export default function Modal({ item, onClose }: ModalProps) {
 
             return (
               <>
-                {/* Prominent: jump straight to the full interactive case study */}
+                {/* Prominent filled button: jump straight to the full interactive case study */}
                 {item.externalUrl && (
                   <a
                     href={item.externalUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group mb-8 flex items-center justify-between gap-4 border-b-2 pb-4 font-sans text-[22px] sm:text-[28px] leading-tight tracking-tight text-foreground transition-opacity hover:opacity-90"
-                    style={{ borderColor: colors.dot }}
+                    className="group mb-8 flex items-center justify-center gap-3 px-6 py-4 font-mono text-[13px] sm:text-[14px] font-bold uppercase tracking-wider text-white transition-opacity hover:opacity-90"
+                    style={{ background: colors.dot }}
                   >
-                    <span>View the full interactive case study</span>
-                    <span className="shrink-0 transition-transform group-hover:translate-x-1" style={{ color: colors.dot }}>
-                      →
-                    </span>
+                    View the full interactive case study
+                    <span className="transition-transform group-hover:translate-x-1">→</span>
                   </a>
                 )}
 

@@ -112,7 +112,7 @@ const SECTIONS = [
   {
     title: "Overview",
     layout: "full-width",
-    images: [{ file: "overview.webp", alt: "Arcarae brand hero — a figure beneath a galaxy" }],
+    images: [{ file: "discovery-bento.webp", alt: "A selection of finished Arcarae work — app screens, launch carousels, and realm posters" }],
     body: `Arcarae is an AI-powered journaling platform that surfaces user behavior patterns. While the founder had a clear product vision and a mood board, the brand lacked a cohesive identity. I was brought in to design the launch.
 
 The scope was the App Store lockups and four Instagram carousels. Producing those required establishing the brand identity underneath first.
@@ -121,13 +121,11 @@ The core challenge was demographic positioning: the visual style leans feminine,
   },
   {
     title: "Discovery",
-    layout: "full-width",
-    images: [
-      { file: "discovery-bento.webp", alt: "A selection of finished Arcarae work — app screens, launch carousels, and realm posters" },
-    ],
+    layout: "text-first",
+    images: [],
     body: `I treated the client's reference board as data rather than passive inspiration. Analyzing recurring patterns across dozens of images surfaced four dominant signals: interior cosmology, soft bioluminescence, Y2K spiritual-pop, and second-person softness.
 
-Those signals became the brief, and the brief became the work above — one system across the store, the feed, and every realm.`,
+Those signals became the brief, and the brief became the work above: one system across the store, the feed, and every realm.`,
   },
   {
     title: "Concepts",
