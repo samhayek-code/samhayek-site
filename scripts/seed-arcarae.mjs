@@ -101,10 +101,10 @@ const FULL_CASE_URL = "https://arcarae-case-study.vercel.app";
 // ─── Meta ──────────────────────────────────────────────────────────
 const caseStudyMeta = [
   { _key: key(), key: "Client", value: "Arcarae, Inc. (Nicole Hsing)" },
-  { _key: key(), key: "Role", value: "Designer (contract)" },
+  { _key: key(), key: "Role", value: "Designer" },
   { _key: key(), key: "Year", value: "2026" },
   { _key: key(), key: "Deliverables", value: "App Store lockups · 4 Instagram carousels" },
-  { _key: key(), key: "Tools", value: "Figma, Midjourney, Affinity, Photomosh, Rotato, Paper" },
+  { _key: key(), key: "Tools", value: "Figma, Midjourney, Affinity, Photomosh, Rotato, DaVinci Resolve" },
 ];
 
 // ─── Sections (copy + media) ───────────────────────────────────────
@@ -113,22 +113,22 @@ const SECTIONS = [
     title: "Overview",
     layout: "full-width",
     images: [{ file: "discovery-bento.webp", alt: "A selection of finished Arcarae work — app screens, launch carousels, and realm posters" }],
-    body: `Arcarae is an AI-powered journaling platform that surfaces user behavior patterns. While the founder had a clear product vision and a mood board, the brand lacked a cohesive identity. I was brought in to design the launch.
+    body: `Arcarae is an AI-powered journaling platform that surfaces user behavior patterns. While the founder had a clear product vision and a mood board, the brand lacked a cohesive visual language.
 
-The scope was the App Store lockups and four Instagram carousels. Producing those required establishing the brand identity underneath first.
+The scope was the App Store lockups and four Instagram carousels. Producing those required establishing the visual language underneath first.
 
-The core challenge was demographic positioning: the visual style leans feminine, but roughly half the user base is male. The identity had to feel immediate and polished on the surface, yet universally accessible underneath.`,
+The core challenge was demographic positioning: the visual style leans feminine, but roughly half the user base is male. The visual language had to feel immediate and polished on the surface, yet universally accessible underneath.`,
   },
   {
-    title: "Discovery",
+    title: "Moodboards",
     layout: "text-first",
     images: [],
-    body: `I treated the client's reference board as data rather than passive inspiration. Analyzing recurring patterns across dozens of images surfaced four dominant signals: interior cosmology, soft bioluminescence, Y2K spiritual-pop, and second-person softness.
+    body: `By analyzing recurring patterns across dozens of images, I identified four dominant signals: interior cosmology, soft bioluminescence, Y2K spiritual-pop, and iridescent pastels.
 
 Those signals became the brief, and the brief became the work above: one system across the store, the feed, and every realm.`,
   },
   {
-    title: "Concepts",
+    title: "Analysis",
     layout: "images-first",
     images: [
       { file: "concept-aura-bloom.webp", alt: "Aura Bloom concept", caption: "Aura Bloom — the softest reading" },
@@ -138,10 +138,12 @@ Those signals became the brief, and the brief became the work above: one system 
       { file: "concept-deep-signal.webp", alt: "Deep Signal concept", caption: "Deep Signal — the differentiated wildcard" },
       { file: "concept-cyber-seraph.webp", alt: "Cyber Seraph concept", caption: "Cyber Seraph — the sharpest reading" },
     ],
-    body: `Rather than a menu of safe variations, I explored a single axis: how much of the parent brand's Y2K and chrome edge should carry into the app. Three safe options would not have tested the brief, so I built the full range, from soft to sharp — six concepts in total.`,
+    body: `Six concepts, each pulling color, motif, and mood from the references in a different direction. They mapped several dimensions at once: soft to sharp, neural to galactic, organic to futuristic.
+
+These started as exploration tools for pulling visual elements, color, and motifs out of the references. They informed the four directions I presented.`,
   },
   {
-    title: "Directions",
+    title: "Direction",
     layout: "images-first",
     images: [
       { file: "dir-astral.webp", alt: "Astral direction", caption: "Astral" },
@@ -152,7 +154,7 @@ Those signals became the brief, and the brief became the work above: one system 
     body: `I narrowed the six concepts to four and built each out far enough to actually choose between: Astral, Aura, Nebula, and Synapse. Each carried its own 60/30/10 palette, copy voice, symbol set, and a body of art-directed, AI-generated imagery.`,
   },
   {
-    title: "System",
+    title: "Visual language",
     layout: "full-width",
     images: [
       { file: "system-palette.webp", alt: "Astral v2 color palette" },
@@ -160,12 +162,12 @@ Those signals became the brief, and the brief became the work above: one system 
       { file: "system-deck-1.webp", alt: "Astral v2 system specification" },
       { file: "system-deck-2.webp", alt: "Astral v2 system specification" },
     ],
-    body: `The founder's feedback described a direction rather than naming one. I documented it as Astral v2: roughly 80% Astral, 15% of Aura's palette, and a grounded Nebula voice.
+    body: `The founder's feedback described a composite direction, which I synthesized into Astral v2: roughly 80% Astral, 15% of Aura's palette, and a grounded Nebula voice.
 
-The system is fully specified — color, type, voice, and symbols — so it stays consistent across a five-screen flow, four carousels, and two device families. The palette runs a 60/30/10 distribution with an off-white base and a sparing warm gold that neutralizes the feminine read. Three realms get three marks: an aperture for the Void, a bloom for the Mirror, a ringed eye for the Bridge.`,
+The system is fully specified across color, type, voice, and symbols: a reusable system that holds together across every touchpoint. The palette runs a 60/30/10 distribution with an off-white base and a sparing warm gold that neutralizes the feminine read. Three realms get three marks: an aperture for the Void, a bloom for the Mirror, a ringed eye for the Bridge.`,
   },
   {
-    title: "App Store",
+    title: "App Store lockups",
     layout: "images-first",
     images: [
       { file: "appstore-hook.webp", alt: "App Store screen — Hook", caption: "Hook" },
@@ -174,10 +176,10 @@ The system is fully specified — color, type, voice, and symbols — so it stay
       { file: "appstore-bridge.webp", alt: "App Store screen — Bridge", caption: "Bridge" },
       { file: "appstore-invite.webp", alt: "App Store screen — Invite", caption: "Invite" },
     ],
-    body: `The sequence follows the product itself — Void, Mirror, Bridge — rather than disconnected feature vignettes. Each middle screen reads as either spiritual or clinical by design. Every screen pairs one emotional line with one functional line that states what the app does.`,
+    body: `The flow has a clear arc: a hook to set the mood, three realm screens, and an invitation to close. Each realm states its use: the Void clears the mind, the Mirror reflects without judgment, the Bridge integrates insight.`,
   },
   {
-    title: "Social",
+    title: "Instagram carousels",
     layout: "images-first",
     images: [
       { file: "social-1.webp", alt: "Instagram launch carousel slide" },
@@ -185,13 +187,15 @@ The system is fully specified — color, type, voice, and symbols — so it stay
       { file: "social-3.webp", alt: "Instagram launch carousel slide" },
       { file: "social-4.webp", alt: "Instagram launch carousel slide" },
     ],
-    body: `A pinned-grid strategy across three posts: what Arcarae is, the three realms, and the proof. Each closes on the same call to enter the portal. One carousel animates; the rest are static. The store's system, turned outward.`,
+    body: `A pinned-grid strategy across three posts: what Arcarae is, the three realms, and the proof. Each closes on the same call to enter the portal.`,
   },
   {
-    title: "Outcome",
+    title: "Summary",
     layout: "text-first",
     images: [{ file: "outcome.webp", alt: "Arcarae lockup on a phone, held in hand" }],
-    body: `The lockups and carousels shipped on schedule. The work also pulled the engagement forward: the founder opened the parent-brand conversation, Arcarae Labs, off the back of a direction that began here as a parked exploration.`,
+    body: `I started by analyzing the moodboards to identify the embedded attributes. From there I produced four distinct directions, which we synthesized into a new visual language.
+
+Astral v2 is the system we built, which informs the App Store lockups and the Instagram carousels.`,
     link: { label: "View the full interactive case study →", href: FULL_CASE_URL },
   },
 ];
@@ -228,7 +232,7 @@ async function main() {
     date: "2026-06-06",
     year: "2026",
     description:
-      "Brand and launch design for an AI journaling app — App Store lockups and Instagram carousels, plus the identity underneath them.",
+      "Brand expansion and visual design for an AI journaling app: App Store lockups and Instagram carousels, plus the visual language beneath them.",
     coverImage: { _type: "image", asset: { _type: "reference", _ref: coverAsset._id } },
     externalUrl: FULL_CASE_URL,
     caseStudyMeta,
