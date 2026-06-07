@@ -8,6 +8,7 @@ import { ArchiveItem, typeColors } from '@/lib/types'
 import { urlFor } from '@/lib/sanity'
 import WalletButton from './WalletButton'
 import CaseStudyContent from './CaseStudyContent'
+import ContactForm from './ContactForm'
 
 // Crypto wallet addresses for Support card
 const WALLET_ADDRESSES = {
@@ -217,7 +218,6 @@ interface ModalProps {
 
 export default function Modal({ item, onClose }: ModalProps) {
   const colors = typeColors[item.type] || typeColors.Everything
-  const youformRef = useRef<HTMLDivElement>(null)
   const closingForCheckoutRef = useRef(false)
   const [lightboxState, setLightboxState] = useState<{ images: { src: string; alt: string }[]; currentIndex: number } | null>(null)
   const [activeQR, setActiveQR] = useState<{ currency: string; address: string } | null>(null)
@@ -321,33 +321,6 @@ export default function Modal({ item, onClose }: ModalProps) {
       document.body.style.paddingRight = ''
     }
   }, [])
-
-  // Load YouForm script for contact form
-  useEffect(() => {
-    if (!isContactForm) return
-
-    const initYouForm = () => {
-      // Small delay to ensure DOM is ready
-      setTimeout(() => {
-        if ((window as any).YouForm) {
-          (window as any).YouForm.init()
-        }
-      }, 100)
-    }
-
-    // Check if script already exists
-    const existingScript = document.querySelector('script[src="https://app.youform.com/embed.js"]')
-    if (!existingScript) {
-      const script = document.createElement('script')
-      script.src = 'https://app.youform.com/embed.js'
-      script.async = true
-      script.onload = initYouForm
-      document.body.appendChild(script)
-    } else {
-      // Re-initialize if script already loaded
-      initYouForm()
-    }
-  }, [isContactForm])
 
   // Load Cal.com script for booking form
   useEffect(() => {
@@ -1348,16 +1321,10 @@ export default function Modal({ item, onClose }: ModalProps) {
             </div>
           )}
 
-          {/* YouForm embed for contact form */}
+          {/* Contact form — sends via Resend API */}
           {isContactForm && (
             <div className="mb-8">
-              <div
-                ref={youformRef}
-                data-youform-embed
-                data-form="muqaomml"
-                data-width="100%"
-                data-height="700"
-              />
+              <ContactForm />
             </div>
           )}
 
