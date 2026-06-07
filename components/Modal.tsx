@@ -501,6 +501,22 @@ export default function Modal({ item, onClose }: ModalProps) {
 
             return (
               <>
+                {/* Prominent: jump straight to the full interactive case study */}
+                {item.externalUrl && (
+                  <a
+                    href={item.externalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group mb-8 flex items-center justify-between gap-4 border-b-2 pb-4 font-sans text-[22px] sm:text-[28px] leading-tight tracking-tight text-foreground transition-opacity hover:opacity-90"
+                    style={{ borderColor: colors.dot }}
+                  >
+                    <span>View the full interactive case study</span>
+                    <span className="shrink-0 transition-transform group-hover:translate-x-1" style={{ color: colors.dot }}>
+                      →
+                    </span>
+                  </a>
+                )}
+
                 {/* Video at top */}
                 {item.muxVideo?.asset?.playbackId && (
                   <div className="mb-8">
@@ -1495,6 +1511,18 @@ export default function Modal({ item, onClose }: ModalProps) {
                   style={{ background: colors.dot }}
                 >
                   View Figma
+                </a>
+              )}
+              {/* Case study: View the full live case study site */}
+              {isCaseStudy && item.externalUrl && (
+                <a
+                  href={item.externalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  style={{ background: colors.dot }}
+                >
+                  View Live Case Study
                 </a>
               )}
               {/* Resume download button */}
