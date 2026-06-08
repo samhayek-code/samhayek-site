@@ -62,6 +62,7 @@ export interface ArchiveItem {
   muxVideo?: MuxVideo // MUX video asset
   figmaUrl?: string
   prototypeUrl?: string
+  liveUrl?: string
   collectionPieces?: CollectionPiece[]
   collectionBanner?: any // Sanity image for collection intro
   merchGallery?: any[] // Array of Sanity images

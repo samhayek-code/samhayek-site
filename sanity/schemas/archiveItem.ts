@@ -181,6 +181,12 @@ export default defineType({
       description: 'Figma prototype URL for interactive preview',
     }),
     defineField({
+      name: 'liveUrl',
+      title: 'Live Site URL',
+      type: 'url',
+      description: 'Link to the live production site — renders a "Visit the live site" button at the top and bottom of a case study',
+    }),
+    defineField({
       name: 'fileAsset',
       title: 'File Download',
       type: 'file',

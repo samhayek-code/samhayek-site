@@ -269,6 +269,11 @@ export default function Modal({ item, onClose }: ModalProps) {
   const isContactForm = item.slug?.current === 'send-message'
   const isBookingForm = item.slug?.current === 'book-a-call'
   const isCaseStudy = (item.caseStudySections?.length ?? 0) > 0
+  // Live production site link. Prefers the Sanity `liveUrl` field; falls back to
+  // a per-slug map so the button works without a CMS write.
+  const liveUrl =
+    item.liveUrl ||
+    ({ "grow-theory": "https://growtheory.io" } as Record<string, string>)[item.slug?.current ?? ""]
   const isSupport = item.slug?.current === 'support'
   const isResume = item.slug?.current === 'resume'
   const isArt = item.type === 'Art'
@@ -512,6 +517,20 @@ export default function Modal({ item, onClose }: ModalProps) {
                     style={{ background: colors.dot }}
                   >
                     View the full interactive case study
+                    <span className="transition-transform group-hover:translate-x-1">→</span>
+                  </a>
+                )}
+
+                {/* Prominent filled button: visit the live production site */}
+                {liveUrl && (
+                  <a
+                    href={liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group mb-8 flex items-center justify-center gap-3 px-6 py-4 font-mono text-[13px] sm:text-[14px] font-bold uppercase tracking-wider text-white transition-opacity hover:opacity-90"
+                    style={{ background: colors.dot }}
+                  >
+                    Visit the live site
                     <span className="transition-transform group-hover:translate-x-1">→</span>
                   </a>
                 )}
@@ -1648,6 +1667,18 @@ export default function Modal({ item, onClose }: ModalProps) {
                   style={{ background: colors.dot }}
                 >
                   View Live Case Study
+                </a>
+              )}
+              {/* Case study: visit the live production site */}
+              {isCaseStudy && liveUrl && (
+                <a
+                  href={liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  style={{ background: colors.dot }}
+                >
+                  Visit Live Site
                 </a>
               )}
               {/* Resume download button */}

@@ -50,6 +50,7 @@ export async function getArchiveItems() {
       },
       figmaUrl,
       prototypeUrl,
+      liveUrl,
       collectionPieces,
       collectionBanner,
       merchGallery,
