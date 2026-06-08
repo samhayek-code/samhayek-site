@@ -930,7 +930,7 @@ export default function Modal({ item, onClose }: ModalProps) {
             <div className="space-y-6 mb-8">
               {/* Subtitle */}
               <p className="font-sans text-[15px]" style={{ color: 'var(--modal-text-tertiary)' }}>
-                Tiberian Sun EVA + CABAL voices for Claude Code.
+                Tiberian Sun EVA, CABAL, and unit voices for Claude Code.
               </p>
 
               {/* Main description */}
@@ -938,10 +938,10 @@ export default function Modal({ item, onClose }: ModalProps) {
                 Hooks into four Claude Code events and plays a random Tiberian Sun line — a boot-up when a session starts, a confirmation when a task finishes, a prompt when permission&rsquo;s needed, and a reaction when a command errors out.
               </p>
               <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
-                Two voices: GDI EVA, the calm battlefield announcer, and CABAL, Nod&rsquo;s menacing AI — played pure, where every event is a threat. 37 lines across the pair, switchable anytime.
+                Each faction blends its announcer with its unit voices, the way the game layers them — GDI&rsquo;s EVA and her infantry, Nod&rsquo;s CABAL and his cyborgs. 80 lines across the two packs, fired at random, switchable anytime.
               </p>
               <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
-                The interesting part: these aren&rsquo;t soundboard rips, they&rsquo;re the original game audio. Pulling it on macOS meant cracking Westwood&rsquo;s MIX archive format by hand, reversing the filename hash to recover names, decoding the Westwood ADPCM with ffmpeg, then transcribing all 306 voice lines with whisper so the right ones land in the right event.
+                The interesting part: these aren&rsquo;t soundboard rips, they&rsquo;re the original game audio. Pulling it on macOS meant cracking Westwood&rsquo;s MIX archive format by hand, reversing the filename hash to recover names, decoding the Westwood ADPCM with ffmpeg, then transcribing every voice line with whisper so the right ones land in the right event.
               </p>
               <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
                 macOS only.
@@ -1025,7 +1025,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 <div className="pl-4 space-y-0.5">
                   <div><span className="text-muted">Session starts →</span> {'"Establishing Battlefield Control. Stand by."'}</div>
                   <div><span className="text-muted">Task completes →</span> {'"Construction complete"'}</div>
-                  <div><span className="text-muted">Needs permission →</span> {'"Ion cannon ready"'}</div>
+                  <div><span className="text-muted">Needs permission →</span> {'"Awaiting orders"'} <span className="text-muted">(unit)</span></div>
                   <div><span className="text-muted">Error occurs →</span> {'"Prepare for sterilization"'} <span className="text-muted">(CABAL)</span></div>
                 </div>
               </div>
