@@ -265,6 +265,7 @@ export default function Modal({ item, onClose }: ModalProps) {
   const isOasis = item.slug?.current === 'oasis'
   const isSC2 = item.slug?.current === 'sc2-audio-hooks'
   const isHalo = item.slug?.current === 'halo-audio-hooks'
+  const isTiberianSun = item.slug?.current === 'tiberian-sun-audio-hooks'
   const isContactForm = item.slug?.current === 'send-message'
   const isBookingForm = item.slug?.current === 'book-a-call'
   const isCaseStudy = (item.caseStudySections?.length ?? 0) > 0
@@ -279,7 +280,7 @@ export default function Modal({ item, onClose }: ModalProps) {
   const isReferences = item.slug?.current === 'references'
   const isGalleryType = (isArt || isDesign) && !isCollection && !isTestimonial && !isReferences && !isCaseStudy  // Types that use full-width gallery display (but not collections, testimonials, case studies, or references)
   const isEmbedModal = isContactForm || isBookingForm
-  const hideCtaButton = isEmbedModal || isGalleryType || isSupport || isCollection || isWriting || isOasis || isSC2 || isHalo || isResume || isCaseStudy
+  const hideCtaButton = isEmbedModal || isGalleryType || isSupport || isCollection || isWriting || isOasis || isSC2 || isHalo || isTiberianSun || isResume || isCaseStudy
 
   // Collection navigation
   const collectionPieces = item.collectionPieces || []
@@ -568,7 +569,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           })()}
 
           {/* Description - hide for collections, checkout, OASIS, and case studies */}
-          {!isCollection && !showWhopCheckout && !isOasis && !isSC2 && !isHalo && !isCaseStudy && (
+          {!isCollection && !showWhopCheckout && !isOasis && !isSC2 && !isHalo && !isTiberianSun && !isCaseStudy && (
             <p className="font-sans text-[17px] leading-relaxed mb-6" style={{ color: 'var(--modal-text-secondary)' }}>
               {item.description}
             </p>
@@ -901,6 +902,120 @@ export default function Modal({ item, onClose }: ModalProps) {
               <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
                 Prefer sci-fi RTS? There&rsquo;s a{' '}
                 <a href="/tools/sc2-audio-hooks" className="underline underline-offset-2 hover:opacity-70 transition-opacity" style={{ color: 'var(--modal-text-secondary)' }}>StarCraft 2 set</a>{' '}too.
+              </p>
+            </div>
+          )}
+
+          {/* Tiberian Sun Audio-Hooks */}
+          {isTiberianSun && (
+            <div className="space-y-6 mb-8">
+              {/* Subtitle */}
+              <p className="font-sans text-[15px]" style={{ color: 'var(--modal-text-tertiary)' }}>
+                Tiberian Sun EVA + CABAL voices for Claude Code.
+              </p>
+
+              {/* Main description */}
+              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
+                Hooks into four Claude Code events and plays a random Tiberian Sun line — a boot-up when a session starts, a confirmation when a task finishes, a prompt when permission&rsquo;s needed, and a reaction when a command errors out.
+              </p>
+              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
+                Two voices: GDI EVA, the calm battlefield announcer, and CABAL, Nod&rsquo;s menacing AI — played pure, where every event is a threat. 37 lines across the pair, switchable anytime.
+              </p>
+              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
+                The interesting part: these aren&rsquo;t soundboard rips, they&rsquo;re the original game audio. Pulling it on macOS meant cracking Westwood&rsquo;s MIX archive format by hand, reversing the filename hash to recover names, decoding the Westwood ADPCM with ffmpeg, then transcribing all 306 voice lines with whisper so the right ones land in the right event.
+              </p>
+              <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
+                macOS only.
+              </p>
+
+              {/* Install command */}
+              <div className="space-y-3">
+                <span className="font-mono font-medium text-[11px] text-muted uppercase tracking-wide">
+                  Install
+                </span>
+                <div
+                  className="flex items-center gap-3 px-4 py-3"
+                  style={{
+                    background: 'var(--surface)',
+                    border: '1px solid var(--border)',
+                  }}
+                >
+                  <code className="font-mono text-[13px] text-foreground truncate flex-1 select-all" title="bash <(curl -fsSL https://raw.githubusercontent.com/samhayek-code/tiberian-sun-audio-hooks/main/install.sh)">
+                    bash &lt;(curl -fsSL https://raw.githubusercontent.com/samhayek-code/tiberian-sun-audio-hooks/main/install.sh)
+                  </code>
+                  <button
+                    onClick={() => handleCopyInstall('bash <(curl -fsSL https://raw.githubusercontent.com/samhayek-code/tiberian-sun-audio-hooks/main/install.sh)')}
+                    className="shrink-0 px-3 py-1.5 font-mono text-[12px] font-medium transition-all"
+                    style={{
+                      background: copied ? 'var(--foreground)' : 'var(--cta-bg)',
+                      border: '1px solid',
+                      borderColor: copied ? 'var(--foreground)' : 'var(--border)',
+                      color: copied ? 'var(--background)' : 'var(--cta-text)',
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!copied) {
+                        e.currentTarget.style.background = 'var(--cta-hover-bg)'
+                        e.currentTarget.style.borderColor = 'var(--cta-hover-border)'
+                        e.currentTarget.style.color = 'var(--cta-hover-text)'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!copied) {
+                        e.currentTarget.style.background = 'var(--cta-bg)'
+                        e.currentTarget.style.borderColor = 'var(--border)'
+                        e.currentTarget.style.color = 'var(--cta-text)'
+                      }
+                    }}
+                  >
+                    {copied ? 'Copied' : 'Copy'}
+                  </button>
+                </div>
+              </div>
+
+              {/* How it works */}
+              <div className="space-y-3">
+                <span className="font-mono font-medium text-[11px] text-muted uppercase tracking-wide">
+                  How it works
+                </span>
+                <ol className="space-y-2 font-sans text-[15px]" style={{ color: 'var(--modal-text-tertiary)' }}>
+                  <li className="flex gap-3">
+                    <span className="font-mono text-[13px] text-muted shrink-0">1.</span>
+                    <span>Run the command above in Terminal</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="font-mono text-[13px] text-muted shrink-0">2.</span>
+                    <span>Pick your faction (GDI or NOD)</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="font-mono text-[13px] text-muted shrink-0">3.</span>
+                    <span>Start a new Claude Code session and you&rsquo;ll hear it</span>
+                  </li>
+                </ol>
+              </div>
+
+              {/* Events preview */}
+              <div
+                className="p-4 font-mono text-[12px] leading-relaxed"
+                style={{
+                  background: 'var(--surface)',
+                  border: '1px solid var(--border)',
+                  color: 'var(--modal-text-tertiary)',
+                }}
+              >
+                <div className="text-muted mb-2">Events</div>
+                <div className="pl-4 space-y-0.5">
+                  <div><span className="text-muted">Session starts →</span> {'"Establishing Battlefield Control. Stand by."'}</div>
+                  <div><span className="text-muted">Task completes →</span> {'"Construction complete"'}</div>
+                  <div><span className="text-muted">Needs permission →</span> {'"Ion cannon ready"'}</div>
+                  <div><span className="text-muted">Error occurs →</span> {'"Prepare for sterilization"'} <span className="text-muted">(CABAL)</span></div>
+                </div>
+              </div>
+
+              {/* Light link to the other sets */}
+              <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
+                Two more in the set — the{' '}
+                <a href="/code/halo-audio-hooks" className="underline underline-offset-2 hover:opacity-70 transition-opacity" style={{ color: 'var(--modal-text-secondary)' }}>Halo</a>{' '}and{' '}
+                <a href="/code/sc2-audio-hooks" className="underline underline-offset-2 hover:opacity-70 transition-opacity" style={{ color: 'var(--modal-text-secondary)' }}>StarCraft 2</a>{' '}voices.
               </p>
             </div>
           )}
@@ -1329,7 +1444,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           )}
 
           {/* Body (rich text) - hide for Support card and Resume */}
-          {item.body && item.body.length > 0 && !isSupport && !isResume && !isHalo && (
+          {item.body && item.body.length > 0 && !isSupport && !isResume && !isHalo && !isTiberianSun && (
             <div className="prose prose-base max-w-full w-full mb-8 overflow-hidden break-words [&>p]:mb-4 [&>p]:leading-relaxed [&>p]:text-[17px] [&_a]:text-foreground [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:opacity-70 [&_h1]:text-foreground [&_h2]:text-foreground [&_h3]:text-foreground [&_h4]:text-foreground [&_strong]:text-foreground [&_code]:text-foreground [&_blockquote]:text-muted [&_blockquote]:border-border" style={{ color: 'var(--modal-text-body)' }}>
               <PortableText value={item.body} components={portableTextComponents} />
             </div>
@@ -1491,6 +1606,18 @@ export default function Modal({ item, onClose }: ModalProps) {
               {isSC2 && (
                 <a
                   href="https://github.com/samhayek-code/sc2-claude-hooks"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  style={{ background: colors.dot }}
+                >
+                  View on GitHub
+                </a>
+              )}
+              {/* Tiberian Sun GitHub link */}
+              {isTiberianSun && (
+                <a
+                  href="https://github.com/samhayek-code/tiberian-sun-audio-hooks"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
