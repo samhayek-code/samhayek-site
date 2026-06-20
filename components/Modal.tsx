@@ -788,6 +788,42 @@ export default function Modal({ item, onClose }: ModalProps) {
               <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
                 Three franchises — StarCraft 2 (Terran, Protoss, Zerg), Halo (Cortana, 343 Guilty Spark, Sgt. Johnson), and Tiberian Sun (GDI&rsquo;s EVA, Nod&rsquo;s CABAL). Around 330 lines, picked at random; error sounds are smart-filtered so routine failures stay quiet.
               </p>
+
+              {/* Packs table */}
+              <div className="rounded-input overflow-hidden" style={{ border: '1px solid var(--border)', background: 'var(--surface)' }}>
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse text-[12px]">
+                    <thead>
+                      <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                        <th className="text-left font-mono font-medium uppercase tracking-wide px-3 py-2" style={{ color: 'var(--muted)' }}>Pack</th>
+                        <th className="text-left font-mono font-medium uppercase tracking-wide px-3 py-2" style={{ color: 'var(--muted)' }}>Franchise</th>
+                        <th className="text-left font-mono font-medium uppercase tracking-wide px-3 py-2" style={{ color: 'var(--muted)' }}>Voices</th>
+                        <th className="text-right font-mono font-medium uppercase tracking-wide px-3 py-2" style={{ color: 'var(--muted)' }}>Clips</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        ['terran', 'StarCraft 2', 'Terran advisor + units', '28'],
+                        ['protoss', 'StarCraft 2', 'Protoss advisor + units', '23'],
+                        ['zerg', 'StarCraft 2', 'Zerg advisor + creature sounds', '24'],
+                        ['cortana', 'Halo', 'Cortana (Halo 2/3)', '80'],
+                        ['guilty-spark', 'Halo', '343 Guilty Spark (Halo 3)', '48'],
+                        ['sergeant-johnson', 'Halo', 'Sgt. Johnson', '47'],
+                        ['gdi', 'Tiberian Sun', 'EVA announcer + GDI units', '40'],
+                        ['nod', 'Tiberian Sun', 'CABAL + Nod units', '40'],
+                      ].map(([pack, franchise, voices, clips], i) => (
+                        <tr key={pack} style={{ borderTop: i === 0 ? 'none' : '1px solid var(--border-subtle)' }}>
+                          <td className="font-mono px-3 py-2 whitespace-nowrap" style={{ color: 'var(--modal-text-secondary)' }}>{pack}</td>
+                          <td className="font-sans px-3 py-2 whitespace-nowrap" style={{ color: 'var(--modal-text-tertiary)' }}>{franchise}</td>
+                          <td className="font-sans px-3 py-2" style={{ color: 'var(--modal-text-tertiary)' }}>{voices}</td>
+                          <td className="font-mono tabular-nums text-right px-3 py-2" style={{ color: 'var(--modal-text-secondary)' }}>{clips}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
               <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
                 The clips ship clean. Soundboard rips came with an in-game ping and a spoken watermark before each line — a numpy + ffmpeg pipeline finds the ping by cross-correlation and trims to the voice onset, never clipping the first word. The Tiberian Sun set is the original game audio, pulled on macOS by cracking Westwood&rsquo;s MIX format by hand.
               </p>
