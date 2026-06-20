@@ -440,7 +440,7 @@ export default function Modal({ item, onClose }: ModalProps) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`max-w-[800px] w-full overflow-auto cursor-default rounded-modal ${showWhopCheckout ? 'max-h-[95vh]' : 'max-h-[85vh]'}`}
+        className="max-w-[800px] w-full cursor-default rounded-modal overflow-hidden"
         style={{
           background: 'var(--modal-bg)',
           boxShadow: 'var(--shadow-pop)',
@@ -451,6 +451,9 @@ export default function Modal({ item, onClose }: ModalProps) {
             : 'transform 0.29s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.23s ease-in',
         }}
       >
+        {/* Inner scroll container — the outer box's overflow-hidden + rounded-modal
+            clips this scrollbar flush to the corners, so it no longer runs past them. */}
+        <div className={`overflow-y-auto overflow-x-hidden ${showWhopCheckout ? 'max-h-[95vh]' : 'max-h-[85vh]'}`}>
         {/* Hero image - hide for embed modals, gallery types (Art, Design), Writing, testimonials, case studies, and checkout */}
         {!isEmbedModal && !isGalleryType && !isWriting && !isTestimonial && !isCaseStudy && !showWhopCheckout && !isReferences && item.coverImage && (
           <div className="w-full aspect-video flex items-center justify-center relative overflow-hidden img-outline" style={{ background: 'var(--modal-surface)' }}>
@@ -472,7 +475,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           {/* Header */}
           <div className="flex justify-between items-start mb-6">
             <div>
-              <h2 className="font-sans text-[22px] lg:text-[26px] font-normal tracking-tighter text-foreground mb-2">
+              <h2 className="font-display text-[24px] lg:text-[28px] font-medium tracking-[-0.012em] text-foreground mb-2">
                 {item.title}
               </h2>
               {item.year && (
@@ -484,7 +487,7 @@ export default function Modal({ item, onClose }: ModalProps) {
             
             {/* Label pill */}
             <div
-              className="flex items-center gap-1.5 px-3 py-1.5 shrink-0 rounded-pill shadow-card"
+              className="flex items-center gap-1.5 px-3 py-1.5 shrink-0 rounded-tag shadow-card"
               style={{
                 background: 'var(--card-pill-bg)',
                 border: '1px solid var(--card-pill-border)',
@@ -537,7 +540,7 @@ export default function Modal({ item, onClose }: ModalProps) {
 
                 {/* Video at top */}
                 {item.muxVideo?.asset?.playbackId && (
-                  <div className="mb-8">
+                  <div className="mb-8 rounded-card overflow-hidden">
                     <MuxPlayer
                       playbackId={item.muxVideo.asset.playbackId}
                       streamType="on-demand"
@@ -1362,7 +1365,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                       </div>
 
                       {/* Piece title */}
-                      <h3 className="font-sans text-[22px] font-normal tracking-tighter text-foreground text-center">
+                      <h3 className="font-display text-[22px] font-medium tracking-[-0.012em] text-foreground text-center">
                         {piece.title}
                       </h3>
 
@@ -1381,7 +1384,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 {/* Merch grid */}
                 {displayedIndex === totalPieces && hasMerch && (
                   <div className="space-y-6">
-                    <h3 className="font-sans text-[22px] font-normal tracking-tighter text-foreground text-center">
+                    <h3 className="font-display text-[22px] font-medium tracking-[-0.012em] text-foreground text-center">
                       The Collection
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -1509,7 +1512,7 @@ export default function Modal({ item, onClose }: ModalProps) {
 
           {/* MUX Video Player (skip for case studies — rendered in case study block above) */}
           {!isCaseStudy && item.muxVideo?.asset?.playbackId && (
-            <div className="mb-8">
+            <div className="mb-8 rounded-card overflow-hidden">
               <MuxPlayer
                 playbackId={item.muxVideo.asset.playbackId}
                 streamType="on-demand"
@@ -1558,7 +1561,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           {showWhopCheckout && item.whopPlanId && (
             <div className="mb-8">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-sans text-[20px] font-normal tracking-tighter text-foreground">Checkout</h3>
+                <h3 className="font-display text-[20px] font-medium tracking-[-0.012em] text-foreground">Checkout</h3>
                 <button
                   onClick={() => setShowWhopCheckout(false)}
                   className="text-muted hover:text-foreground transition-colors text-[16px]"
@@ -1733,6 +1736,7 @@ export default function Modal({ item, onClose }: ModalProps) {
               )}
             </div>
           </div>
+        </div>
         </div>
       </div>
 

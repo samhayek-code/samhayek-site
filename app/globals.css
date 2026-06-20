@@ -1,28 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&display=swap');
-
-@font-face {
-  font-family: 'PP Neue Montreal';
-  src: url('/fonts/PPNeueMontreal-Thin.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'PP Neue Montreal';
-  src: url('/fonts/PPNeueMontreal-Book.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'PP Neue Montreal';
-  src: url('/fonts/PPNeueMontreal-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
+/* Fonts loaded via <link> in app/layout.tsx:
+   Sentient (display serif, titles) · Manrope (sans, body) · Geist Mono (mono). */
 
 @tailwind base;
 @tailwind components;
@@ -57,7 +34,7 @@
   --grid-color: %23ffffff;
   --grid-opacity: 0.06;
   --noise-opacity: 0.015;
-  --modal-backdrop: rgba(0, 0, 0, 0.8);
+  --modal-backdrop: rgba(0, 0, 0, 0.5);
   /* Card overlay colors */
   --card-overlay-rgb: 13, 13, 15;
   --card-overlay-default: 0.7;
@@ -115,7 +92,7 @@
   --grid-color: %23000000;
   --grid-opacity: 0.09;
   --noise-opacity: 0.025;
-  --modal-backdrop: rgba(0, 0, 0, 0.5);
+  --modal-backdrop: rgba(0, 0, 0, 0.38);
   /* Card overlay colors */
   --card-overlay-rgb: 244, 244, 245;
   --card-overlay-default: 0.25;
@@ -148,12 +125,17 @@
    New namespaces (--radius-*, --shadow-*, --ease-*, --dur-*) so a revert can't
    touch color. Shadows are pure black/white alpha — hue-free, no brand color imported. */
 :root {
+  /* Type families — Sentient (display), Manrope (body), Geist Mono (mono) */
+  --font-display: 'Sentient', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Manrope', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Geist Mono', 'IBM Plex Mono', ui-monospace, monospace;
   --radius-card: 16px;
   --radius-modal: 20px;
   --radius-pill: 999px;
   --radius-btn: 12px;
   --radius-input: 10px;
   --radius-chip: 10px;
+  --radius-tag: 8px;
   --radius-focus: 8px;
   /* DARK shadow base (default theme): white hairline ring + black drops */
   --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.07), 0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.4);
@@ -281,10 +263,12 @@ p {
   animation-delay: var(--entrance-delay, 0ms);
 }
 
-/* Modal backdrop */
+/* Modal backdrop — frosted blur over a light scrim so the modal's soft shadow
+   reads as nested elevation (a heavy scrim flattened it into a solid dark frame). */
 .modal-backdrop {
   background: var(--modal-backdrop);
-  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
 }
 
 /* Card noise texture */
@@ -311,21 +295,22 @@ p {
 
 /* ============================================================
    SOFT SURFACE — type scale + motion (ported from the Jakub recipe).
-   Type weights snapped to PP Neue Montreal's 300/400/500 set.
+   Display = Sentient · body = Manrope · mono = Geist Mono. All variable,
+   so the original Dossier weights (450/460/540/600) are restored.
    ============================================================ */
 
-/* Type scale — sizes/spacing exact; weights rounded to the loaded font set */
-.t-display  { font-size: clamp(2.4rem, 3.4vw, 3.4rem); line-height: 1.04; letter-spacing: -0.02em; font-weight: 400; text-wrap: balance; }
-.t-h2       { font-size: 1.9rem; line-height: 1.12; letter-spacing: -0.014em; font-weight: 400; text-wrap: balance; }
+/* Type scale — sizes/spacing/weights from the Dossier; families from --font-* */
+.t-display  { font-family: var(--font-display); font-size: clamp(2.4rem, 3.4vw, 3.4rem); line-height: 1.04; letter-spacing: -0.018em; font-weight: 400; text-wrap: balance; }
+.t-h2       { font-family: var(--font-display); font-size: 1.9rem; line-height: 1.12; letter-spacing: -0.012em; font-weight: 500; text-wrap: balance; }
 .t-nav      { font-size: 1.1875rem; line-height: 1.25; letter-spacing: -0.012em; font-weight: 500; }
-.t-body-lg  { font-size: 1.0625rem; line-height: 1.5; letter-spacing: -0.008em; font-weight: 400; text-wrap: pretty; }
-.t-body     { font-size: 0.9375rem; line-height: 1.55; letter-spacing: -0.004em; font-weight: 400; text-wrap: pretty; }
-.t-body-sm  { font-size: 0.875rem; line-height: 1.45; font-weight: 400; text-wrap: pretty; }
-.t-label    { font-size: 0.8125rem; line-height: 1.3; letter-spacing: 0; font-weight: 500; }
-.t-caption  { font-size: 0.75rem; line-height: 1.35; font-weight: 500; }
-.t-overline { font-size: 0.6875rem; line-height: 1.2; letter-spacing: 0.13em; font-weight: 500; text-transform: uppercase; }
-.t-mono     { font-family: var(--font-mono, "IBM Plex Mono", monospace); font-size: 0.75rem; line-height: 1.4; letter-spacing: 0.002em; font-weight: 500; }
-.t-mono-xs  { font-family: var(--font-mono, "IBM Plex Mono", monospace); font-size: 0.6875rem; line-height: 1.3; letter-spacing: 0.01em; font-weight: 500; }
+.t-body-lg  { font-size: 1.0625rem; line-height: 1.5; letter-spacing: -0.008em; font-weight: 450; text-wrap: pretty; }
+.t-body     { font-size: 0.9375rem; line-height: 1.55; letter-spacing: -0.004em; font-weight: 450; text-wrap: pretty; }
+.t-body-sm  { font-size: 0.875rem; line-height: 1.45; font-weight: 450; text-wrap: pretty; }
+.t-label    { font-size: 0.8125rem; line-height: 1.3; letter-spacing: 0; font-weight: 540; }
+.t-caption  { font-size: 0.75rem; line-height: 1.35; font-weight: 460; }
+.t-overline { font-size: 0.6875rem; line-height: 1.2; letter-spacing: 0.13em; font-weight: 600; text-transform: uppercase; }
+.t-mono     { font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.4; letter-spacing: 0.002em; font-weight: 460; }
+.t-mono-xs  { font-family: var(--font-mono); font-size: 0.6875rem; line-height: 1.3; letter-spacing: 0.01em; font-weight: 460; }
 .tnum       { font-variant-numeric: tabular-nums; }
 
 /* Image outlines — pure black/white, never tinted; inset so it sits in the rounded clip */

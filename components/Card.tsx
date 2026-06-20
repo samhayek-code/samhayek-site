@@ -262,12 +262,13 @@ export default function Card({
             )}
           </div>
 
-          {/* Label pill — category-coded */}
+          {/* Label tag — solid dark base + a faint category tint. Opaque (no
+              translucency) so the label keeps contrast over the revealed image on hover. */}
           <div
-            className="flex items-center gap-1.5 px-2.5 py-1 flex-shrink-0 rounded-pill"
+            className="flex items-center gap-1.5 px-2.5 py-1 flex-shrink-0 rounded-tag"
             style={{
-              background: colors.bg,
-              border: `1px solid ${colors.dot}20`,
+              background: `linear-gradient(0deg, ${colors.dot}1F, ${colors.dot}1F), #15151A`,
+              border: `1px solid ${colors.dot}2E`,
             }}
           >
             <div

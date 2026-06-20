@@ -193,7 +193,7 @@ export default function ContactForm() {
                 disabled={sending}
                 onClick={() => toggleTopic(topic)}
                 aria-pressed={active}
-                className="px-4 py-2 font-mono text-[12px] font-medium uppercase tracking-wide rounded-pill press transition-all"
+                className="px-4 py-2 font-mono text-[12px] font-medium uppercase tracking-wide rounded-chip press transition-all"
                 style={{
                   background: active ? 'var(--accent-primary)' : 'var(--cta-bg)',
                   border: '1px solid',

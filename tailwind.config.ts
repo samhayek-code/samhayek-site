@@ -32,8 +32,9 @@ const config: Config = {
         'type-connect': '#EF4444',
       },
       fontFamily: {
-        sans: ['PP Neue Montreal', 'system-ui', 'sans-serif'],
-        mono: ['IBM Plex Mono', 'monospace'],
+        sans: ['Manrope', 'system-ui', '-apple-system', 'sans-serif'],
+        mono: ['Geist Mono', 'IBM Plex Mono', 'ui-monospace', 'monospace'],
+        display: ['Sentient', 'Georgia', 'Times New Roman', 'serif'],
       },
       letterSpacing: {
         tighter: '-0.03em',
@@ -47,6 +48,7 @@ const config: Config = {
         btn: 'var(--radius-btn)',
         input: 'var(--radius-input)',
         chip: 'var(--radius-chip)',
+        tag: 'var(--radius-tag)',
       },
       boxShadow: {
         card: 'var(--shadow-card)',
