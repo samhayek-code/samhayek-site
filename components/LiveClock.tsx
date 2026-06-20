@@ -28,9 +28,8 @@ export default function LiveClock() {
   }, [])
   
   return (
-    <span 
-      className="font-mono font-medium text-[11px] text-subtle tracking-wide"
-      style={{ fontVariantNumeric: 'tabular-nums' }}
+    <span
+      className="t-mono-xs tnum text-subtle"
     >
       {time}
     </span>

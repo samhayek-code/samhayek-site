@@ -24,7 +24,7 @@ export default function CaseStudyContent({
       {/* Metadata grid */}
       {meta && meta.length > 0 && (
         <div
-          className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-4 p-5"
+          className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-4 p-5 rounded-card"
           style={{
             background: "var(--surface)",
             border: "1px solid var(--border)",
@@ -103,7 +103,7 @@ function SectionRenderer({
       {galleryImages.map((img, i) => (
         <div key={i} className="relative group">
           <div
-            className="relative overflow-hidden cursor-zoom-in"
+            className="relative overflow-hidden cursor-zoom-in rounded-card img-outline"
             onClick={() =>
               onImageClick(
                 galleryImages.map((g) => ({ src: g.src, alt: g.alt })),
@@ -146,7 +146,7 @@ function SectionRenderer({
               {galleryImages.map((img, i) => (
                 <div key={i} className="relative group">
                   <div
-                    className="relative overflow-hidden cursor-zoom-in"
+                    className="relative overflow-hidden cursor-zoom-in rounded-card img-outline"
                     onClick={() =>
                       onImageClick(
                         galleryImages.map((g) => ({

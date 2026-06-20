@@ -14,7 +14,7 @@ const fieldStyle: React.CSSProperties = {
 }
 
 const fieldClass =
-  'w-full px-4 py-3 font-sans text-[16px] placeholder:text-subtle focus:outline-none transition-all'
+  'w-full px-4 py-3 font-sans text-[16px] rounded-input placeholder:text-subtle focus:outline-none transition-all'
 
 function Field({
   id,
@@ -93,11 +93,11 @@ export default function ContactForm() {
   if (status === 'success') {
     return (
       <div
-        className="flex flex-col items-center text-center px-6 py-12 space-y-4"
+        className="flex flex-col items-center text-center px-6 py-12 space-y-4 rounded-card"
         style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
       >
         <div
-          className="w-12 h-12 rounded-full flex items-center justify-center"
+          className="w-12 h-12 rounded-full shadow-card flex items-center justify-center"
           style={{ background: 'var(--accent-primary-muted)', color: 'var(--accent-primary)' }}
         >
           <RiCheckLine size={24} />
@@ -193,7 +193,7 @@ export default function ContactForm() {
                 disabled={sending}
                 onClick={() => toggleTopic(topic)}
                 aria-pressed={active}
-                className="px-4 py-2 font-mono text-[12px] font-medium uppercase tracking-wide transition-all"
+                className="px-4 py-2 font-mono text-[12px] font-medium uppercase tracking-wide rounded-pill press transition-all"
                 style={{
                   background: active ? 'var(--accent-primary)' : 'var(--cta-bg)',
                   border: '1px solid',
@@ -240,7 +240,7 @@ export default function ContactForm() {
       {/* Error banner */}
       {error && (
         <div
-          className="px-4 py-3 font-sans text-[14px]"
+          className="px-4 py-3 font-sans text-[14px] rounded-input"
           style={{
             background: 'rgba(239, 68, 68, 0.1)',
             border: '1px solid rgba(239, 68, 68, 0.3)',
@@ -255,7 +255,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={sending}
-        className="w-full px-6 py-3.5 font-mono text-[12px] font-bold uppercase tracking-wider transition-all disabled:cursor-not-allowed"
+        className="w-full px-6 py-3.5 font-mono text-[12px] font-bold uppercase tracking-wider rounded-btn press shadow-card transition-all disabled:cursor-not-allowed"
         style={{
           background: sending ? 'var(--cta-bg)' : 'var(--accent-primary)',
           border: '1px solid',
