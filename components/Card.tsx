@@ -11,6 +11,7 @@ import {
   RiHeartFill,
   RiFileTextFill,
 } from "@remixicon/react";
+import { categoryIcons } from "@/lib/categoryIcons";
 
 // Filled icons for Connect type cards
 const connectIconColors: Record<string, string> = {
@@ -49,6 +50,7 @@ export default function Card({
   const glowRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<JSAnimation | null>(null);
   const colors = typeColors[item.type] || typeColors.Everything;
+  const CategoryIcon = categoryIcons[item.type] || categoryIcons.Everything;
 
   const isWritingType = item.type === "Writing";
   const isConnectType = item.type === "Connect";
@@ -265,12 +267,13 @@ export default function Card({
           {/* Label tag — solid dark base + a faint category tint. Opaque (no
               translucency) so the label keeps contrast over the revealed image on hover. */}
           <div
-            className="flex items-center px-2.5 py-1 flex-shrink-0 rounded-tag"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 flex-shrink-0 rounded-tag"
             style={{
               background: `linear-gradient(0deg, ${colors.dot}1F, ${colors.dot}1F), #15151A`,
               border: `1px solid ${colors.dot}2E`,
             }}
           >
+            <CategoryIcon weight="fill" size={11} color={colors.dot} />
             <span
               className="font-mono font-bold text-[9px] uppercase tracking-wider"
               style={{ color: colors.dot }}

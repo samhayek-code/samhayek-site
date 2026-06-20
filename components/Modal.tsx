@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import MuxPlayer from '@mux/mux-player-react'
 import { ArchiveItem, typeColors } from '@/lib/types'
+import { categoryIcons } from '@/lib/categoryIcons'
 import { urlFor } from '@/lib/sanity'
 import WalletButton from './WalletButton'
 import CaseStudyContent from './CaseStudyContent'
@@ -218,6 +219,7 @@ interface ModalProps {
 
 export default function Modal({ item, onClose }: ModalProps) {
   const colors = typeColors[item.type] || typeColors.Everything
+  const CategoryIcon = categoryIcons[item.type] || categoryIcons.Everything
   const closingForCheckoutRef = useRef(false)
   const [lightboxState, setLightboxState] = useState<{ images: { src: string; alt: string }[]; currentIndex: number } | null>(null)
   const [activeQR, setActiveQR] = useState<{ currency: string; address: string } | null>(null)
@@ -493,10 +495,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 border: '1px solid var(--card-pill-border)',
               }}
             >
-              <div
-                className="w-1.5 h-1.5 rounded-full shrink-0"
-                style={{ background: colors.dot }}
-              />
+              <CategoryIcon weight="fill" size={13} color={colors.dot} className="shrink-0" />
               <span className="font-mono font-medium text-[11px] text-muted uppercase tracking-wide whitespace-nowrap">
                 {item.label}
               </span>

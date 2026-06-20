@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { filterCategories, typeColors } from '@/lib/types'
+import { categoryIcons } from '@/lib/categoryIcons'
 
 interface NavBarProps {
   activeFilter: string
@@ -68,6 +69,7 @@ export default function NavBar({
             const isEverything = filter === 'Everything'
             const activeColor = isEverything ? 'var(--foreground)' : colors.dot
             const activeBg = isEverything ? 'var(--nav-active-bg)' : colors.bg
+            const Icon = categoryIcons[filter] || categoryIcons.Everything
 
             return (
               <button
@@ -88,12 +90,13 @@ export default function NavBar({
                   color: isActive ? activeColor : isHovered ? 'var(--foreground)' : 'var(--subtle)',
                 }}
               >
-                <div
-                  className="w-[5px] h-[5px] rounded-full transition-all duration-200"
+                <Icon
+                  weight="fill"
+                  size={13}
+                  className="transition-all duration-200"
                   style={{
-                    background: isActive ? activeColor : isHovered ? colors.dot : 'transparent',
-                    border: `1px solid ${isActive ? activeColor : isHovered ? colors.dot : 'var(--subtle)'}`,
-                    opacity: isActive ? 1 : isHovered ? 0.7 : 0.4,
+                    color: isActive ? activeColor : isHovered ? colors.dot : 'var(--subtle)',
+                    opacity: isActive ? 1 : isHovered ? 0.85 : 0.55,
                   }}
                 />
                 {filter}
@@ -207,6 +210,7 @@ export default function NavBar({
             const isEverything = filter === 'Everything'
             const activeColor = isEverything ? 'var(--foreground)' : colors.dot
             const activeBg = isEverything ? 'var(--nav-active-bg)' : colors.bg
+            const Icon = categoryIcons[filter] || categoryIcons.Everything
 
             return (
               <button
@@ -227,12 +231,13 @@ export default function NavBar({
                   color: isActive ? activeColor : isHovered ? 'var(--foreground)' : 'var(--subtle)',
                 }}
               >
-                <div
-                  className="w-[5px] h-[5px] rounded-full transition-all duration-200"
+                <Icon
+                  weight="fill"
+                  size={13}
+                  className="transition-all duration-200"
                   style={{
-                    background: isActive ? activeColor : isHovered ? colors.dot : 'transparent',
-                    border: `1px solid ${isActive ? activeColor : isHovered ? colors.dot : 'var(--subtle)'}`,
-                    opacity: isActive ? 1 : isHovered ? 0.7 : 0.4,
+                    color: isActive ? activeColor : isHovered ? colors.dot : 'var(--subtle)',
+                    opacity: isActive ? 1 : isHovered ? 0.85 : 0.55,
                   }}
                 />
                 {filter}
