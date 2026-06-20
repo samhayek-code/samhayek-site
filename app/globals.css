@@ -299,76 +299,9 @@ p {
   z-index: 50;
 }
 
-/* Card depth frame — card sits centered inside with 5px padding */
-.card-frame {
-  position: absolute;
-  inset: 0;
-  background: var(--depth);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Corner bracket marks — opacity & transition now set inline via DialKit */
-.card-corner-bracket {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  z-index: 5;
-  pointer-events: none;
-}
-
-.card-corner-bracket--tl {
-  top: 6px;
-  left: 6px;
-  border-top: 1px solid #8A8A8F;
-  border-left: 1px solid #8A8A8F;
-}
-
-.card-corner-bracket--tr {
-  top: 6px;
-  right: 6px;
-  border-top: 1px solid #8A8A8F;
-  border-right: 1px solid #8A8A8F;
-}
-
-.card-corner-bracket--bl {
-  bottom: 6px;
-  left: 6px;
-  border-bottom: 1px solid #8A8A8F;
-  border-left: 1px solid #8A8A8F;
-}
-
-.card-corner-bracket--br {
-  bottom: 6px;
-  right: 6px;
-  border-bottom: 1px solid #8A8A8F;
-  border-right: 1px solid #8A8A8F;
-}
-
-/* Spec line — opacity & color now set inline via DialKit */
-.card-spec-line {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 7px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-/* Card code */
-.card-code {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 9px;
-  font-weight: 500;
-  color: #3A3A3F;
-  letter-spacing: 0.06em;
-}
-
-/* Hide spec line on mobile */
-@media (max-width: 640px) {
-  .card-spec-line {
-    display: none;
-  }
-}
+/* Blueprint chrome retired (soft-surface port): .card-frame depth rectangle,
+   .card-corner-bracket marks, and .card-spec-line/.card-code are gone — the soft
+   shadow + rounded silhouette carries the card; the D-### code now uses .t-mono-xs. */
 
 /* Light mode: more visible nav hover states */
 :root.light {
