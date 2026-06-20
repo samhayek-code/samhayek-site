@@ -3,6 +3,7 @@ import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 import CustomCursor from '@/components/CustomCursor'
+import ScrollBlur from '@/components/ScrollBlur'
 
 export const metadata: Metadata = {
   title: 'Sam Hayek | Artist + Designer',
@@ -74,6 +75,7 @@ export default function RootLayout({
         <div className="iso-grid" />
         <div className="noise-overlay" />
         {children}
+        <ScrollBlur />
         <Analytics />
         <SpeedInsights />
       </body>
