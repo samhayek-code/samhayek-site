@@ -144,6 +144,36 @@
   --modal-text-body: #6B6B70;
 }
 
+/* === SOFT SURFACE TOKENS — appended, never overwriting the color vars above ===
+   New namespaces (--radius-*, --shadow-*, --ease-*, --dur-*) so a revert can't
+   touch color. Shadows are pure black/white alpha — hue-free, no brand color imported. */
+:root {
+  --radius-card: 16px;
+  --radius-modal: 20px;
+  --radius-pill: 999px;
+  --radius-btn: 12px;
+  --radius-input: 10px;
+  --radius-chip: 10px;
+  --radius-focus: 8px;
+  /* DARK shadow base (default theme): white hairline ring + black drops */
+  --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.07), 0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.4);
+  --shadow-pop: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 8px 24px rgba(0, 0, 0, 0.55), 0 20px 50px rgba(0, 0, 0, 0.5);
+  --ease-out-craft: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in-craft: cubic-bezier(0.4, 0, 1, 1);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-wiggle: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-instant: 100ms;
+  --dur-fast: 150ms;
+  --dur-base: 220ms;
+  --dur-slow: 400ms;
+}
+
+:root.light {
+  /* LIGHT shadow base: faint black hairline ring + soft black drops */
+  --shadow-card: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-pop: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 6px 16px -4px rgba(0, 0, 0, 0.1), 0 16px 40px -12px rgba(0, 0, 0, 0.12);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -159,6 +189,22 @@ body {
   color: var(--foreground);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Keyboard focus ring — the custom cursor is not an a11y substitute.
+   Uses the existing accent color var; outline follows the element's own radius. */
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
 }
 
 ::selection {
@@ -176,7 +222,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
-  border-radius: 1px;
+  border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -215,21 +261,23 @@ body {
 
 /* Card hover transition — transform/border/bg now driven by inline styles via DialKit */
 
-/* Staggered card entrance animation — distance & duration parameterized via CSS vars */
+/* Staggered card entrance — soft blur-reveal; distance & duration via CSS vars */
 @keyframes cardEntrance {
   from {
     opacity: 0;
     transform: translateY(var(--entrance-distance, 12px));
+    filter: blur(4px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
   }
 }
 
 .card-entrance {
   opacity: 0;
-  animation: cardEntrance var(--entrance-duration, 0.5s) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: cardEntrance var(--entrance-duration, 0.5s) var(--ease-spring) forwards;
   animation-delay: var(--entrance-delay, 0ms);
 }
 
@@ -326,6 +374,59 @@ body {
 :root.light {
   --nav-hover-bg: rgba(0, 0, 0, 0.08);
   --nav-active-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================================
+   SOFT SURFACE — type scale + motion (ported from the Jakub recipe).
+   Type weights snapped to PP Neue Montreal's 300/400/500 set.
+   ============================================================ */
+
+/* Type scale — sizes/spacing exact; weights rounded to the loaded font set */
+.t-display  { font-size: clamp(2.4rem, 3.4vw, 3.4rem); line-height: 1.04; letter-spacing: -0.02em; font-weight: 400; text-wrap: balance; }
+.t-h2       { font-size: 1.9rem; line-height: 1.12; letter-spacing: -0.014em; font-weight: 400; text-wrap: balance; }
+.t-nav      { font-size: 1.1875rem; line-height: 1.25; letter-spacing: -0.012em; font-weight: 500; }
+.t-body-lg  { font-size: 1.0625rem; line-height: 1.5; letter-spacing: -0.008em; font-weight: 400; text-wrap: pretty; }
+.t-body     { font-size: 0.9375rem; line-height: 1.55; letter-spacing: -0.004em; font-weight: 400; text-wrap: pretty; }
+.t-body-sm  { font-size: 0.875rem; line-height: 1.45; font-weight: 400; text-wrap: pretty; }
+.t-label    { font-size: 0.8125rem; line-height: 1.3; letter-spacing: 0; font-weight: 500; }
+.t-caption  { font-size: 0.75rem; line-height: 1.35; font-weight: 500; }
+.t-overline { font-size: 0.6875rem; line-height: 1.2; letter-spacing: 0.13em; font-weight: 500; text-transform: uppercase; }
+.t-mono     { font-family: var(--font-mono, "IBM Plex Mono", monospace); font-size: 0.75rem; line-height: 1.4; letter-spacing: 0.002em; font-weight: 500; }
+.t-mono-xs  { font-family: var(--font-mono, "IBM Plex Mono", monospace); font-size: 0.6875rem; line-height: 1.3; letter-spacing: 0.01em; font-weight: 500; }
+.tnum       { font-variant-numeric: tabular-nums; }
+
+/* Image outlines — pure black/white, never tinted; inset so it sits in the rounded clip */
+.img-outline { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1); }
+:root.light .img-outline { box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1); }
+
+/* Motion keyframes */
+@keyframes enterChunk {
+  from { opacity: 0; transform: translateY(12px); filter: blur(4px); }
+  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@keyframes wiggle {
+  0%   { transform: rotate(0); }
+  25%  { transform: rotate(-5deg); }
+  50%  { transform: rotate(4deg); }
+  75%  { transform: rotate(-2.5deg); }
+  100% { transform: rotate(0); }
+}
+
+/* Motion primitives — press scale, hover lift, staggered enter, one-shot wiggle */
+.enter  { animation: enterChunk 460ms var(--ease-spring) both; animation-delay: var(--enter-delay, 0ms); }
+.wiggle { transform-origin: center bottom; animation: wiggle 500ms var(--ease-wiggle); }
+.press:active:not(:disabled) { scale: 0.96; transition: scale var(--dur-fast) var(--ease-out-craft); }
+.lift   { transition: transform var(--dur-base) var(--ease-spring), box-shadow var(--dur-base) var(--ease-spring); }
+.lift:hover { transform: translateY(-2px); box-shadow: var(--shadow-pop); }
+
+/* Reduced motion — kill transforms/animations, keep press inert */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .press:active:not(:disabled) { scale: 1; }
+  .wiggle, .lift:hover { animation: none; transform: none; }
 }
 
 /* Hide default cursor - using custom cursor element */
