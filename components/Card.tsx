@@ -6,14 +6,15 @@ import { animate, JSAnimation } from "animejs";
 import { ArchiveItem, typeColors, extractPlainText } from "@/lib/types";
 import { urlFor } from "@/lib/sanity";
 import {
-  RiCalendarScheduleFill,
-  RiChat1Fill,
-  RiHeartFill,
-  RiFileTextFill,
-} from "@remixicon/react";
+  CalendarDots,
+  ChatCircleDots,
+  HandHeart,
+  FileText,
+  CaretRight,
+} from "@phosphor-icons/react";
 import { categoryIcons } from "@/lib/categoryIcons";
 
-// Filled icons for Connect type cards
+// Solid Phosphor icons for Connect type cards (per-slug accent colors retained)
 const connectIconColors: Record<string, string> = {
   "book-a-call": "#fbbf24",
   "send-message": "#60a5fa",
@@ -22,10 +23,10 @@ const connectIconColors: Record<string, string> = {
 };
 
 const connectIcons: Record<string, JSX.Element> = {
-  "book-a-call": <RiCalendarScheduleFill size={96} />,
-  "send-message": <RiChat1Fill size={96} />,
-  support: <RiHeartFill size={96} />,
-  resume: <RiFileTextFill size={96} />,
+  "book-a-call": <CalendarDots weight="fill" size={96} />,
+  "send-message": <ChatCircleDots weight="fill" size={96} />,
+  support: <HandHeart weight="fill" size={96} />,
+  resume: <FileText weight="fill" size={96} />,
 };
 
 interface CardProps {
@@ -252,86 +253,87 @@ export default function Card({
         {/* ── Content layer (top + bottom rows) ── */}
 
         {/* Top row */}
-        <div className="relative z-10 flex justify-between items-start p-5">
-          <div className="flex-1 pr-4">
-            <span className={`font-sans text-[15px] font-normal tracking-[0.02em] leading-tight block ${isComingSoon ? "text-[#505055]" : "text-[#E8E8E9]"}`}>
+        <div className="relative z-10 p-5">
+          {/* Title + label chip — vertically centered together; date sits below */}
+          <div className="flex items-center justify-between gap-2">
+            <span className={`font-sans text-[16px] font-normal tracking-[0.02em] leading-tight flex-1 min-w-0 ${isComingSoon ? "text-[#505055]" : "text-[#E8E8E9]"}`}>
               {isComingSoon ? "Coming Soon" : item.title}
             </span>
-            {item.year && !isComingSoon && (
-              <span className="font-mono font-medium text-[11px] text-[#505055] mt-1 block">
-                {item.year}
+
+            {/* Label chip — dark fill + a defined category stroke (modal-button aesthetic).
+                Opaque so the label keeps contrast over the revealed image on hover. */}
+            <div
+              className="flex items-center gap-1.5 px-2.5 py-1.5 flex-shrink-0 rounded-tag"
+              style={{
+                background: `linear-gradient(0deg, ${colors.dot}1F, ${colors.dot}1F), #15151A`,
+                border: `1.5px solid ${colors.dot}59`,
+              }}
+            >
+              <CategoryIcon weight="fill" size={11} color={colors.dot} />
+              <span
+                className="font-mono font-bold text-[9px] leading-none uppercase tracking-wider"
+                style={{ color: colors.dot }}
+              >
+                {isComingSoon ? "Product" : item.label}
               </span>
-            )}
+            </div>
           </div>
 
-          {/* Label tag — solid dark base + a faint category tint. Opaque (no
-              translucency) so the label keeps contrast over the revealed image on hover. */}
-          <div
-            className="flex items-center gap-1.5 px-2.5 py-1.5 flex-shrink-0 rounded-tag"
-            style={{
-              background: `linear-gradient(0deg, ${colors.dot}1F, ${colors.dot}1F), #15151A`,
-              border: `1px solid ${colors.dot}2E`,
-            }}
-          >
-            <CategoryIcon weight="fill" size={11} color={colors.dot} />
-            <span
-              className="font-mono font-bold text-[9px] uppercase tracking-wider"
-              style={{ color: colors.dot }}
-            >
-              {isComingSoon ? "Product" : item.label}
+          {item.year && !isComingSoon && (
+            <span className="font-mono font-medium text-[11px] text-[#505055] mt-1.5 block">
+              {item.year}
             </span>
-          </div>
+          )}
         </div>
 
         {/* Spacer — pushes bottom row down */}
         <div className="flex-1" />
 
-        {/* Bottom row */}
-        <div className="relative z-10 flex flex-col gap-2 p-5 pt-0">
-          <div className="flex justify-between items-end">
-            {/* Price on left (if applicable) */}
-            {item.price && !isComingSoon ? (
+        {/* Bottom row — price + code wink in one corner, CTA chip in the other */}
+        <div className="relative z-10 flex items-end justify-between gap-2 p-5">
+          <div className="flex flex-col gap-1 min-w-0">
+            {item.price && !isComingSoon && (
               <span className="font-mono font-medium text-[13px] text-[#E8E8E9]">
                 {item.price}
               </span>
-            ) : (
-              <span />
             )}
-
-            {/* CTA button — faster transition than card body */}
-            <button
-              className="px-3.5 py-2 text-xs font-medium font-mono uppercase tracking-wide rounded-btn press"
+            {/* Card code — quiet mono identity wink (dense spec line retired) */}
+            <span
+              className="t-mono-xs tnum"
               style={{
-                background: isComingSoon
-                  ? "rgba(13, 13, 15, 0.6)"
-                  : isHovered
-                    ? colors.dot
-                    : "rgba(13, 13, 15, 0.6)",
-                color: isComingSoon ? "#3A3A3F" : isHovered ? "#ffffff" : "#8A8A8F",
-                border: `1px solid ${isComingSoon ? "rgba(255, 255, 255, 0.05)" : isHovered ? colors.dot : "rgba(255, 255, 255, 0.1)"}`,
-                transition: `all ${parseFloat(dur) * 0.5}s ease`,
-                cursor: isComingSoon ? "default" : "pointer",
+                opacity: isHovered
+                  ? params.details.specLineOpacity
+                  : params.details.showAtRest
+                  ? 0.2
+                  : 0,
+                color: isHovered ? "#505055" : "#3A3A3F",
+                transition: `opacity ${dur} ease, color ${dur} ease`,
               }}
             >
-              {isComingSoon ? "Coming Soon" : item.cta}
-            </button>
+              {cardCode}
+            </span>
           </div>
 
-          {/* Card code — quiet mono identity wink (dense spec line retired) */}
-          <div
-            className="t-mono-xs tnum"
+          {/* CTA — chip-sized to match the label; caret affordance to the right */}
+          <button
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-tag font-mono font-bold text-[9px] leading-none uppercase tracking-wider press flex-shrink-0"
             style={{
-              opacity: isHovered
-                ? params.details.specLineOpacity
-                : params.details.showAtRest
-                ? 0.2
-                : 0,
-              color: isHovered ? "#505055" : "#3A3A3F",
-              transition: `opacity ${dur} ease, color ${dur} ease`,
+              background: isComingSoon
+                ? "rgba(13, 13, 15, 0.6)"
+                : isHovered
+                  ? colors.dot
+                  : "rgba(13, 13, 15, 0.6)",
+              color: isComingSoon ? "#3A3A3F" : isHovered ? "#ffffff" : "#8A8A8F",
+              border: `1.5px solid ${isComingSoon ? "rgba(255, 255, 255, 0.05)" : isHovered ? colors.dot : "rgba(255, 255, 255, 0.1)"}`,
+              transition: `all ${parseFloat(dur) * 0.5}s ease`,
+              cursor: isComingSoon ? "default" : "pointer",
             }}
           >
-            {cardCode}
-          </div>
+            <span className="relative top-px">
+              {isComingSoon ? "Coming Soon" : item.cta}
+            </span>
+            <CaretRight weight="bold" size={9} />
+          </button>
         </div>
       </div>
     </div>

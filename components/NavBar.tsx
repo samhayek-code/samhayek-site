@@ -87,6 +87,17 @@ export default function NavBar({
                     : isHovered
                     ? 'var(--nav-hover-bg)'
                     : 'transparent',
+                  border: `1.5px solid ${
+                    isActive
+                      ? isEverything
+                        ? 'var(--border-hover)'
+                        : `${colors.dot}73`
+                      : isHovered
+                      ? isEverything
+                        ? 'var(--border)'
+                        : `${colors.dot}40`
+                      : 'transparent'
+                  }`,
                   color: isActive ? activeColor : isHovered ? 'var(--foreground)' : 'var(--subtle)',
                 }}
               >
@@ -114,7 +125,7 @@ export default function NavBar({
             </span>
             <div className="flex gap-1">
               <div
-                className="w-8 h-8 border rounded-input flex items-center justify-center transition-all duration-150"
+                className="w-8 h-8 border-[1.5px] rounded-input flex items-center justify-center transition-all duration-150"
                 style={{
                   background: leftKeyPressed ? 'var(--arrow-flash-bg)' : 'transparent',
                   borderColor: leftKeyPressed ? 'var(--arrow-flash-border)' : 'var(--border)',
@@ -126,7 +137,7 @@ export default function NavBar({
                 </svg>
               </div>
               <div
-                className="w-8 h-8 border rounded-input flex items-center justify-center transition-all duration-150"
+                className="w-8 h-8 border-[1.5px] rounded-input flex items-center justify-center transition-all duration-150"
                 style={{
                   background: rightKeyPressed ? 'var(--arrow-flash-bg)' : 'transparent',
                   borderColor: rightKeyPressed ? 'var(--arrow-flash-border)' : 'var(--border)',
@@ -144,7 +155,7 @@ export default function NavBar({
           <button
             onClick={onToggleSound}
             onMouseEnter={onHoverSound}
-            className="relative w-8 h-8 border border-border rounded-input press flex items-center justify-center text-subtle hover:text-foreground hover:border-border-hover transition-colors before:absolute before:-inset-1 before:content-['']"
+            className="relative w-8 h-8 border-[1.5px] border-border rounded-input press flex items-center justify-center text-subtle hover:text-foreground hover:border-border-hover transition-colors before:absolute before:-inset-1 before:content-['']"
             aria-label={soundEnabled ? 'Disable sound' : 'Enable sound'}
           >
             {soundEnabled ? (
@@ -166,7 +177,7 @@ export default function NavBar({
           <button
             onClick={onToggleTheme}
             onMouseEnter={onHoverSound}
-            className="relative w-8 h-8 border border-border rounded-input press flex items-center justify-center text-subtle hover:text-foreground hover:border-border-hover transition-colors before:absolute before:-inset-1 before:content-['']"
+            className="relative w-8 h-8 border-[1.5px] border-border rounded-input press flex items-center justify-center text-subtle hover:text-foreground hover:border-border-hover transition-colors before:absolute before:-inset-1 before:content-['']"
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {theme === 'dark' ? (
@@ -228,6 +239,17 @@ export default function NavBar({
                     : isHovered
                     ? 'var(--nav-hover-bg)'
                     : 'transparent',
+                  border: `1.5px solid ${
+                    isActive
+                      ? isEverything
+                        ? 'var(--border-hover)'
+                        : `${colors.dot}73`
+                      : isHovered
+                      ? isEverything
+                        ? 'var(--border)'
+                        : `${colors.dot}40`
+                      : 'transparent'
+                  }`,
                   color: isActive ? activeColor : isHovered ? 'var(--foreground)' : 'var(--subtle)',
                 }}
               >

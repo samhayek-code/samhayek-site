@@ -1596,7 +1596,7 @@ export default function Modal({ item, onClose }: ModalProps) {
             <div className="flex gap-3 items-center">
               <button
                 onClick={handleClose}
-                className="px-5 py-3 font-sans text-[16px] font-medium text-muted border border-border rounded-btn press hover:border-border-hover hover:text-foreground transition-colors"
+                className="px-6 py-3 font-sans text-[14px] leading-4 font-medium text-muted border border-border rounded-btn press hover:border-border-hover hover:text-foreground transition-colors"
               >
                 Close
               </button>
