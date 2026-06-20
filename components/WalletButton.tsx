@@ -106,7 +106,7 @@ export default function WalletButton({ currency, address, onShowQR, showQRButton
           {/* Copy button */}
           <button
             onClick={copyToClipboard}
-            className="p-2 transition-all hover:bg-white/10"
+            className="p-2 rounded-chip press transition-all hover:bg-white/10"
             style={{ color: copied ? '#34d399' : '#666' }}
             aria-label="Copy address"
           >

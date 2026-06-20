@@ -453,7 +453,7 @@ export default function Modal({ item, onClose }: ModalProps) {
       >
         {/* Hero image - hide for embed modals, gallery types (Art, Design), Writing, testimonials, case studies, and checkout */}
         {!isEmbedModal && !isGalleryType && !isWriting && !isTestimonial && !isCaseStudy && !showWhopCheckout && !isReferences && item.coverImage && (
-          <div className="w-full aspect-video flex items-center justify-center relative" style={{ background: 'var(--modal-surface)' }}>
+          <div className="w-full aspect-video flex items-center justify-center relative overflow-hidden img-outline" style={{ background: 'var(--modal-surface)' }}>
             {item.coverImage ? (
               <Image
                 src={urlFor(item.coverImage).width(1600).height(900).url()}

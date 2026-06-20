@@ -155,14 +155,14 @@ export default function Card({
         }}
       >
         {/* Soft category-colored glow — opacity-only fade via the anime.js loop.
-            A colored hairline ring + a gentle inward bloom (both survive the card's
-            overflow clip), replacing the old hard 1px rect glow. */}
+            Both layers are INSET (a colored hairline ring + an inward bloom) so they
+            paint inside the card's overflow clip, replacing the old hard 1px rect glow. */}
         <div
           ref={glowRef}
           className="absolute inset-0 rounded-card pointer-events-none z-[100]"
           style={{
             opacity: 0,
-            boxShadow: `0 0 0 1px ${colors.dot}, inset 0 0 ${params.glow.blur * 5}px ${colors.dot}33`,
+            boxShadow: `inset 0 0 0 1px ${colors.dot}, inset 0 0 ${params.glow.blur * 5}px ${colors.dot}33`,
           }}
         />
 
