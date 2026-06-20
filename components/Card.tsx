@@ -265,16 +265,12 @@ export default function Card({
           {/* Label tag — solid dark base + a faint category tint. Opaque (no
               translucency) so the label keeps contrast over the revealed image on hover. */}
           <div
-            className="flex items-center gap-1.5 px-2.5 py-1 flex-shrink-0 rounded-tag"
+            className="flex items-center px-2.5 py-1 flex-shrink-0 rounded-tag"
             style={{
               background: `linear-gradient(0deg, ${colors.dot}1F, ${colors.dot}1F), #15151A`,
               border: `1px solid ${colors.dot}2E`,
             }}
           >
-            <div
-              className="w-1.5 h-1.5 rounded-full"
-              style={{ background: colors.dot }}
-            />
             <span
               className="font-mono font-bold text-[9px] uppercase tracking-wider"
               style={{ color: colors.dot }}
