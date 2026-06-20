@@ -711,21 +711,12 @@ export default function Modal({ item, onClose }: ModalProps) {
             <div className="space-y-6 mb-8">
               {/* Subtitle */}
               <p className="font-sans text-[15px]" style={{ color: 'var(--modal-text-tertiary)' }}>
-                Game voice packs for Claude Code.
+                Your terminal, voiced by the games you grew up on.
               </p>
 
-              {/* Main description */}
+              {/* Short description */}
               <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
-                Hooks into four Claude Code events and plays a random game voice line — a unit-ready or greeting when a session starts, a confirmation when a task finishes, an alert when permission&rsquo;s needed, and a reaction when a command errors out.
-              </p>
-              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
-                Three franchises, eight voices — StarCraft 2 (Terran, Protoss, Zerg), Halo (Cortana, 343 Guilty Spark, Sgt. Johnson), and Tiberian Sun (GDI&rsquo;s EVA, Nod&rsquo;s CABAL). Around 330 lines in all, picked at random and switchable anytime with one command.
-              </p>
-              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
-                Half the work was cleaning the audio. Soundboard rips arrived with an in-game ping and a spoken watermark before every line — a numpy + ffmpeg pipeline clusters the ping variants by cross-correlation and trims to the voice onset without clipping the first word. The Tiberian Sun clips are the original game audio, pulled on macOS by cracking Westwood&rsquo;s MIX format by hand, reversing the filename hash, and decoding the ADPCM with ffmpeg.
-              </p>
-              <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
-                macOS only.
+                Claude Code greets every session, announces your wins, calls for orders when it needs you, and sounds off when something breaks — so the work never feels quiet. Eight voices to choose from, switch whenever. <span style={{ color: 'var(--modal-text-tertiary)' }}>macOS only.</span>
               </p>
 
               {/* Install command */}
@@ -793,6 +784,14 @@ export default function Modal({ item, onClose }: ModalProps) {
                 </ol>
               </div>
 
+              {/* The packs */}
+              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
+                Three franchises — StarCraft 2 (Terran, Protoss, Zerg), Halo (Cortana, 343 Guilty Spark, Sgt. Johnson), and Tiberian Sun (GDI&rsquo;s EVA, Nod&rsquo;s CABAL). Around 330 lines, picked at random; error sounds are smart-filtered so routine failures stay quiet.
+              </p>
+              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
+                The clips ship clean. Soundboard rips came with an in-game ping and a spoken watermark before each line — a numpy + ffmpeg pipeline finds the ping by cross-correlation and trims to the voice onset, never clipping the first word. The Tiberian Sun set is the original game audio, pulled on macOS by cracking Westwood&rsquo;s MIX format by hand.
+              </p>
+
               {/* Events preview */}
               <div
                 className="p-4 font-mono text-[12px] leading-relaxed rounded-input"
@@ -813,7 +812,12 @@ export default function Modal({ item, onClose }: ModalProps) {
 
               {/* Switch voices hint */}
               <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
-                Switch anytime — <code className="font-mono text-[13px]" style={{ color: 'var(--modal-text-secondary)' }}>set-faction.sh cortana</code>, or any of the eight packs.
+                Switch anytime — run <code className="font-mono text-[13px]" style={{ color: 'var(--modal-text-secondary)' }}>set-faction.sh cortana</code> (or any of the eight packs), or just ask Claude to switch it for you.
+              </p>
+
+              {/* Customize note */}
+              <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
+                Make it your own — drop any <code className="font-mono text-[13px]" style={{ color: 'var(--modal-text-secondary)' }}>.mp3</code> or <code className="font-mono text-[13px]" style={{ color: 'var(--modal-text-secondary)' }}>.m4a</code> into <code className="font-mono text-[13px]" style={{ color: 'var(--modal-text-secondary)' }}>~/.claude/sounds/&lt;pack&gt;/&lt;event&gt;/</code>, or add a whole new pack as its own folder. The picker finds them automatically.
               </p>
             </div>
           )}
