@@ -46,7 +46,7 @@ export default function Card({
 }: CardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
-  const borderRef = useRef<SVGRectElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<JSAnimation | null>(null);
   const colors = typeColors[item.type] || typeColors.Everything;
 
@@ -71,9 +71,10 @@ export default function Card({
   // Stagger delay for entrance animation
   const entranceDelay = index * params.entrance.staggerMs;
 
-  // Border glow animation — smooth enter AND exit
+  // Soft colored glow halo — opacity-only fade in/out (anime.js handles this cleanly).
+  // Retunes the old hard-rect border-glow into a soft category-colored bloom.
   useEffect(() => {
-    if (!borderRef.current) return;
+    if (!glowRef.current) return;
 
     // Cancel any running animation first
     if (animationRef.current) {
@@ -82,14 +83,14 @@ export default function Card({
     }
 
     if (isHovered) {
-      animationRef.current = animate(borderRef.current, {
+      animationRef.current = animate(glowRef.current, {
         opacity: [0, params.glow.opacity],
         duration: params.glow.duration * 1000,
         ease: "outCubic",
       });
     } else {
       // Smooth fade out (60% of fade-in duration for snappier exit)
-      animationRef.current = animate(borderRef.current, {
+      animationRef.current = animate(glowRef.current, {
         opacity: 0,
         duration: params.glow.duration * 600,
         ease: "outCubic",
@@ -132,59 +133,44 @@ export default function Card({
       className="relative card-entrance aspect-square"
       style={
         {
-          padding: "5px",
           "--entrance-delay": `${entranceDelay}ms`,
           "--entrance-distance": `${params.entrance.distance}px`,
           "--entrance-duration": `${params.entrance.duration}s`,
         } as React.CSSProperties
       }
     >
-      {/* Frame border — card sits centered inside this */}
-      <div className="card-frame" />
-
-      {/* Main card — all hover transforms driven by DialKit params */}
+      {/* Main card — soft rounded shadowed shell; transforms driven by DialKit params */}
       <div
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onMouseDown={() => params.press.enabled && setIsPressed(true)}
         onMouseUp={() => setIsPressed(false)}
         onClick={() => !isComingSoon && onClick(item)}
-        className={`card-hover card-noise relative overflow-hidden flex flex-col h-full ${isComingSoon ? "cursor-default" : "cursor-pointer"}`}
+        className={`card-hover card-noise relative overflow-hidden flex flex-col h-full rounded-card ${isComingSoon ? "cursor-default" : "cursor-pointer"}`}
         style={{
           background: isHovered ? "#1A1A1E" : "#111113",
-          border: `1px solid ${isHovered ? "var(--border-hover)" : "var(--border)"}`,
+          boxShadow: isHovered ? "var(--shadow-pop)" : "var(--shadow-card)",
           transform: `translateY(${liftY}px) scale(${scale})`,
-          transition: `transform ${dur} ${ease}, border-color ${dur} ${ease}, background ${dur} ${ease}`,
+          transition: `transform ${dur} ${ease}, box-shadow ${dur} ${ease}, background ${dur} ${ease}`,
         }}
       >
-        {/* Colored border glow — fades in/out smoothly via anime.js */}
-        <svg
-          className="absolute inset-0 w-full h-full pointer-events-none z-[100]"
-          style={{ overflow: "visible" }}
-        >
-          <rect
-            ref={borderRef}
-            x="0.5"
-            y="0.5"
-            width="calc(100% - 1px)"
-            height="calc(100% - 1px)"
-            rx="1"
-            ry="1"
-            fill="none"
-            stroke={colors.dot}
-            strokeWidth="1"
-            style={{
-              opacity: 0,
-              filter: `drop-shadow(0 0 ${params.glow.blur}px ${colors.dot})`,
-            }}
-          />
-        </svg>
+        {/* Soft category-colored glow — opacity-only fade via the anime.js loop.
+            Both layers are INSET (a colored hairline ring + an inward bloom) so they
+            paint inside the card's overflow clip, replacing the old hard 1px rect glow. */}
+        <div
+          ref={glowRef}
+          className="absolute inset-0 rounded-card pointer-events-none z-[100]"
+          style={{
+            opacity: 0,
+            boxShadow: `inset 0 0 0 1px ${colors.dot}, inset 0 0 ${params.glow.blur * 5}px ${colors.dot}33`,
+          }}
+        />
 
         {/* ── Background layer (image / icon / text blur) ── */}
 
         {/* Cover image — opacity & blur driven by params */}
         {item.coverImage && !isWritingType && !hasIconDisplay && (
-          <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 z-0 rounded-card img-outline overflow-hidden">
             <Image
               src={urlFor(item.coverImage).width(600).height(600).url()}
               alt={item.title}
@@ -257,23 +243,9 @@ export default function Card({
           }}
         />
 
-        {/* ── Micro-detail overlays — controlled by params ── */}
-
-        {/* Corner brackets — opacity from params, visible at rest if showAtRest */}
-        {["tl", "tr", "bl", "br"].map((corner) => (
-          <div
-            key={corner}
-            className={`card-corner-bracket card-corner-bracket--${corner}`}
-            style={{
-              opacity: isHovered
-                ? params.details.bracketOpacity
-                : params.details.showAtRest
-                ? params.details.bracketOpacity * 0.3
-                : 0,
-              transition: `opacity ${dur} ease`,
-            }}
-          />
-        ))}
+        {/* Corner brackets retired — the soft shadow + rounded silhouette reads as a card.
+            params.details.bracketOpacity / showAtRest kept in the params object so Card's
+            prop contract holds; they're simply no longer rendered. */}
 
         {/* ── Content layer (top + bottom rows) ── */}
 
@@ -290,12 +262,13 @@ export default function Card({
             )}
           </div>
 
-          {/* Label pill — category-coded */}
+          {/* Label tag — solid dark base + a faint category tint. Opaque (no
+              translucency) so the label keeps contrast over the revealed image on hover. */}
           <div
-            className="flex items-center gap-1.5 px-2.5 py-1 flex-shrink-0"
+            className="flex items-center gap-1.5 px-2.5 py-1 flex-shrink-0 rounded-tag"
             style={{
-              background: colors.bg,
-              border: `1px solid ${colors.dot}20`,
+              background: `linear-gradient(0deg, ${colors.dot}1F, ${colors.dot}1F), #15151A`,
+              border: `1px solid ${colors.dot}2E`,
             }}
           >
             <div
@@ -328,7 +301,7 @@ export default function Card({
 
             {/* CTA button — faster transition than card body */}
             <button
-              className="px-3.5 py-2 text-xs font-medium font-mono uppercase tracking-wide"
+              className="px-3.5 py-2 text-xs font-medium font-mono uppercase tracking-wide rounded-btn press"
               style={{
                 background: isComingSoon
                   ? "rgba(13, 13, 15, 0.6)"
@@ -345,9 +318,9 @@ export default function Card({
             </button>
           </div>
 
-          {/* Card code + type — visibility from params */}
+          {/* Card code — quiet mono identity wink (dense spec line retired) */}
           <div
-            className="card-spec-line flex items-center gap-1.5"
+            className="t-mono-xs tnum"
             style={{
               opacity: isHovered
                 ? params.details.specLineOpacity
@@ -358,9 +331,7 @@ export default function Card({
               transition: `opacity ${dur} ease, color ${dur} ease`,
             }}
           >
-            <span>{cardCode}</span>
-            <span>◆</span>
-            <span>TYPE:{item.type.toUpperCase()}</span>
+            {cardCode}
           </div>
         </div>
       </div>

@@ -40,9 +40,11 @@ export default function NavBar({
             : 'rgba(244, 244, 245, 0.95)'
           : 'transparent',
         backdropFilter: isScrolled ? 'blur(20px)' : 'none',
-        borderBottom: isScrolled
-          ? '1px solid var(--border-subtle)'
-          : '1px solid transparent',
+        boxShadow: isScrolled
+          ? theme === 'dark'
+            ? '0 1px 0 rgba(255, 255, 255, 0.05)'
+            : '0 1px 0 rgba(0, 0, 0, 0.05)'
+          : 'none',
       }}
     >
       {/* Desktop layout (1024px+) */}
@@ -76,7 +78,7 @@ export default function NavBar({
                   onHoverSound()
                 }}
                 onMouseLeave={() => setHoveredFilter(null)}
-                className="flex items-center gap-1.5 px-3 py-2 font-mono font-medium text-[11px] uppercase tracking-wide transition-all duration-200"
+                className="flex items-center gap-1.5 px-3 py-2 font-mono font-medium text-[11px] uppercase tracking-wide rounded-chip press transition-all duration-200"
                 style={{
                   background: isActive
                     ? activeBg
@@ -109,7 +111,7 @@ export default function NavBar({
             </span>
             <div className="flex gap-1">
               <div
-                className="w-8 h-8 border flex items-center justify-center transition-all duration-150"
+                className="w-8 h-8 border rounded-input flex items-center justify-center transition-all duration-150"
                 style={{
                   background: leftKeyPressed ? 'var(--arrow-flash-bg)' : 'transparent',
                   borderColor: leftKeyPressed ? 'var(--arrow-flash-border)' : 'var(--border)',
@@ -121,7 +123,7 @@ export default function NavBar({
                 </svg>
               </div>
               <div
-                className="w-8 h-8 border flex items-center justify-center transition-all duration-150"
+                className="w-8 h-8 border rounded-input flex items-center justify-center transition-all duration-150"
                 style={{
                   background: rightKeyPressed ? 'var(--arrow-flash-bg)' : 'transparent',
                   borderColor: rightKeyPressed ? 'var(--arrow-flash-border)' : 'var(--border)',
@@ -139,7 +141,7 @@ export default function NavBar({
           <button
             onClick={onToggleSound}
             onMouseEnter={onHoverSound}
-            className="w-8 h-8 border border-border flex items-center justify-center text-subtle hover:text-foreground hover:border-border-hover transition-colors"
+            className="relative w-8 h-8 border border-border rounded-input press flex items-center justify-center text-subtle hover:text-foreground hover:border-border-hover transition-colors before:absolute before:-inset-1 before:content-['']"
             aria-label={soundEnabled ? 'Disable sound' : 'Enable sound'}
           >
             {soundEnabled ? (
@@ -161,7 +163,7 @@ export default function NavBar({
           <button
             onClick={onToggleTheme}
             onMouseEnter={onHoverSound}
-            className="w-8 h-8 border border-border flex items-center justify-center text-subtle hover:text-foreground hover:border-border-hover transition-colors"
+            className="relative w-8 h-8 border border-border rounded-input press flex items-center justify-center text-subtle hover:text-foreground hover:border-border-hover transition-colors before:absolute before:-inset-1 before:content-['']"
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {theme === 'dark' ? (
@@ -215,7 +217,7 @@ export default function NavBar({
                   onHoverSound()
                 }}
                 onMouseLeave={() => setHoveredFilter(null)}
-                className="flex items-center justify-center gap-1.5 px-2 py-3 font-mono font-medium text-[10px] uppercase tracking-wide transition-all duration-200"
+                className="flex items-center justify-center gap-1.5 px-2 py-3 font-mono font-medium text-[10px] uppercase tracking-wide rounded-chip press transition-all duration-200"
                 style={{
                   background: isActive
                     ? activeBg

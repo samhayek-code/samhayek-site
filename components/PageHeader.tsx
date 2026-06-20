@@ -13,17 +13,17 @@ export default function PageHeader({ filter }: PageHeaderProps) {
     <div className="min-h-[35vh] flex flex-col justify-end p-4 lg:p-12 pt-24">
       <div className="max-w-[800px]">
         <span
-          className="font-mono font-medium text-[11px] tracking-[0.15em] uppercase block mb-6"
+          className="font-mono t-overline block mb-6"
           style={{ color: isEverything ? 'var(--subtle)' : colors.dot }}
         >
           {isEverything ? "I'm Sam" : filter}
         </span>
 
-        <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-medium tracking-tighter text-foreground mb-4 leading-tight">
+        <h1 className="font-sans t-display text-foreground mb-4">
           {h.title}
         </h1>
 
-        <p className="font-sans text-[17px] font-normal text-muted leading-relaxed tracking-[0.02em]">
+        <p className="font-sans t-body-lg text-muted">
           {h.subtitle}
         </p>
       </div>

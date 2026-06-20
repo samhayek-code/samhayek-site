@@ -28,7 +28,7 @@ const portableTextComponents = {
 
       return (
         <figure className="my-8">
-          <div className="relative w-full overflow-hidden">
+          <div className="relative w-full overflow-hidden rounded-card img-outline">
             <Image
               src={urlFor(value).width(1200).quality(90).url()}
               alt={value.alt || ''}
@@ -440,10 +440,10 @@ export default function Modal({ item, onClose }: ModalProps) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`max-w-[800px] w-full overflow-auto cursor-default ${showWhopCheckout ? 'max-h-[95vh]' : 'max-h-[85vh]'}`}
+        className="max-w-[800px] w-full cursor-default rounded-modal overflow-hidden"
         style={{
           background: 'var(--modal-bg)',
-          border: '1px solid var(--modal-border)',
+          boxShadow: 'var(--shadow-pop)',
           transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(12px) scale(0.98)',
           opacity: isVisible ? 1 : 0,
           transition: isVisible
@@ -451,9 +451,12 @@ export default function Modal({ item, onClose }: ModalProps) {
             : 'transform 0.29s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.23s ease-in',
         }}
       >
+        {/* Inner scroll container — the outer box's overflow-hidden + rounded-modal
+            clips this scrollbar flush to the corners, so it no longer runs past them. */}
+        <div className={`overflow-y-auto overflow-x-hidden ${showWhopCheckout ? 'max-h-[95vh]' : 'max-h-[85vh]'}`}>
         {/* Hero image - hide for embed modals, gallery types (Art, Design), Writing, testimonials, case studies, and checkout */}
         {!isEmbedModal && !isGalleryType && !isWriting && !isTestimonial && !isCaseStudy && !showWhopCheckout && !isReferences && item.coverImage && (
-          <div className="w-full aspect-video flex items-center justify-center relative" style={{ background: 'var(--modal-surface)' }}>
+          <div className="w-full aspect-video flex items-center justify-center relative overflow-hidden img-outline" style={{ background: 'var(--modal-surface)' }}>
             {item.coverImage ? (
               <Image
                 src={urlFor(item.coverImage).width(1600).height(900).url()}
@@ -472,7 +475,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           {/* Header */}
           <div className="flex justify-between items-start mb-6">
             <div>
-              <h2 className="font-sans text-[22px] lg:text-[26px] font-normal tracking-tighter text-foreground mb-2">
+              <h2 className="font-display text-[24px] lg:text-[28px] font-medium tracking-[-0.02em] text-foreground mb-2">
                 {item.title}
               </h2>
               {item.year && (
@@ -484,7 +487,7 @@ export default function Modal({ item, onClose }: ModalProps) {
             
             {/* Label pill */}
             <div
-              className="flex items-center gap-1.5 px-3 py-1.5 shrink-0"
+              className="flex items-center gap-1.5 px-3 py-1.5 shrink-0 rounded-tag shadow-card"
               style={{
                 background: 'var(--card-pill-bg)',
                 border: '1px solid var(--card-pill-border)',
@@ -513,7 +516,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                     href={item.externalUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group mb-8 flex items-center justify-center gap-3 px-6 py-4 font-mono text-[13px] sm:text-[14px] font-bold uppercase tracking-wider text-white transition-opacity hover:opacity-90"
+                    className="group mb-8 flex items-center justify-center gap-3 px-6 py-4 font-mono text-[13px] sm:text-[14px] font-bold uppercase tracking-wider text-white rounded-btn press transition-opacity hover:opacity-90"
                     style={{ background: colors.dot }}
                   >
                     View the full interactive case study
@@ -527,7 +530,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                     href={liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group mb-8 flex items-center justify-center gap-3 px-6 py-4 font-mono text-[13px] sm:text-[14px] font-bold uppercase tracking-wider text-white transition-opacity hover:opacity-90"
+                    className="group mb-8 flex items-center justify-center gap-3 px-6 py-4 font-mono text-[13px] sm:text-[14px] font-bold uppercase tracking-wider text-white rounded-btn press transition-opacity hover:opacity-90"
                     style={{ background: colors.dot }}
                   >
                     Visit the live site
@@ -537,7 +540,7 @@ export default function Modal({ item, onClose }: ModalProps) {
 
                 {/* Video at top */}
                 {item.muxVideo?.asset?.playbackId && (
-                  <div className="mb-8">
+                  <div className="mb-8 rounded-card overflow-hidden">
                     <MuxPlayer
                       playbackId={item.muxVideo.asset.playbackId}
                       streamType="on-demand"
@@ -545,6 +548,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                       style={{
                         width: '100%',
                         maxHeight: '70vh',
+                        borderRadius: 'var(--radius-card)',
                         aspectRatio: '16/9'
                       }}
                     />
@@ -569,7 +573,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                       width="100%"
                       height="500"
                       allowFullScreen
-                      className="border border-border"
+                      className="border border-border rounded-card"
                       style={{ background: 'var(--background)' }}
                     />
                   </div>
@@ -622,7 +626,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   Install
                 </span>
                 <div
-                  className="flex items-center gap-3 px-4 py-3"
+                  className="flex items-center gap-3 px-4 py-3 rounded-input"
                   style={{
                     background: 'var(--surface)',
                     border: '1px solid var(--border)',
@@ -633,7 +637,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   </code>
                   <button
                     onClick={() => handleCopyInstall('curl -fsSL https://raw.githubusercontent.com/samhayek-code/OASIS/main/install.sh | bash')}
-                    className="shrink-0 px-3 py-1.5 font-mono text-[12px] font-medium transition-all"
+                    className="shrink-0 px-3 py-1.5 font-mono text-[12px] font-medium rounded-chip press transition-all"
                     style={{
                       background: copied ? 'var(--foreground)' : 'var(--cta-bg)',
                       border: '1px solid',
@@ -683,7 +687,7 @@ export default function Modal({ item, onClose }: ModalProps) {
 
               {/* What you get */}
               <div
-                className="p-4 font-mono text-[12px] leading-relaxed"
+                className="p-4 font-mono text-[12px] leading-relaxed rounded-input"
                 style={{
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
@@ -733,7 +737,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   Install
                 </span>
                 <div
-                  className="flex items-center gap-3 px-4 py-3"
+                  className="flex items-center gap-3 px-4 py-3 rounded-input"
                   style={{
                     background: 'var(--surface)',
                     border: '1px solid var(--border)',
@@ -744,7 +748,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   </code>
                   <button
                     onClick={() => handleCopyInstall('bash <(curl -fsSL https://raw.githubusercontent.com/samhayek-code/sc2-claude-hooks/main/install.sh)')}
-                    className="shrink-0 px-3 py-1.5 font-mono text-[12px] font-medium transition-all"
+                    className="shrink-0 px-3 py-1.5 font-mono text-[12px] font-medium rounded-chip press transition-all"
                     style={{
                       background: copied ? 'var(--foreground)' : 'var(--cta-bg)',
                       border: '1px solid',
@@ -794,7 +798,7 @@ export default function Modal({ item, onClose }: ModalProps) {
 
               {/* Events preview */}
               <div
-                className="p-4 font-mono text-[12px] leading-relaxed"
+                className="p-4 font-mono text-[12px] leading-relaxed rounded-input"
                 style={{
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
@@ -840,7 +844,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   Install
                 </span>
                 <div
-                  className="flex items-center gap-3 px-4 py-3"
+                  className="flex items-center gap-3 px-4 py-3 rounded-input"
                   style={{
                     background: 'var(--surface)',
                     border: '1px solid var(--border)',
@@ -851,7 +855,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   </code>
                   <button
                     onClick={() => handleCopyInstall('bash <(curl -fsSL https://raw.githubusercontent.com/samhayek-code/halo-audio-hooks/main/install.sh)')}
-                    className="shrink-0 px-3 py-1.5 font-mono text-[12px] font-medium transition-all"
+                    className="shrink-0 px-3 py-1.5 font-mono text-[12px] font-medium rounded-chip press transition-all"
                     style={{
                       background: copied ? 'var(--foreground)' : 'var(--cta-bg)',
                       border: '1px solid',
@@ -901,7 +905,7 @@ export default function Modal({ item, onClose }: ModalProps) {
 
               {/* Events preview */}
               <div
-                className="p-4 font-mono text-[12px] leading-relaxed"
+                className="p-4 font-mono text-[12px] leading-relaxed rounded-input"
                 style={{
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
@@ -953,7 +957,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   Install
                 </span>
                 <div
-                  className="flex items-center gap-3 px-4 py-3"
+                  className="flex items-center gap-3 px-4 py-3 rounded-input"
                   style={{
                     background: 'var(--surface)',
                     border: '1px solid var(--border)',
@@ -964,7 +968,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   </code>
                   <button
                     onClick={() => handleCopyInstall('bash <(curl -fsSL https://raw.githubusercontent.com/samhayek-code/tiberian-sun-audio-hooks/main/install.sh)')}
-                    className="shrink-0 px-3 py-1.5 font-mono text-[12px] font-medium transition-all"
+                    className="shrink-0 px-3 py-1.5 font-mono text-[12px] font-medium rounded-chip press transition-all"
                     style={{
                       background: copied ? 'var(--foreground)' : 'var(--cta-bg)',
                       border: '1px solid',
@@ -1014,7 +1018,7 @@ export default function Modal({ item, onClose }: ModalProps) {
 
               {/* Events preview */}
               <div
-                className="p-4 font-mono text-[12px] leading-relaxed"
+                className="p-4 font-mono text-[12px] leading-relaxed rounded-input"
                 style={{
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
@@ -1271,7 +1275,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 {allImages.map((image, i) => (
                   <div
                     key={i}
-                    className="relative w-full cursor-zoom-in group"
+                    className="relative w-full cursor-zoom-in group rounded-card overflow-hidden img-outline"
                     onClick={() => openLightbox(i)}
                   >
                     <Image
@@ -1319,7 +1323,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                     <div className="space-y-6">
                       {/* Piece image */}
                       {piece.image && (
-                        <div className="relative w-full">
+                        <div className="relative w-full rounded-card overflow-hidden img-outline">
                           <Image
                             src={urlFor(piece.image).width(1600).quality(90).url()}
                             alt={piece.title}
@@ -1361,7 +1365,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                       </div>
 
                       {/* Piece title */}
-                      <h3 className="font-sans text-[22px] font-normal tracking-tighter text-foreground text-center">
+                      <h3 className="font-display text-[22px] font-medium tracking-[-0.02em] text-foreground text-center">
                         {piece.title}
                       </h3>
 
@@ -1380,12 +1384,12 @@ export default function Modal({ item, onClose }: ModalProps) {
                 {/* Merch grid */}
                 {displayedIndex === totalPieces && hasMerch && (
                   <div className="space-y-6">
-                    <h3 className="font-sans text-[22px] font-normal tracking-tighter text-foreground text-center">
+                    <h3 className="font-display text-[22px] font-medium tracking-[-0.02em] text-foreground text-center">
                       The Collection
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                       {item.merchGallery!.map((image, i) => (
-                        <div key={i} className="aspect-square relative overflow-hidden" style={{ background: 'var(--modal-surface)' }}>
+                        <div key={i} className="aspect-square relative overflow-hidden rounded-card img-outline" style={{ background: 'var(--modal-surface)' }}>
                           <Image
                             src={urlFor(image).width(600).height(600).url()}
                             alt={`Merch ${i + 1}`}
@@ -1439,7 +1443,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   onClick={() => setActiveQR(null)}
                 >
                   <div
-                    className="p-4 shadow-2xl"
+                    className="p-4 rounded-card shadow-pop"
                     style={{
                       background: '#0f0f0f',
                       border: '1px solid rgba(255,255,255,0.15)',
@@ -1500,7 +1504,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                   loading="lazy"
                   className=""
-                  style={{ borderRadius: '12px' }}
+                  style={{ borderRadius: 'var(--radius-card)' }}
                 />
               </div>
             )
@@ -1508,7 +1512,7 @@ export default function Modal({ item, onClose }: ModalProps) {
 
           {/* MUX Video Player (skip for case studies — rendered in case study block above) */}
           {!isCaseStudy && item.muxVideo?.asset?.playbackId && (
-            <div className="mb-8">
+            <div className="mb-8 rounded-card overflow-hidden">
               <MuxPlayer
                 playbackId={item.muxVideo.asset.playbackId}
                 streamType="on-demand"
@@ -1516,7 +1520,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 style={{
                   width: '100%',
                   maxHeight: '70vh',
-                  borderRadius: '8px',
+                  borderRadius: 'var(--radius-card)',
                   aspectRatio: '16/9'
                 }}
               />
@@ -1531,7 +1535,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 width="100%"
                 height="500"
                 allowFullScreen
-                className="border border-border"
+                className="border border-border rounded-card"
                 style={{ background: 'var(--background)' }}
               />
             </div>
@@ -1541,7 +1545,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           {!isGalleryType && item.gallery && item.gallery.length > 0 && (
             <div className="grid grid-cols-3 gap-3 mb-8">
               {item.gallery.map((image, i) => (
-                <div key={i} className="aspect-square relative overflow-hidden border border-border" style={{ background: 'var(--modal-surface)' }}>
+                <div key={i} className="aspect-square relative overflow-hidden rounded-card img-outline" style={{ background: 'var(--modal-surface)' }}>
                   <Image
                     src={urlFor(image).width(400).height(400).url()}
                     alt={`${item.title} gallery ${i + 1}`}
@@ -1557,7 +1561,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           {showWhopCheckout && item.whopPlanId && (
             <div className="mb-8">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-sans text-[20px] font-normal tracking-tighter text-foreground">Checkout</h3>
+                <h3 className="font-display text-[20px] font-medium tracking-[-0.02em] text-foreground">Checkout</h3>
                 <button
                   onClick={() => setShowWhopCheckout(false)}
                   className="text-muted hover:text-foreground transition-colors text-[16px]"
@@ -1572,7 +1576,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   minHeight: '900px',
                   height: 'auto',
                   border: 'none',
-                  borderRadius: '8px',
+                  borderRadius: 'var(--radius-card)',
                 }}
                 allow="payment; clipboard-write"
                 sandbox="allow-forms allow-modals allow-popups allow-same-origin allow-scripts allow-top-navigation"
@@ -1593,7 +1597,7 @@ export default function Modal({ item, onClose }: ModalProps) {
             <div className="flex gap-3 items-center">
               <button
                 onClick={handleClose}
-                className="px-5 py-3 font-sans text-[16px] font-medium text-muted border border-border hover:border-border-hover hover:text-foreground transition-colors"
+                className="px-5 py-3 font-sans text-[16px] font-medium text-muted border border-border rounded-btn press hover:border-border-hover hover:text-foreground transition-colors"
               >
                 Close
               </button>
@@ -1603,7 +1607,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   href={item.prototypeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white rounded-btn press hover:opacity-80 transition-opacity"
                   style={{ background: colors.dot }}
                 >
                   View Prototype
@@ -1615,7 +1619,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   href="https://github.com/samhayek-code/OASIS"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white rounded-btn press hover:opacity-80 transition-opacity"
                   style={{ background: colors.dot }}
                 >
                   View on GitHub
@@ -1627,7 +1631,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   href="https://github.com/samhayek-code/sc2-claude-hooks"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white rounded-btn press hover:opacity-80 transition-opacity"
                   style={{ background: colors.dot }}
                 >
                   View on GitHub
@@ -1639,7 +1643,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   href="https://github.com/samhayek-code/tiberian-sun-audio-hooks"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white rounded-btn press hover:opacity-80 transition-opacity"
                   style={{ background: colors.dot }}
                 >
                   View on GitHub
@@ -1651,7 +1655,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   href={item.figmaUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white rounded-btn press hover:opacity-80 transition-opacity"
                   style={{ background: colors.dot }}
                 >
                   View Figma
@@ -1663,7 +1667,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   href={item.externalUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white rounded-btn press hover:opacity-80 transition-opacity"
                   style={{ background: colors.dot }}
                 >
                   View Live Case Study
@@ -1675,7 +1679,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   href={liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white rounded-btn press hover:opacity-80 transition-opacity"
                   style={{ background: colors.dot }}
                 >
                   Visit Live Site
@@ -1686,7 +1690,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 <a
                   href="/Sam-Hayek-Resume-2026.pdf"
                   download="Sam-Hayek-Resume-2026.pdf"
-                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white rounded-btn press hover:opacity-80 transition-opacity"
                   style={{ background: colors.dot }}
                 >
                   Download PDF
@@ -1696,7 +1700,7 @@ export default function Modal({ item, onClose }: ModalProps) {
               {isCollection && collectionIndex === -1 && (
                 <button
                   onClick={goNextCollection}
-                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white rounded-btn press hover:opacity-80 transition-opacity"
                   style={{ background: colors.dot }}
                 >
                   View
@@ -1706,7 +1710,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 item.whopPlanId ? (
                   <button
                     onClick={() => setShowWhopCheckout(true)}
-                    className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                    className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white rounded-btn press hover:opacity-80 transition-opacity"
                     style={{ background: colors.dot }}
                   >
                     {item.cta}
@@ -1723,7 +1727,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 ) : (
                   <button
                     onClick={handleAction}
-                    className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white hover:opacity-80 transition-opacity"
+                    className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white rounded-btn press hover:opacity-80 transition-opacity"
                     style={{ background: colors.dot }}
                   >
                     {item.cta}
@@ -1732,6 +1736,7 @@ export default function Modal({ item, onClose }: ModalProps) {
               )}
             </div>
           </div>
+        </div>
         </div>
       </div>
 
