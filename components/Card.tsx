@@ -231,7 +231,7 @@ export default function Card({
           style={{
             background: isHovered
               ? `linear-gradient(to bottom, rgba(var(--card-overlay-rgb),${params.overlay.hoverStrength}) 0%, rgba(var(--card-overlay-rgb),${params.overlay.hoverStrength * 0.2}) 40%, rgba(var(--card-overlay-rgb),${params.overlay.hoverStrength}) 100%)`
-              : `linear-gradient(to bottom, rgba(var(--card-overlay-rgb),${params.overlay.restStrength}) 0%, rgba(var(--card-overlay-rgb),${params.overlay.restStrength * 0.57}) 40%, rgba(var(--card-overlay-rgb),${params.overlay.restStrength}) 100%)`,
+              : `linear-gradient(to bottom, rgba(var(--card-overlay-rgb),var(--card-overlay-rest,${params.overlay.restStrength})) 0%, rgba(var(--card-overlay-rgb),calc(var(--card-overlay-rest,${params.overlay.restStrength}) * 0.57)) 40%, rgba(var(--card-overlay-rgb),var(--card-overlay-rest,${params.overlay.restStrength})) 100%)`,
             transition: `all ${dur} ease-out`,
           }}
         />

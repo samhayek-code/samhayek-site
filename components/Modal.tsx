@@ -265,9 +265,7 @@ export default function Modal({ item, onClose }: ModalProps) {
 
   // Check if this is a special modal type
   const isOasis = item.slug?.current === 'oasis'
-  const isSC2 = item.slug?.current === 'sc2-audio-hooks'
-  const isHalo = item.slug?.current === 'halo-audio-hooks'
-  const isTiberianSun = item.slug?.current === 'tiberian-sun-audio-hooks'
+  const isAudioHooks = item.slug?.current === 'audio-hooks'
   const isContactForm = item.slug?.current === 'send-message'
   const isBookingForm = item.slug?.current === 'book-a-call'
   const isCaseStudy = (item.caseStudySections?.length ?? 0) > 0
@@ -287,7 +285,7 @@ export default function Modal({ item, onClose }: ModalProps) {
   const isReferences = item.slug?.current === 'references'
   const isGalleryType = (isArt || isDesign) && !isCollection && !isTestimonial && !isReferences && !isCaseStudy  // Types that use full-width gallery display (but not collections, testimonials, case studies, or references)
   const isEmbedModal = isContactForm || isBookingForm
-  const hideCtaButton = isEmbedModal || isGalleryType || isSupport || isCollection || isWriting || isOasis || isSC2 || isHalo || isTiberianSun || isResume || isCaseStudy
+  const hideCtaButton = isEmbedModal || isGalleryType || isSupport || isCollection || isWriting || isOasis || isAudioHooks || isResume || isCaseStudy
 
   // Collection navigation
   const collectionPieces = item.collectionPieces || []
@@ -591,7 +589,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           })()}
 
           {/* Description - hide for collections, checkout, OASIS, and case studies */}
-          {!isCollection && !showWhopCheckout && !isOasis && !isSC2 && !isHalo && !isTiberianSun && !isCaseStudy && (
+          {!isCollection && !showWhopCheckout && !isOasis && !isAudioHooks && !isCaseStudy && (
             <p className="font-sans text-[17px] leading-relaxed mb-6" style={{ color: 'var(--modal-text-secondary)' }}>
               {item.description}
             </p>
@@ -708,23 +706,23 @@ export default function Modal({ item, onClose }: ModalProps) {
             </div>
           )}
 
-          {/* SC2 Audio-Hooks */}
-          {isSC2 && (
+          {/* Audio-Hooks */}
+          {isAudioHooks && (
             <div className="space-y-6 mb-8">
               {/* Subtitle */}
               <p className="font-sans text-[15px]" style={{ color: 'var(--modal-text-tertiary)' }}>
-                StarCraft 2 sound effects for Claude Code.
+                Game voice packs for Claude Code.
               </p>
 
               {/* Main description */}
               <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
-                Hooks into four Claude Code events and plays random SC2 voice lines — unit ready confirmations when a session starts, completion announcements when a task finishes, alert lines when permission is needed, and resource warnings on errors.
+                Hooks into four Claude Code events and plays a random game voice line — a unit-ready or greeting when a session starts, a confirmation when a task finishes, an alert when permission&rsquo;s needed, and a reaction when a command errors out.
               </p>
               <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
-                Choose your faction — Terran, Protoss, or Zerg — and switch anytime. 75 sounds across all three, with a random pick each time so it never gets repetitive.
+                Three franchises, eight voices — StarCraft 2 (Terran, Protoss, Zerg), Halo (Cortana, 343 Guilty Spark, Sgt. Johnson), and Tiberian Sun (GDI&rsquo;s EVA, Nod&rsquo;s CABAL). Around 330 lines in all, picked at random and switchable anytime with one command.
               </p>
               <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
-                Error sounds are smart-filtered so routine command failures stay silent. Only genuinely interesting errors trigger a sound, with a 15-second cooldown to prevent rapid-fire.
+                Half the work was cleaning the audio. Soundboard rips arrived with an in-game ping and a spoken watermark before every line — a numpy + ffmpeg pipeline clusters the ping variants by cross-correlation and trims to the voice onset without clipping the first word. The Tiberian Sun clips are the original game audio, pulled on macOS by cracking Westwood&rsquo;s MIX format by hand, reversing the filename hash, and decoding the ADPCM with ffmpeg.
               </p>
               <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
                 macOS only.
@@ -742,11 +740,11 @@ export default function Modal({ item, onClose }: ModalProps) {
                     border: '1px solid var(--border)',
                   }}
                 >
-                  <code className="font-mono text-[13px] text-foreground truncate flex-1 select-all" title="bash <(curl -fsSL https://raw.githubusercontent.com/samhayek-code/sc2-claude-hooks/main/install.sh)">
-                    bash &lt;(curl -fsSL https://raw.githubusercontent.com/samhayek-code/sc2-claude-hooks/main/install.sh)
+                  <code className="font-mono text-[13px] text-foreground truncate flex-1 select-all" title="bash <(curl -fsSL https://raw.githubusercontent.com/samhayek-code/claude-audio-hooks/main/install.sh)">
+                    bash &lt;(curl -fsSL https://raw.githubusercontent.com/samhayek-code/claude-audio-hooks/main/install.sh)
                   </code>
                   <button
-                    onClick={() => handleCopyInstall('bash <(curl -fsSL https://raw.githubusercontent.com/samhayek-code/sc2-claude-hooks/main/install.sh)')}
+                    onClick={() => handleCopyInstall('bash <(curl -fsSL https://raw.githubusercontent.com/samhayek-code/claude-audio-hooks/main/install.sh)')}
                     className="shrink-0 px-3 py-1.5 font-mono text-[12px] font-medium rounded-chip press transition-all"
                     style={{
                       background: copied ? 'var(--foreground)' : 'var(--cta-bg)',
@@ -786,7 +784,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                   </li>
                   <li className="flex gap-3">
                     <span className="font-mono text-[13px] text-muted shrink-0">2.</span>
-                    <span>Pick your faction (Terran, Protoss, or Zerg)</span>
+                    <span>Pick a starting voice — all eight install</span>
                   </li>
                   <li className="flex gap-3">
                     <span className="font-mono text-[13px] text-muted shrink-0">3.</span>
@@ -807,237 +805,15 @@ export default function Modal({ item, onClose }: ModalProps) {
                 <div className="text-muted mb-2">Events</div>
                 <div className="pl-4 space-y-0.5">
                   <div><span className="text-muted">Session starts →</span> {'"Battlecruiser operational"'}</div>
-                  <div><span className="text-muted">Task completes →</span> {'"Evolution complete"'}</div>
-                  <div><span className="text-muted">Needs permission →</span> {'"Nuclear launch detected"'}</div>
+                  <div><span className="text-muted">Task completes →</span> {'"Construction complete"'}</div>
+                  <div><span className="text-muted">Needs permission →</span> {'"Awaiting orders"'}</div>
                   <div><span className="text-muted">Error occurs →</span> {'"Not enough minerals"'}</div>
                 </div>
               </div>
-            </div>
-          )}
 
-          {/* Halo Audio-Hooks */}
-          {isHalo && (
-            <div className="space-y-6 mb-8">
-              {/* Subtitle */}
-              <p className="font-sans text-[15px]" style={{ color: 'var(--modal-text-tertiary)' }}>
-                Halo voice lines for Claude Code.
-              </p>
-
-              {/* Main description */}
-              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
-                Hooks into four Claude Code events and plays a random Halo line — a greeting when a session starts, a confirmation when a task finishes, a prompt when permission is needed, and a reaction when a command errors out.
-              </p>
-              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
-                Three voices — Cortana, 343 Guilty Spark, and Sergeant Johnson — switchable anytime. ~175 lines across the three, picked at random so it never gets repetitive.
-              </p>
-              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
-                The clips are pulled straight from the games, so they arrived with baggage — an in-game radio ping and a spoken soundboard watermark before every line. A small Python pipeline (numpy + ffmpeg) clusters the recurring ping variants by cross-correlation, trims each clip to where the voice actually begins, adds a fast fade-in, and de-dupes — without ever clipping the first word.
-              </p>
+              {/* Switch voices hint */}
               <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
-                macOS only.
-              </p>
-
-              {/* Install command */}
-              <div className="space-y-3">
-                <span className="font-mono font-medium text-[11px] text-muted uppercase tracking-wide">
-                  Install
-                </span>
-                <div
-                  className="flex items-center gap-3 px-4 py-3 rounded-input"
-                  style={{
-                    background: 'var(--surface)',
-                    border: '1px solid var(--border)',
-                  }}
-                >
-                  <code className="font-mono text-[13px] text-foreground truncate flex-1 select-all" title="bash <(curl -fsSL https://raw.githubusercontent.com/samhayek-code/halo-audio-hooks/main/install.sh)">
-                    bash &lt;(curl -fsSL https://raw.githubusercontent.com/samhayek-code/halo-audio-hooks/main/install.sh)
-                  </code>
-                  <button
-                    onClick={() => handleCopyInstall('bash <(curl -fsSL https://raw.githubusercontent.com/samhayek-code/halo-audio-hooks/main/install.sh)')}
-                    className="shrink-0 px-3 py-1.5 font-mono text-[12px] font-medium rounded-chip press transition-all"
-                    style={{
-                      background: copied ? 'var(--foreground)' : 'var(--cta-bg)',
-                      border: '1px solid',
-                      borderColor: copied ? 'var(--foreground)' : 'var(--border)',
-                      color: copied ? 'var(--background)' : 'var(--cta-text)',
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!copied) {
-                        e.currentTarget.style.background = 'var(--cta-hover-bg)'
-                        e.currentTarget.style.borderColor = 'var(--cta-hover-border)'
-                        e.currentTarget.style.color = 'var(--cta-hover-text)'
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!copied) {
-                        e.currentTarget.style.background = 'var(--cta-bg)'
-                        e.currentTarget.style.borderColor = 'var(--border)'
-                        e.currentTarget.style.color = 'var(--cta-text)'
-                      }
-                    }}
-                  >
-                    {copied ? 'Copied' : 'Copy'}
-                  </button>
-                </div>
-              </div>
-
-              {/* How it works */}
-              <div className="space-y-3">
-                <span className="font-mono font-medium text-[11px] text-muted uppercase tracking-wide">
-                  How it works
-                </span>
-                <ol className="space-y-2 font-sans text-[15px]" style={{ color: 'var(--modal-text-tertiary)' }}>
-                  <li className="flex gap-3">
-                    <span className="font-mono text-[13px] text-muted shrink-0">1.</span>
-                    <span>Run the command above in Terminal</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="font-mono text-[13px] text-muted shrink-0">2.</span>
-                    <span>Pick your voice (Cortana, Guilty Spark, or Johnson)</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="font-mono text-[13px] text-muted shrink-0">3.</span>
-                    <span>Start a new Claude Code session and you&rsquo;ll hear it</span>
-                  </li>
-                </ol>
-              </div>
-
-              {/* Events preview */}
-              <div
-                className="p-4 font-mono text-[12px] leading-relaxed rounded-input"
-                style={{
-                  background: 'var(--surface)',
-                  border: '1px solid var(--border)',
-                  color: 'var(--modal-text-tertiary)',
-                }}
-              >
-                <div className="text-muted mb-2">Events</div>
-                <div className="pl-4 space-y-0.5">
-                  <div><span className="text-muted">Session starts →</span> {'"Wake me when you need me"'}</div>
-                  <div><span className="text-muted">Task completes →</span> {'"I love me some me"'}</div>
-                  <div><span className="text-muted">Needs permission →</span> {'"I need you to make a decision"'}</div>
-                  <div><span className="text-muted">Error occurs →</span> {'"We\'re all gonna die!"'}</div>
-                </div>
-              </div>
-
-              {/* Light link to SC2 */}
-              <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
-                Prefer sci-fi RTS? There&rsquo;s a{' '}
-                <a href="/tools/sc2-audio-hooks" className="underline underline-offset-2 hover:opacity-70 transition-opacity" style={{ color: 'var(--modal-text-secondary)' }}>StarCraft 2 set</a>{' '}too.
-              </p>
-            </div>
-          )}
-
-          {/* Tiberian Sun Audio-Hooks */}
-          {isTiberianSun && (
-            <div className="space-y-6 mb-8">
-              {/* Subtitle */}
-              <p className="font-sans text-[15px]" style={{ color: 'var(--modal-text-tertiary)' }}>
-                Tiberian Sun EVA, CABAL, and unit voices for Claude Code.
-              </p>
-
-              {/* Main description */}
-              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
-                Hooks into four Claude Code events and plays a random Tiberian Sun line — a boot-up when a session starts, a confirmation when a task finishes, a prompt when permission&rsquo;s needed, and a reaction when a command errors out.
-              </p>
-              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
-                Each faction blends its announcer with its unit voices, the way the game layers them — GDI&rsquo;s EVA and her infantry, Nod&rsquo;s CABAL and his cyborgs. 80 lines across the two packs, fired at random, switchable anytime.
-              </p>
-              <p className="font-sans text-[17px] leading-relaxed" style={{ color: 'var(--modal-text-secondary)' }}>
-                The interesting part: these aren&rsquo;t soundboard rips, they&rsquo;re the original game audio. Pulling it on macOS meant cracking Westwood&rsquo;s MIX archive format by hand, reversing the filename hash to recover names, decoding the Westwood ADPCM with ffmpeg, then transcribing every voice line with whisper so the right ones land in the right event.
-              </p>
-              <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
-                macOS only.
-              </p>
-
-              {/* Install command */}
-              <div className="space-y-3">
-                <span className="font-mono font-medium text-[11px] text-muted uppercase tracking-wide">
-                  Install
-                </span>
-                <div
-                  className="flex items-center gap-3 px-4 py-3 rounded-input"
-                  style={{
-                    background: 'var(--surface)',
-                    border: '1px solid var(--border)',
-                  }}
-                >
-                  <code className="font-mono text-[13px] text-foreground truncate flex-1 select-all" title="bash <(curl -fsSL https://raw.githubusercontent.com/samhayek-code/tiberian-sun-audio-hooks/main/install.sh)">
-                    bash &lt;(curl -fsSL https://raw.githubusercontent.com/samhayek-code/tiberian-sun-audio-hooks/main/install.sh)
-                  </code>
-                  <button
-                    onClick={() => handleCopyInstall('bash <(curl -fsSL https://raw.githubusercontent.com/samhayek-code/tiberian-sun-audio-hooks/main/install.sh)')}
-                    className="shrink-0 px-3 py-1.5 font-mono text-[12px] font-medium rounded-chip press transition-all"
-                    style={{
-                      background: copied ? 'var(--foreground)' : 'var(--cta-bg)',
-                      border: '1px solid',
-                      borderColor: copied ? 'var(--foreground)' : 'var(--border)',
-                      color: copied ? 'var(--background)' : 'var(--cta-text)',
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!copied) {
-                        e.currentTarget.style.background = 'var(--cta-hover-bg)'
-                        e.currentTarget.style.borderColor = 'var(--cta-hover-border)'
-                        e.currentTarget.style.color = 'var(--cta-hover-text)'
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!copied) {
-                        e.currentTarget.style.background = 'var(--cta-bg)'
-                        e.currentTarget.style.borderColor = 'var(--border)'
-                        e.currentTarget.style.color = 'var(--cta-text)'
-                      }
-                    }}
-                  >
-                    {copied ? 'Copied' : 'Copy'}
-                  </button>
-                </div>
-              </div>
-
-              {/* How it works */}
-              <div className="space-y-3">
-                <span className="font-mono font-medium text-[11px] text-muted uppercase tracking-wide">
-                  How it works
-                </span>
-                <ol className="space-y-2 font-sans text-[15px]" style={{ color: 'var(--modal-text-tertiary)' }}>
-                  <li className="flex gap-3">
-                    <span className="font-mono text-[13px] text-muted shrink-0">1.</span>
-                    <span>Run the command above in Terminal</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="font-mono text-[13px] text-muted shrink-0">2.</span>
-                    <span>Pick your faction (GDI or NOD)</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="font-mono text-[13px] text-muted shrink-0">3.</span>
-                    <span>Start a new Claude Code session and you&rsquo;ll hear it</span>
-                  </li>
-                </ol>
-              </div>
-
-              {/* Events preview */}
-              <div
-                className="p-4 font-mono text-[12px] leading-relaxed rounded-input"
-                style={{
-                  background: 'var(--surface)',
-                  border: '1px solid var(--border)',
-                  color: 'var(--modal-text-tertiary)',
-                }}
-              >
-                <div className="text-muted mb-2">Events</div>
-                <div className="pl-4 space-y-0.5">
-                  <div><span className="text-muted">Session starts →</span> {'"Establishing Battlefield Control. Stand by."'}</div>
-                  <div><span className="text-muted">Task completes →</span> {'"Construction complete"'}</div>
-                  <div><span className="text-muted">Needs permission →</span> {'"Awaiting orders"'} <span className="text-muted">(unit)</span></div>
-                  <div><span className="text-muted">Error occurs →</span> {'"Prepare for sterilization"'} <span className="text-muted">(CABAL)</span></div>
-                </div>
-              </div>
-
-              {/* Light link to the other sets */}
-              <p className="font-sans text-[15px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
-                Two more in the set — the{' '}
-                <a href="/code/halo-audio-hooks" className="underline underline-offset-2 hover:opacity-70 transition-opacity" style={{ color: 'var(--modal-text-secondary)' }}>Halo</a>{' '}and{' '}
-                <a href="/code/sc2-audio-hooks" className="underline underline-offset-2 hover:opacity-70 transition-opacity" style={{ color: 'var(--modal-text-secondary)' }}>StarCraft 2</a>{' '}voices.
+                Switch anytime — <code className="font-mono text-[13px]" style={{ color: 'var(--modal-text-secondary)' }}>set-faction.sh cortana</code>, or any of the eight packs.
               </p>
             </div>
           )}
@@ -1466,7 +1242,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           )}
 
           {/* Body (rich text) - hide for Support card and Resume */}
-          {item.body && item.body.length > 0 && !isSupport && !isResume && !isHalo && !isTiberianSun && (
+          {item.body && item.body.length > 0 && !isSupport && !isResume && !isAudioHooks && (
             <div className="prose prose-base max-w-full w-full mb-8 overflow-hidden break-words [&>p]:mb-4 [&>p]:leading-relaxed [&>p]:text-[17px] [&_a]:text-foreground [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:opacity-70 [&_h1]:text-foreground [&_h2]:text-foreground [&_h3]:text-foreground [&_h4]:text-foreground [&_strong]:text-foreground [&_code]:text-foreground [&_blockquote]:text-muted [&_blockquote]:border-border" style={{ color: 'var(--modal-text-body)' }}>
               <PortableText value={item.body} components={portableTextComponents} />
             </div>
@@ -1624,22 +1400,10 @@ export default function Modal({ item, onClose }: ModalProps) {
                   View on GitHub
                 </a>
               )}
-              {/* SC2 GitHub link */}
-              {isSC2 && (
+              {/* Audio-Hooks GitHub link */}
+              {isAudioHooks && (
                 <a
-                  href="https://github.com/samhayek-code/sc2-claude-hooks"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white rounded-btn press hover:opacity-80 transition-opacity"
-                  style={{ background: colors.dot }}
-                >
-                  View on GitHub
-                </a>
-              )}
-              {/* Tiberian Sun GitHub link */}
-              {isTiberianSun && (
-                <a
-                  href="https://github.com/samhayek-code/tiberian-sun-audio-hooks"
+                  href="https://github.com/samhayek-code/claude-audio-hooks"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-6 py-3 font-mono text-[12px] font-bold uppercase tracking-wider text-white rounded-btn press hover:opacity-80 transition-opacity"
