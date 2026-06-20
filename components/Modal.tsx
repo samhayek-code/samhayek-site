@@ -475,7 +475,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           {/* Header */}
           <div className="flex justify-between items-start mb-6">
             <div>
-              <h2 className="font-display text-[24px] lg:text-[28px] font-medium tracking-[-0.012em] text-foreground mb-2">
+              <h2 className="font-display text-[24px] lg:text-[28px] font-medium tracking-[-0.02em] text-foreground mb-2">
                 {item.title}
               </h2>
               {item.year && (
@@ -1365,7 +1365,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                       </div>
 
                       {/* Piece title */}
-                      <h3 className="font-display text-[22px] font-medium tracking-[-0.012em] text-foreground text-center">
+                      <h3 className="font-display text-[22px] font-medium tracking-[-0.02em] text-foreground text-center">
                         {piece.title}
                       </h3>
 
@@ -1384,7 +1384,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 {/* Merch grid */}
                 {displayedIndex === totalPieces && hasMerch && (
                   <div className="space-y-6">
-                    <h3 className="font-display text-[22px] font-medium tracking-[-0.012em] text-foreground text-center">
+                    <h3 className="font-display text-[22px] font-medium tracking-[-0.02em] text-foreground text-center">
                       The Collection
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -1561,7 +1561,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           {showWhopCheckout && item.whopPlanId && (
             <div className="mb-8">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-display text-[20px] font-medium tracking-[-0.012em] text-foreground">Checkout</h3>
+                <h3 className="font-display text-[20px] font-medium tracking-[-0.02em] text-foreground">Checkout</h3>
                 <button
                   onClick={() => setShowWhopCheckout(false)}
                   className="text-muted hover:text-foreground transition-colors text-[16px]"
