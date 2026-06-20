@@ -39,6 +39,16 @@
   --card-overlay-rgb: 13, 13, 15;
   --card-overlay-default: 0.7;
   --card-overlay-hover: 0.5;
+  /* Card SURFACE — dark default (theme-aware; light overrides flip to frosted) */
+  --card-bg: #111113;
+  --card-bg-hover: #1A1A1E;
+  --card-text: #E8E8E9;
+  --card-text-muted: #505055;
+  --card-text-faint: #3A3A3F;
+  --card-chip-bg: #15151A;
+  --card-cta-bg: rgba(13, 13, 15, 0.6);
+  --card-cta-text: #8A8A8F;
+  --card-cta-border: rgba(255, 255, 255, 0.1);
   --card-pill-bg: rgba(13, 13, 15, 0.6);
   --card-pill-border: rgba(255, 255, 255, 0.08);
   --cta-bg: rgba(13, 13, 15, 0.6);
@@ -97,6 +107,16 @@
   --card-overlay-rgb: 244, 244, 245;
   --card-overlay-default: 0.25;
   --card-overlay-hover: 0.15;
+  /* Card SURFACE — LIGHT / frosted swap (inverted text/chip/cta) */
+  --card-bg: #FFFFFF;
+  --card-bg-hover: #FFFFFF;
+  --card-text: #111113;
+  --card-text-muted: #6B6B70;
+  --card-text-faint: #9C9CA1;
+  --card-chip-bg: #FFFFFF;
+  --card-cta-bg: rgba(255, 255, 255, 0.7);
+  --card-cta-text: #6B6B70;
+  --card-cta-border: rgba(0, 0, 0, 0.12);
   --card-pill-bg: rgba(255, 255, 255, 0.75);
   --card-pill-border: rgba(0, 0, 0, 0.08);
   --cta-bg: rgba(255, 255, 255, 0.75);

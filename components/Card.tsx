@@ -151,7 +151,7 @@ export default function Card({
         onClick={() => !isComingSoon && onClick(item)}
         className={`card-hover card-noise relative overflow-hidden flex flex-col h-full rounded-card ${isComingSoon ? "cursor-default" : "cursor-pointer"}`}
         style={{
-          background: isHovered ? "#1A1A1E" : "#111113",
+          background: isHovered ? "var(--card-bg-hover)" : "var(--card-bg)",
           boxShadow: isHovered ? "var(--shadow-pop)" : "var(--shadow-card)",
           transform: `translateY(${liftY}px) scale(${scale})`,
           transition: `transform ${dur} ${ease}, box-shadow ${dur} ${ease}, background ${dur} ${ease}`,
@@ -216,7 +216,7 @@ export default function Card({
             }}
           >
             <div className="w-full max-w-[180px] aspect-square flex items-center justify-center">
-              <p className="text-[#E8E8E9] text-[13px] leading-[1.6] text-justify font-sans whitespace-pre-line line-clamp-5">
+              <p className="text-[var(--card-text)] text-[13px] leading-[1.6] text-justify font-sans whitespace-pre-line line-clamp-5">
                 {bodyText.slice(0, 150)}
               </p>
             </div>
@@ -230,8 +230,8 @@ export default function Card({
           className="absolute inset-0 z-[2]"
           style={{
             background: isHovered
-              ? `linear-gradient(to bottom, rgba(13,13,15,${params.overlay.hoverStrength}) 0%, rgba(13,13,15,${params.overlay.hoverStrength * 0.2}) 40%, rgba(13,13,15,${params.overlay.hoverStrength}) 100%)`
-              : `linear-gradient(to bottom, rgba(13,13,15,${params.overlay.restStrength}) 0%, rgba(13,13,15,${params.overlay.restStrength * 0.57}) 40%, rgba(13,13,15,${params.overlay.restStrength}) 100%)`,
+              ? `linear-gradient(to bottom, rgba(var(--card-overlay-rgb),${params.overlay.hoverStrength}) 0%, rgba(var(--card-overlay-rgb),${params.overlay.hoverStrength * 0.2}) 40%, rgba(var(--card-overlay-rgb),${params.overlay.hoverStrength}) 100%)`
+              : `linear-gradient(to bottom, rgba(var(--card-overlay-rgb),${params.overlay.restStrength}) 0%, rgba(var(--card-overlay-rgb),${params.overlay.restStrength * 0.57}) 40%, rgba(var(--card-overlay-rgb),${params.overlay.restStrength}) 100%)`,
             transition: `all ${dur} ease-out`,
           }}
         />
@@ -256,7 +256,7 @@ export default function Card({
         <div className="relative z-10 p-5">
           {/* Title + label chip — vertically centered together; date sits below */}
           <div className="flex items-center justify-between gap-2">
-            <span className={`font-sans text-[16px] font-normal tracking-[0.02em] leading-tight flex-1 min-w-0 ${isComingSoon ? "text-[#505055]" : "text-[#E8E8E9]"}`}>
+            <span className={`font-sans text-[16px] font-normal tracking-[0.02em] leading-tight flex-1 min-w-0 ${isComingSoon ? "text-[var(--card-text-muted)]" : "text-[var(--card-text)]"}`}>
               {isComingSoon ? "Coming Soon" : item.title}
             </span>
 
@@ -265,7 +265,7 @@ export default function Card({
             <div
               className="flex items-center gap-1.5 px-2.5 py-1.5 flex-shrink-0 rounded-tag"
               style={{
-                background: `linear-gradient(0deg, ${colors.dot}1F, ${colors.dot}1F), #15151A`,
+                background: `linear-gradient(0deg, ${colors.dot}1F, ${colors.dot}1F), var(--card-chip-bg)`,
                 border: `1.5px solid ${colors.dot}59`,
               }}
             >
@@ -280,7 +280,7 @@ export default function Card({
           </div>
 
           {item.year && !isComingSoon && (
-            <span className="font-mono font-medium text-[11px] text-[#505055] mt-1.5 block">
+            <span className="font-mono font-medium text-[11px] text-[var(--card-text-muted)] mt-1.5 block">
               {item.year}
             </span>
           )}
@@ -293,7 +293,7 @@ export default function Card({
         <div className="relative z-10 flex items-end justify-between gap-2 p-5">
           <div className="flex flex-col gap-1 min-w-0">
             {item.price && !isComingSoon && (
-              <span className="font-mono font-medium text-[13px] text-[#E8E8E9]">
+              <span className="font-mono font-medium text-[13px] text-[var(--card-text)]">
                 {item.price}
               </span>
             )}
@@ -306,7 +306,7 @@ export default function Card({
                   : params.details.showAtRest
                   ? 0.2
                   : 0,
-                color: isHovered ? "#505055" : "#3A3A3F",
+                color: isHovered ? "var(--card-text-muted)" : "var(--card-text-faint)",
                 transition: `opacity ${dur} ease, color ${dur} ease`,
               }}
             >
@@ -319,12 +319,12 @@ export default function Card({
             className="flex items-center gap-1 px-2.5 py-1.5 rounded-tag font-mono font-bold text-[9px] leading-none uppercase tracking-wider press flex-shrink-0"
             style={{
               background: isComingSoon
-                ? "rgba(13, 13, 15, 0.6)"
+                ? "var(--card-cta-bg)"
                 : isHovered
                   ? colors.dot
-                  : "rgba(13, 13, 15, 0.6)",
-              color: isComingSoon ? "#3A3A3F" : isHovered ? "#ffffff" : "#8A8A8F",
-              border: `1.5px solid ${isComingSoon ? "rgba(255, 255, 255, 0.05)" : isHovered ? colors.dot : "rgba(255, 255, 255, 0.1)"}`,
+                  : "var(--card-cta-bg)",
+              color: isComingSoon ? "var(--card-text-faint)" : isHovered ? "#ffffff" : "var(--card-cta-text)",
+              border: `1.5px solid ${isComingSoon ? "var(--card-cta-border)" : isHovered ? colors.dot : "var(--card-cta-border)"}`,
               transition: `all ${parseFloat(dur) * 0.5}s ease`,
               cursor: isComingSoon ? "default" : "pointer",
             }}

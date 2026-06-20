@@ -39,7 +39,7 @@ export default function ArchiveGrid({
     hover: { liftY: -8, scale: 1, duration: 0.56 },
     glow: { opacity: 0.7, blur: 3, duration: 0.36 },
     image: { restOpacity: 0.25, hoverOpacity: 1, restBlur: 2.35, hoverBlur: 0 },
-    overlay: { restStrength: 0.7, hoverStrength: 0 },
+    overlay: { restStrength: 0.63, hoverStrength: 0 },
     details: { bracketOpacity: 0.6, specLineOpacity: 1, showAtRest: false },
     press: { scale: 0.96, enabled: true },
     entrance: { distance: 12, duration: 0.46, staggerMs: 90 },
