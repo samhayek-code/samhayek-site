@@ -8,7 +8,7 @@ import { urlFor } from "@/lib/sanity";
 import {
   CalendarDots,
   ChatCircleDots,
-  HandHeart,
+  Heart,
   FileText,
   CaretRight,
 } from "@phosphor-icons/react";
@@ -25,7 +25,7 @@ const connectIconColors: Record<string, string> = {
 const connectIcons: Record<string, JSX.Element> = {
   "book-a-call": <CalendarDots weight="fill" size={96} />,
   "send-message": <ChatCircleDots weight="fill" size={96} />,
-  support: <HandHeart weight="fill" size={96} />,
+  support: <Heart weight="fill" size={96} />,
   resume: <FileText weight="fill" size={96} />,
 };
 
