@@ -44,6 +44,7 @@ export default function HomeClient({ items, initialFilter = 'Everything', initia
   const [selectedItem, setSelectedItem] = useState<ArchiveItem | null>(null)
   const [soundEnabled, setSoundEnabled] = useState(true) // Sound on by default
   const [theme, setTheme] = useState<'dark' | 'light'>('dark')
+  const [cardInvert, setCardInvert] = useState(false) // TEMP: card-style swap experiment
   const [leftKeyPressed, setLeftKeyPressed] = useState(false)
   const [rightKeyPressed, setRightKeyPressed] = useState(false)
 
@@ -106,6 +107,14 @@ export default function HomeClient({ items, initialFilter = 'Everything', initia
     }
   }, [])
 
+  // TEMP: load card-style-swap preference (mirrors theme; remove after deciding)
+  useEffect(() => {
+    if (localStorage.getItem('cardInvert') === 'true') {
+      setCardInvert(true)
+      document.documentElement.classList.add('cards-invert')
+    }
+  }, [])
+
   // Save sound preference
   const toggleSound = useCallback(async () => {
     // Ensure audio context is running before toggling
@@ -131,6 +140,16 @@ export default function HomeClient({ items, initialFilter = 'Everything', initia
       localStorage.setItem('theme', newTheme)
       document.documentElement.classList.toggle('light', newTheme === 'light')
       return newTheme
+    })
+  }, [])
+
+  // TEMP: toggle card-style swap (remove with the rest of the cardInvert wiring)
+  const toggleCardInvert = useCallback(() => {
+    setCardInvert(prev => {
+      const next = !prev
+      localStorage.setItem('cardInvert', String(next))
+      document.documentElement.classList.toggle('cards-invert', next)
+      return next
     })
   }, [])
 
@@ -250,6 +269,8 @@ export default function HomeClient({ items, initialFilter = 'Everything', initia
         rightKeyPressed={rightKeyPressed}
         theme={theme}
         onToggleTheme={toggleTheme}
+        cardInvert={cardInvert}
+        onToggleCardInvert={toggleCardInvert}
       />
 
       <ArchiveGrid

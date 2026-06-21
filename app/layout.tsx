@@ -45,6 +45,10 @@ const themeScript = `
         document.documentElement.classList.add('light');
       }
     }
+    // TEMP: card-style swap experiment — remove with the rest of the cardInvert wiring
+    if (localStorage.getItem('cardInvert') === 'true') {
+      document.documentElement.classList.add('cards-invert');
+    }
   })();
 `;
 

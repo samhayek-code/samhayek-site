@@ -178,6 +178,46 @@
   --shadow-pop: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 6px 16px -4px rgba(0, 0, 0, 0.1), 0 16px 40px -12px rgba(0, 0, 0, 0.12);
 }
 
+/* ─── TEMP: card-style swap experiment — remove after deciding ───────────────
+   Inverts ONLY the card surface/overlay/shadow tokens relative to the page
+   theme (toggled by the `cards-invert` class on <html>). Page background, nav,
+   and modal stay on the page theme so the cards read as a deliberate contrast.
+   To remove: delete these two rules + the cardInvert wiring in HomeClient /
+   NavBar / layout.tsx, then keep whichever pairing won by editing the base
+   :root / :root.light card tokens. */
+:root.cards-invert:not(.light) {
+  /* dark page → LIGHT (frosted) card treatment */
+  --card-overlay-rgb: 244, 244, 245;
+  --card-overlay-rest: 0.4;
+  --card-bg: #FFFFFF;
+  --card-bg-hover: #FFFFFF;
+  --card-text: #111113;
+  --card-text-muted: #6B6B70;
+  --card-text-faint: #9C9CA1;
+  --card-chip-bg: #FFFFFF;
+  --card-cta-bg: rgba(255, 255, 255, 0.7);
+  --card-cta-text: #6B6B70;
+  --card-cta-border: rgba(0, 0, 0, 0.12);
+  --shadow-card: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-pop: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 6px 16px -4px rgba(0, 0, 0, 0.1), 0 16px 40px -12px rgba(0, 0, 0, 0.12);
+}
+:root.light.cards-invert {
+  /* light page → DARK card treatment */
+  --card-overlay-rgb: 13, 13, 15;
+  --card-overlay-rest: 0.5;
+  --card-bg: #111113;
+  --card-bg-hover: #1A1A1E;
+  --card-text: #E8E8E9;
+  --card-text-muted: #505055;
+  --card-text-faint: #3A3A3F;
+  --card-chip-bg: #15151A;
+  --card-cta-bg: rgba(13, 13, 15, 0.6);
+  --card-cta-text: #8A8A8F;
+  --card-cta-border: rgba(255, 255, 255, 0.1);
+  --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.07), 0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.4);
+  --shadow-pop: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 8px 24px rgba(0, 0, 0, 0.55), 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
