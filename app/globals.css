@@ -178,13 +178,11 @@
   --shadow-pop: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 6px 16px -4px rgba(0, 0, 0, 0.1), 0 16px 40px -12px rgba(0, 0, 0, 0.12);
 }
 
-/* ─── TEMP: card-style swap experiment — remove after deciding ───────────────
-   Inverts ONLY the card surface/overlay/shadow tokens relative to the page
-   theme (toggled by the `cards-invert` class on <html>). Page background, nav,
-   and modal stay on the page theme so the cards read as a deliberate contrast.
-   To remove: delete these two rules + the cardInvert wiring in HomeClient /
-   NavBar / layout.tsx, then keep whichever pairing won by editing the base
-   :root / :root.light card tokens. */
+/* ─── Card-style swap ────────────────────────────────────────────────────────
+   Flips ONLY the card surface/overlay/shadow tokens relative to the page theme
+   (the `cards-invert` class on <html>, toggled from the nav). Page background,
+   nav, and modal stay on the page theme, so an inverted set reads as a
+   deliberate contrast — light frosted cards on a dark page, or the reverse. */
 :root.cards-invert:not(.light) {
   /* dark page → LIGHT (frosted) card treatment */
   --card-overlay-rgb: 244, 244, 245;

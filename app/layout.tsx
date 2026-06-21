@@ -39,13 +39,9 @@ const themeScript = `
     const saved = localStorage.getItem('theme');
     if (saved === 'light') {
       document.documentElement.classList.add('light');
-    } else if (!saved) {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (!prefersDark) {
-        document.documentElement.classList.add('light');
-      }
     }
-    // TEMP: card-style swap experiment — remove with the rest of the cardInvert wiring
+    // No saved preference → dark by default.
+    // Card-style swap: apply the saved preference before paint (no flash)
     if (localStorage.getItem('cardInvert') === 'true') {
       document.documentElement.classList.add('cards-invert');
     }

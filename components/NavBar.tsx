@@ -15,7 +15,7 @@ interface NavBarProps {
   rightKeyPressed: boolean
   theme: 'dark' | 'light'
   onToggleTheme: () => void
-  cardInvert: boolean // TEMP: card-style swap experiment
+  cardInvert: boolean // card-style swap (independent of page theme)
   onToggleCardInvert: () => void
 }
 
@@ -203,13 +203,13 @@ export default function NavBar({
             )}
           </button>
 
-          {/* TEMP: card-style swap (experimental) — remove after deciding the pairing */}
+          {/* Card-style swap — flips the card treatment independent of the page theme */}
           <button
             onClick={onToggleCardInvert}
             onMouseEnter={onHoverSound}
             className={`relative w-8 h-8 border-[1.5px] rounded-input press flex items-center justify-center transition-colors before:absolute before:-inset-1 before:content-[''] ${cardInvert ? 'text-foreground border-border-hover' : 'border-border text-subtle hover:text-foreground hover:border-border-hover'}`}
-            aria-label={cardInvert ? 'Reset card style' : 'Swap card style (experimental)'}
-            title="Swap card style (experimental)"
+            aria-label={cardInvert ? 'Use default card style' : 'Swap card style'}
+            title="Swap card style"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <rect x="3" y="3" width="18" height="18" rx="4" />

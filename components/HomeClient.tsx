@@ -44,7 +44,7 @@ export default function HomeClient({ items, initialFilter = 'Everything', initia
   const [selectedItem, setSelectedItem] = useState<ArchiveItem | null>(null)
   const [soundEnabled, setSoundEnabled] = useState(true) // Sound on by default
   const [theme, setTheme] = useState<'dark' | 'light'>('dark')
-  const [cardInvert, setCardInvert] = useState(false) // TEMP: card-style swap experiment
+  const [cardInvert, setCardInvert] = useState(false) // card-style swap (independent of page theme)
   const [leftKeyPressed, setLeftKeyPressed] = useState(false)
   const [rightKeyPressed, setRightKeyPressed] = useState(false)
 
@@ -92,22 +92,17 @@ export default function HomeClient({ items, initialFilter = 'Everything', initia
     // If nothing saved, keep default (true)
   }, [])
 
-  // Load theme preference from localStorage (respects system preference on first visit)
+  // Load theme preference from localStorage (defaults to dark on first visit)
   useEffect(() => {
     const saved = localStorage.getItem('theme')
     if (saved === 'light' || saved === 'dark') {
       setTheme(saved)
       document.documentElement.classList.toggle('light', saved === 'light')
-    } else {
-      // Check system preference on first visit
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      const initialTheme = prefersDark ? 'dark' : 'light'
-      setTheme(initialTheme)
-      document.documentElement.classList.toggle('light', initialTheme === 'light')
     }
+    // No saved preference → keep the dark default (useState('dark'))
   }, [])
 
-  // TEMP: load card-style-swap preference (mirrors theme; remove after deciding)
+  // Load card-style-swap preference
   useEffect(() => {
     if (localStorage.getItem('cardInvert') === 'true') {
       setCardInvert(true)
@@ -143,7 +138,7 @@ export default function HomeClient({ items, initialFilter = 'Everything', initia
     })
   }, [])
 
-  // TEMP: toggle card-style swap (remove with the rest of the cardInvert wiring)
+  // Toggle card-style swap
   const toggleCardInvert = useCallback(() => {
     setCardInvert(prev => {
       const next = !prev
