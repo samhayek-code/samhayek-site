@@ -865,7 +865,7 @@ export default function Modal({ item, onClose }: ModalProps) {
             <div className="space-y-8 mb-8">
               {/* Tagline */}
               <p className="font-sans text-[15px] italic" style={{ color: 'var(--modal-text-tertiary)' }}>
-                I translate founder vision into scalable design systems — and increasingly ship my own code.
+                I help founders make their vision real; and I do it fast. 0 → 1, then 1 → 100 with design engineering, brand systems, and creative direction.
               </p>
 
               {/* Contact Info */}
@@ -885,38 +885,23 @@ export default function Modal({ item, onClose }: ModalProps) {
                   Experience
                 </h3>
 
-                {/* Job: Fathom */}
-                <div className="space-y-3">
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
-                    <h4 className="font-sans text-[16px] font-medium text-foreground">Brand & Marketing Lead · Fathom Plumbing Solutions</h4>
-                    <span className="font-mono text-[12px] text-muted shrink-0">Jan 2026 – Present</span>
-                  </div>
-                  <p className="font-sans text-[14px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
-                    Leading end-to-end brand transformation for a commercial plumbing company, from strategy through execution across all touchpoints.
-                  </p>
-                  <ul className="space-y-1.5 text-[14px]" style={{ color: 'var(--modal-text-secondary)' }}>
-                    <li className="flex gap-2"><span className="text-muted">·</span><span>Developing comprehensive brand identity system with governance guidelines for consistency at scale</span></li>
-                    <li className="flex gap-2"><span className="text-muted">·</span><span>Designing conversion-focused website with lead capture architecture, booking flows, and analytics integration</span></li>
-                    <li className="flex gap-2"><span className="text-muted">·</span><span>Creating complete collateral package: business cards, vehicle wraps, signage, apparel, and sales materials</span></li>
-                    <li className="flex gap-2"><span className="text-muted">·</span><span>Building social media launch kit with video content, branded graphics, and platform strategy</span></li>
-                  </ul>
-                </div>
-
                 {/* Job: Freelance */}
                 <div className="space-y-3">
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
                     <h4 className="font-sans text-[16px] font-medium text-foreground">Designer · Freelance</h4>
-                    <span className="font-mono text-[12px] text-muted shrink-0">Nov 2023 – Dec 2025</span>
+                    <span className="font-mono text-[12px] text-muted shrink-0">Feb 2024 – Present</span>
                   </div>
                   <p className="font-sans text-[14px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
-                    Delivered brand identities, websites, and product design for early-stage companies across Web3, health, and consumer sectors.
+                    Brand identities, websites, and product design for early-stage companies across Web3, health, and consumer sectors.
                   </p>
                   <ul className="space-y-1.5 text-[14px]" style={{ color: 'var(--modal-text-secondary)' }}>
-                    <li className="flex gap-2"><span className="text-muted">·</span><span><strong className="text-foreground">Parallel</strong> — Full brand identity and product design for AI video editing tool</span></li>
-                    <li className="flex gap-2"><span className="text-muted">·</span><span><strong className="text-foreground">GasHawk</strong> — Website design (gashawk.io) for Ethereum gas optimization platform</span></li>
-                    <li className="flex gap-2"><span className="text-muted">·</span><span><strong className="text-foreground">ChargedParticles</strong> — Designed websites and product interfaces for Web3 Packs and Phoenix Guild</span></li>
-                    <li className="flex gap-2"><span className="text-muted">·</span><span><strong className="text-foreground">Fanfly</strong> — Complete UX/UI design and branding for Web3 music livestreaming mobile app</span></li>
+                    <li className="flex gap-2"><span className="text-muted">·</span><span><strong className="text-foreground">Arcarae</strong> — Brand expansion and visual design for an AI self-reflection app</span></li>
+                    <li className="flex gap-2"><span className="text-muted">·</span><span><strong className="text-foreground">Parallel</strong> — Full brand identity and product design for an AI video editing tool</span></li>
+                    <li className="flex gap-2"><span className="text-muted">·</span><span><strong className="text-foreground">GasHawk</strong> — Website design (gashawk.io) for an Ethereum gas optimization platform</span></li>
+                    <li className="flex gap-2"><span className="text-muted">·</span><span><strong className="text-foreground">ChargedParticles</strong> — Websites and product interfaces for Web3 Packs and Phoenix Guild</span></li>
+                    <li className="flex gap-2"><span className="text-muted">·</span><span><strong className="text-foreground">Fanfly</strong> — Complete UX/UI design and branding for a Web3 music livestreaming mobile app</span></li>
                     <li className="flex gap-2"><span className="text-muted">·</span><span><strong className="text-foreground">Project Legacy</strong> — Brand identity, landing page, custom icon system, and sales materials</span></li>
+                    <li className="flex gap-2"><span className="text-muted">·</span><span><strong className="text-foreground">Additional clients</strong> — Winery brand/label, ops consulting site, plumbing company print assets, web3 gaming social posts</span></li>
                   </ul>
                 </div>
 
@@ -943,13 +928,9 @@ export default function Modal({ item, onClose }: ModalProps) {
                     <h4 className="font-sans text-[16px] font-medium text-foreground">Designer & Community Lead · Web3 Music Platforms</h4>
                     <span className="font-mono text-[12px] text-muted shrink-0">2021 – 2022</span>
                   </div>
-                  <p className="font-sans text-[14px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
-                    Marketing design and community management for leading Web3 music startups during rapid growth phase.
-                  </p>
                   <ul className="space-y-1.5 text-[14px]" style={{ color: 'var(--modal-text-secondary)' }}>
-                    <li className="flex gap-2"><span className="text-muted">·</span><span><strong className="text-foreground">Audius</strong> (2021) — Created social content and managed community as platform grew from 3M to 6M monthly users and announced TikTok partnership</span></li>
-                    <li className="flex gap-2"><span className="text-muted">·</span><span><strong className="text-foreground">Sound.xyz</strong> (2022) — Supported community growth for a16z-backed music NFT platform during closed beta</span></li>
-                    <li className="flex gap-2"><span className="text-muted">·</span><span><strong className="text-foreground">WvrpSound</strong> (2022) — Marketing design and community management for Authentic Artists subsidiary</span></li>
+                    <li className="flex gap-2"><span className="text-muted">·</span><span><strong className="text-foreground">Audius</strong> (2021) — Created social content and managed community as the platform grew from 3M to 6M monthly users and announced a TikTok partnership</span></li>
+                    <li className="flex gap-2"><span className="text-muted">·</span><span><strong className="text-foreground">Sound.xyz</strong> (2022) — Supported community growth for the a16z-backed music NFT platform during closed beta</span></li>
                   </ul>
                 </div>
 
@@ -960,7 +941,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                     <span className="font-mono text-[12px] text-muted shrink-0">2021</span>
                   </div>
                   <p className="font-sans text-[14px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
-                    Brand identity and creative direction for an ocean conservation nonprofit. Delivered full brand system including logo, website, merchandise designs, and social content.
+                    Delivered full brand system including logo, website, merchandise designs, and social content.
                   </p>
                 </div>
 
@@ -971,7 +952,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                     <span className="font-mono text-[12px] text-muted shrink-0">2020</span>
                   </div>
                   <p className="font-sans text-[14px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
-                    Brand identity and packaging design for a supplement startup, from concept through production. Designed branding and product labels for full lineup: protein, nootropics, sleep, immune, and coffee.
+                    Designed branding and product labels for full lineup: protein, nootropics, sleep, immune, and coffee.
                   </p>
                 </div>
 
@@ -982,7 +963,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                     <span className="font-mono text-[12px] text-muted shrink-0">2015 – 2017</span>
                   </div>
                   <p className="font-sans text-[14px] leading-relaxed" style={{ color: 'var(--modal-text-tertiary)' }}>
-                    Founded a community focused on consciousness and creativity. Built brand identity, content strategy, website, and apparel line. Grew Instagram community to 3,500 organic followers.
+                    Built brand identity, content strategy, website, and apparel line.
                   </p>
                 </div>
               </div>
@@ -994,6 +975,26 @@ export default function Modal({ item, onClose }: ModalProps) {
                 </h3>
 
                 <div className="space-y-4">
+                  <div className="space-y-1">
+                    <h4 className="font-sans text-[15px] font-medium text-foreground">samhayek.com</h4>
+                    <p className="font-sans text-[14px]" style={{ color: 'var(--modal-text-secondary)' }}>
+                      Personal portfolio built with Next.js and Sanity CMS.
+                    </p>
+                    <a href="https://samhayek.com" target="_blank" rel="noopener noreferrer" className="font-mono text-[12px] text-muted hover:text-foreground transition-colors">
+                      samhayek.com
+                    </a>
+                  </div>
+
+                  <div className="space-y-1">
+                    <h4 className="font-sans text-[15px] font-medium text-foreground">Audio-Hooks</h4>
+                    <p className="font-sans text-[14px]" style={{ color: 'var(--modal-text-secondary)' }}>
+                      Your terminal, voiced by the games you grew up on.
+                    </p>
+                    <a href="https://www.samhayek.com/code/audio-hooks" target="_blank" rel="noopener noreferrer" className="font-mono text-[12px] text-muted hover:text-foreground transition-colors">
+                      samhayek.com/code/audio-hooks
+                    </a>
+                  </div>
+
                   <div className="space-y-1">
                     <h4 className="font-sans text-[15px] font-medium text-foreground">OASIS</h4>
                     <p className="font-sans text-[14px]" style={{ color: 'var(--modal-text-secondary)' }}>
@@ -1009,18 +1010,8 @@ export default function Modal({ item, onClose }: ModalProps) {
                     <p className="font-sans text-[14px]" style={{ color: 'var(--modal-text-secondary)' }}>
                       Design tool for generating customizable grid overlays with multiple canvas presets, line styles, and PNG/SVG export.
                     </p>
-                    <a href="https://baselinegrids.netlify.app" target="_blank" rel="noopener noreferrer" className="font-mono text-[12px] text-muted hover:text-foreground transition-colors">
-                      baselinegrids.netlify.app
-                    </a>
-                  </div>
-
-                  <div className="space-y-1">
-                    <h4 className="font-sans text-[15px] font-medium text-foreground">samhayek.com</h4>
-                    <p className="font-sans text-[14px]" style={{ color: 'var(--modal-text-secondary)' }}>
-                      Personal portfolio built with Next.js and Sanity CMS.
-                    </p>
-                    <a href="https://github.com/samhayek-code/samhayek-site" target="_blank" rel="noopener noreferrer" className="font-mono text-[12px] text-muted hover:text-foreground transition-colors">
-                      github.com/samhayek-code/samhayek-site
+                    <a href="https://baseline-beta.vercel.app" target="_blank" rel="noopener noreferrer" className="font-mono text-[12px] text-muted hover:text-foreground transition-colors">
+                      baseline-beta.vercel.app
                     </a>
                   </div>
                 </div>
@@ -1036,22 +1027,27 @@ export default function Modal({ item, onClose }: ModalProps) {
                   <div>
                     <span className="font-medium text-foreground">Design</span>
                     <span className="text-muted"> — </span>
-                    <span style={{ color: 'var(--modal-text-secondary)' }}>Brand Identity, Design Systems, Art Direction, UX/UI, Prototyping, Visual Design</span>
+                    <span style={{ color: 'var(--modal-text-secondary)' }}>Design Engineering, Brand Identity + Systems, Creative Direction, Visual Design, Product Design</span>
                   </div>
                   <div>
                     <span className="font-medium text-foreground">Tools</span>
                     <span className="text-muted"> — </span>
-                    <span style={{ color: 'var(--modal-text-secondary)' }}>Figma, Flora, Procreate, Pencil, Framer, Adobe, Paper, Jitter, Spline</span>
+                    <span style={{ color: 'var(--modal-text-secondary)' }}>Figma, Cursor, Procreate, Flora, Framer, Adobe, Claude Code, DaVinci Resolve, Pencil, Jitter, Paper</span>
                   </div>
                   <div>
                     <span className="font-medium text-foreground">Code</span>
                     <span className="text-muted"> — </span>
-                    <span style={{ color: 'var(--modal-text-secondary)' }}>HTML, CSS, JavaScript, React, Next.js</span>
+                    <span style={{ color: 'var(--modal-text-secondary)' }}>HTML, CSS, JavaScript, React, Next.js, Three.js, WGSL, Motion</span>
                   </div>
                   <div>
                     <span className="font-medium text-foreground">Growth</span>
                     <span className="text-muted"> — </span>
-                    <span style={{ color: 'var(--modal-text-secondary)' }}>Community Management, Content Strategy, Copywriting, Social Media</span>
+                    <span style={{ color: 'var(--modal-text-secondary)' }}>Content Strategy, Social Media Marketing, Community Management</span>
+                  </div>
+                  <div>
+                    <span className="font-medium text-foreground">Other</span>
+                    <span className="text-muted"> — </span>
+                    <span style={{ color: 'var(--modal-text-secondary)' }}>Audio Engineering, Micro-interactions, Video Editing, Copywriting</span>
                   </div>
                 </div>
               </div>
