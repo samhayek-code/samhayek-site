@@ -1302,7 +1302,7 @@ export default function Modal({ item, onClose }: ModalProps) {
             <div className="mb-8">
               <div
                 id="my-cal-inline-design"
-                style={{ width: '100%', height: '600px', overflow: 'scroll' }}
+                style={{ width: '100%', minHeight: '600px' }}
               />
             </div>
           )}
