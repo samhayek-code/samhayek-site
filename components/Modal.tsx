@@ -361,13 +361,15 @@ export default function Modal({ item, onClose }: ModalProps) {
     })(window, "https://app.cal.com/embed/embed.js", "init")
 
     const Cal = (window as any).Cal
-    Cal("init", "30min", { origin: "https://app.cal.com" })
-    Cal.ns["30min"]("inline", {
-      elementOrSelector: "#my-cal-inline-30min",
-      config: { layout: "week_view" },
-      calLink: "samhayek/30min",
+    Cal("init", "design", { origin: "https://app.cal.com" })
+    Cal.config = Cal.config || {}
+    Cal.config.forwardQueryParams = true
+    Cal.ns["design"]("inline", {
+      elementOrSelector: "#my-cal-inline-design",
+      config: { layout: "month_view", useSlotsViewOnSmallScreen: "true" },
+      calLink: "samhayek/design",
     })
-    Cal.ns["30min"]("ui", { hideEventTypeDetails: true, layout: "week_view" })
+    Cal.ns["design"]("ui", { hideEventTypeDetails: false, layout: "month_view" })
   }, [isBookingForm])
   
   // Load Lemon Squeezy script for checkout overlay
@@ -1299,7 +1301,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           {isBookingForm && (
             <div className="mb-8">
               <div
-                id="my-cal-inline-30min"
+                id="my-cal-inline-design"
                 style={{ width: '100%', height: '600px', overflow: 'scroll' }}
               />
             </div>
