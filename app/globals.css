@@ -108,7 +108,7 @@
   --card-overlay-default: 0.25;
   --card-overlay-hover: 0.15;
   /* Rest-overlay strength, light only (dark inherits 0.5 from ArchiveGrid param) */
-  --card-overlay-rest: 0.25;
+  --card-overlay-rest: 0.15;
   /* Card SURFACE — LIGHT / frosted swap (inverted text/chip/cta) */
   --card-bg: #FFFFFF;
   --card-bg-hover: #FFFFFF;
@@ -186,7 +186,7 @@
 :root.cards-invert:not(.light) {
   /* dark page → LIGHT (frosted) card treatment */
   --card-overlay-rgb: 244, 244, 245;
-  --card-overlay-rest: 0.25;
+  --card-overlay-rest: 0.15;
   --card-bg: #FFFFFF;
   --card-bg-hover: #FFFFFF;
   --card-text: #111113;
