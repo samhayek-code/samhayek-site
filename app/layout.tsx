@@ -36,15 +36,17 @@ export const metadata: Metadata = {
 // Script to prevent flash of wrong theme on load
 const themeScript = `
   (function() {
-    const saved = localStorage.getItem('theme');
-    if (saved === 'light') {
-      document.documentElement.classList.add('light');
-    }
-    // No saved preference → dark by default.
-    // Card-style swap: apply the saved preference before paint (no flash)
-    if (localStorage.getItem('cardInvert') === 'true') {
-      document.documentElement.classList.add('cards-invert');
-    }
+    try {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'light') {
+        document.documentElement.classList.add('light');
+      }
+      // No saved preference → dark by default.
+      // Card-style swap: apply the saved preference before paint (no flash)
+      if (localStorage.getItem('cardInvert') === 'true') {
+        document.documentElement.classList.add('cards-invert');
+      }
+    } catch (e) {}
   })();
 `;
 

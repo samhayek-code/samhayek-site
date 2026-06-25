@@ -32,6 +32,14 @@ function playClickSound(audioContext: AudioContext | null) {
   oscillator.stop(now + 0.04)
 }
 
+// localStorage can throw in storage-disabled contexts (Safari private mode, etc.)
+const lsGet = (k: string): string | null => {
+  try { return lsGet(k) } catch { return null }
+}
+const lsSet = (k: string, v: string): void => {
+  try { lsSet(k, v) } catch { /* ignore */ }
+}
+
 interface HomeClientProps {
   items: ArchiveItem[]
   initialFilter?: string
@@ -85,7 +93,7 @@ export default function HomeClient({ items, initialFilter = 'Everything', initia
 
   // Load sound preference from localStorage (defaults to true if not set)
   useEffect(() => {
-    const saved = localStorage.getItem('soundEnabled')
+    const saved = lsGet('soundEnabled')
     if (saved !== null) {
       setSoundEnabled(JSON.parse(saved))
     }
@@ -94,7 +102,7 @@ export default function HomeClient({ items, initialFilter = 'Everything', initia
 
   // Load theme preference from localStorage (defaults to dark on first visit)
   useEffect(() => {
-    const saved = localStorage.getItem('theme')
+    const saved = lsGet('theme')
     if (saved === 'light' || saved === 'dark') {
       setTheme(saved)
       document.documentElement.classList.toggle('light', saved === 'light')
@@ -104,7 +112,7 @@ export default function HomeClient({ items, initialFilter = 'Everything', initia
 
   // Load card-style-swap preference
   useEffect(() => {
-    if (localStorage.getItem('cardInvert') === 'true') {
+    if (lsGet('cardInvert') === 'true') {
       setCardInvert(true)
       document.documentElement.classList.add('cards-invert')
     }
@@ -119,7 +127,7 @@ export default function HomeClient({ items, initialFilter = 'Everything', initia
 
     setSoundEnabled(prev => {
       const newValue = !prev
-      localStorage.setItem('soundEnabled', JSON.stringify(newValue))
+      lsSet('soundEnabled', JSON.stringify(newValue))
       // Play a click when enabling sound
       if (newValue && audioContextRef.current) {
         playClickSound(audioContextRef.current)
@@ -132,7 +140,7 @@ export default function HomeClient({ items, initialFilter = 'Everything', initia
   const toggleTheme = useCallback(() => {
     setTheme(prev => {
       const newTheme = prev === 'dark' ? 'light' : 'dark'
-      localStorage.setItem('theme', newTheme)
+      lsSet('theme', newTheme)
       document.documentElement.classList.toggle('light', newTheme === 'light')
       return newTheme
     })
@@ -142,7 +150,7 @@ export default function HomeClient({ items, initialFilter = 'Everything', initia
   const toggleCardInvert = useCallback(() => {
     setCardInvert(prev => {
       const next = !prev
-      localStorage.setItem('cardInvert', String(next))
+      lsSet('cardInvert', String(next))
       document.documentElement.classList.toggle('cards-invert', next)
       return next
     })
@@ -203,13 +211,19 @@ export default function HomeClient({ items, initialFilter = 'Everything', initia
     window.history.replaceState(null, '', getItemUrl(item))
   }, [playSound, getItemUrl])
 
-  // Scroll detection
+  // Scroll detection (rAF-throttled, passive)
   useEffect(() => {
+    let ticking = false
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100)
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(() => {
+        setIsScrolled(window.scrollY > 100)
+        ticking = false
+      })
     }
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
   
@@ -277,7 +291,7 @@ export default function HomeClient({ items, initialFilter = 'Everything', initia
 
       {/* Modal */}
       {selectedItem && (
-        <Modal item={selectedItem} onClose={() => {
+        <Modal key={selectedItem._id} item={selectedItem} onClose={() => {
           setSelectedItem(null)
           window.history.replaceState(null, '', getItemUrl(null))
         }} />

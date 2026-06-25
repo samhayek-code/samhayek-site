@@ -50,11 +50,13 @@ const portableTextComponents = {
   },
   marks: {
     link: ({ children, value }: { children: React.ReactNode; value?: { href?: string } }) => {
-      const href = value?.href || ''
+      const raw = (value?.href || '').trim()
+      // Allow only safe schemes — blocks javascript:/data: hrefs from the CMS
+      const href = /^(https?:|mailto:|tel:|\/|#)/i.test(raw) ? raw : ''
       const isExternal = href.startsWith('http')
       return (
         <a
-          href={href}
+          href={href || undefined}
           target={isExternal ? '_blank' : undefined}
           rel={isExternal ? 'noopener noreferrer' : undefined}
           className="text-foreground underline underline-offset-2 hover:opacity-70 transition-opacity"
@@ -190,9 +192,13 @@ function getEmbedUrl(url: string): { src: string; type: 'spotify' | 'youtube' | 
     let videoId = ''
 
     if (url.includes('youtube.com/watch')) {
-      // youtube.com/watch?v=VIDEO_ID
-      const urlParams = new URL(url).searchParams
-      videoId = urlParams.get('v') || ''
+      // youtube.com/watch?v=VIDEO_ID — base + try/catch so a schemeless/malformed
+      // URL can never throw out of render (no error boundary to catch it).
+      try {
+        videoId = new URL(url, 'https://www.youtube.com').searchParams.get('v') || ''
+      } catch {
+        videoId = ''
+      }
     } else if (url.includes('youtu.be/')) {
       // youtu.be/VIDEO_ID
       videoId = url.split('youtu.be/')[1]?.split('?')[0] || ''
@@ -305,7 +311,8 @@ export default function Modal({ item, onClose }: ModalProps) {
   // Close on escape + collection navigation with arrow keys
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') handleClose()
+      // When the lightbox is open it owns Escape (closes itself only)
+      if (e.key === 'Escape' && !lightboxState) handleClose()
       if (isCollection && !lightboxState) {
         if (e.key === 'ArrowRight') goNextCollection()
         if (e.key === 'ArrowLeft') goPrevCollection()

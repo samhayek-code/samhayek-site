@@ -7,6 +7,11 @@ export default function CustomCursor() {
   const [isPointer, setIsPointer] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isOverIframe, setIsOverIframe] = useState(false)
+  // Render nothing until mounted (and never on touch). The server can't know
+  // about touch, so deciding in the render body caused a hydration mismatch on
+  // touch devices (server rendered the cursor, the client returned null).
+  const [mounted, setMounted] = useState(false)
+  const [isTouch, setIsTouch] = useState(false)
 
   const updateCursor = useCallback((e: MouseEvent) => {
     // Update position directly via ref (no re-render needed)
@@ -30,6 +35,8 @@ export default function CustomCursor() {
   }, [])
 
   useEffect(() => {
+    setMounted(true)
+    setIsTouch('ontouchstart' in window || navigator.maxTouchPoints > 0)
     // Small delay to prevent flash on initial load
     const showTimer = setTimeout(() => setIsVisible(true), 100)
 
@@ -49,8 +56,9 @@ export default function CustomCursor() {
     }
   }, [updateCursor])
 
-  // Don't render on touch devices
-  if (typeof window !== 'undefined' && 'ontouchstart' in window) {
+  // Identical on the server and the first client render (null), then decided
+  // after mount — no hydration mismatch.
+  if (!mounted || isTouch) {
     return null
   }
 
