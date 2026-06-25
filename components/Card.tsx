@@ -201,7 +201,7 @@ function Card({
               alt={item.title}
               fill
               sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-              className="object-cover"
+              className="object-cover card-cover-img"
               style={{
                 opacity: isHovered
                   ? params.image.hoverOpacity
@@ -216,7 +216,7 @@ function Card({
         {/* Connect type icon */}
         {isConnectType && connectIcon && (
           <div
-            className="absolute inset-0 z-[1] flex items-center justify-center"
+            className="card-connect-icon absolute inset-0 z-[1] flex items-center justify-center"
             style={{
               color: isHovered ? connectColor : "var(--subtle)",
               opacity: isHovered ? 0.9 : 0.5,
@@ -230,7 +230,7 @@ function Card({
         {/* Blurred text preview for Writing cards */}
         {isWritingType && bodyText && (
           <div
-            className="absolute inset-0 z-[1] overflow-hidden flex items-center justify-center"
+            className="card-writing-preview absolute inset-0 z-[1] overflow-hidden flex items-center justify-center"
             style={{
               padding: "24px",
               filter: `blur(${isHovered ? params.image.hoverBlur : params.image.restBlur}px)`,
@@ -250,7 +250,7 @@ function Card({
 
         {/* Dark overlay — gradient strength driven by params */}
         <div
-          className="absolute inset-0 z-[2]"
+          className="card-overlay absolute inset-0 z-[2]"
           style={{
             background: isHovered
               ? `linear-gradient(to bottom, rgba(var(--card-overlay-rgb),${params.overlay.hoverStrength}) 0%, rgba(var(--card-overlay-rgb),${params.overlay.hoverStrength * 0.2}) 40%, rgba(var(--card-overlay-rgb),${params.overlay.hoverStrength}) 100%)`
@@ -261,7 +261,7 @@ function Card({
 
         {/* Color wash gradient — fades out on hover via opacity (not background, which can't transition between gradients) */}
         <div
-          className="absolute inset-0 z-[3] pointer-events-none"
+          className="card-wash absolute inset-0 z-[3] pointer-events-none"
           style={{
             background: `radial-gradient(ellipse at 50% 0%, ${colors.bg}, transparent 70%)`,
             opacity: isHovered ? 0 : 1,
@@ -283,20 +283,21 @@ function Card({
               {isComingSoon ? "Coming Soon" : item.title}
             </span>
 
-            {/* Label chip — dark fill + a defined category stroke (modal-button aesthetic).
-                Opaque so the label keeps contrast over the revealed image on hover. */}
+            {/* Label chip — category-colored label. Text/icon color is themed via CSS
+                (var(--cat) on .card-chip) so the light/frosted card states darken it to
+                AA contrast (A7) while dark cards keep the bright label. */}
             <div
-              className="flex items-center gap-1.5 px-2.5 py-1.5 flex-shrink-0 rounded-tag"
-              style={{
-                background: `linear-gradient(0deg, ${colors.dot}1F, ${colors.dot}1F), var(--card-chip-bg)`,
-                border: `1.5px solid ${colors.dot}59`,
-              }}
+              className="card-chip flex items-center gap-1.5 px-2.5 py-1.5 flex-shrink-0 rounded-tag"
+              style={
+                {
+                  "--cat": colors.dot,
+                  background: `linear-gradient(0deg, ${colors.dot}1F, ${colors.dot}1F), var(--card-chip-bg)`,
+                  border: `1.5px solid ${colors.dot}59`,
+                } as React.CSSProperties
+              }
             >
-              <CategoryIcon weight="fill" size={11} color={colors.dot} />
-              <span
-                className="font-mono font-bold text-[9px] leading-none uppercase tracking-wider"
-                style={{ color: colors.dot }}
-              >
+              <CategoryIcon weight="fill" size={11} color="currentColor" />
+              <span className="font-mono font-bold text-[9px] leading-none uppercase tracking-wider">
                 {isComingSoon ? "Product" : item.label}
               </span>
             </div>

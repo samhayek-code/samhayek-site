@@ -423,3 +423,28 @@ button,
 iframe {
   cursor: auto !important;
 }
+
+/* ── Category chip label color (A7 contrast) ──
+   Bright category hue by default (dark chips). On the light/frosted card states the
+   chip background is white, where the lighter hues (amber/cyan/green) fail WCAG AA —
+   darken the label toward black until it passes, keeping the hue. Older browsers
+   without color-mix() fall back to the bright var(--cat). */
+.card-chip { color: var(--cat); }
+:root.light:not(.cards-invert) .card-chip,
+:root.cards-invert:not(.light) .card-chip {
+  color: color-mix(in srgb, var(--cat) 58%, #000);
+}
+
+/* ── Mobile: no hover to reveal cards, so drop the rest blur + fade ──
+   The cover image / writing preview / connect icon render at full opacity and sharp
+   (no hover needed). The title-contrast overlay + color wash are KEPT — they're not
+   blur/fade, and they keep the (near-white) card title legible over light cover
+   images like Arete. */
+@media (hover: none) {
+  .card-cover-img,
+  .card-writing-preview {
+    opacity: 1 !important;
+    filter: none !important;
+  }
+  .card-connect-icon { opacity: 0.9 !important; }
+}
