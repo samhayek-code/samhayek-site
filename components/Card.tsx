@@ -283,21 +283,20 @@ function Card({
               {isComingSoon ? "Coming Soon" : item.title}
             </span>
 
-            {/* Label chip — category-colored label. Text/icon color is themed via CSS
-                (var(--cat) on .card-chip) so the light/frosted card states darken it to
-                AA contrast (A7) while dark cards keep the bright label. */}
+            {/* Label chip — dark fill + a defined category stroke (modal-button aesthetic).
+                Opaque so the label keeps contrast over the revealed image on hover. */}
             <div
-              className="card-chip flex items-center gap-1.5 px-2.5 py-1.5 flex-shrink-0 rounded-tag"
-              style={
-                {
-                  "--cat": colors.dot,
-                  background: `linear-gradient(0deg, ${colors.dot}1F, ${colors.dot}1F), var(--card-chip-bg)`,
-                  border: `1.5px solid ${colors.dot}59`,
-                } as React.CSSProperties
-              }
+              className="flex items-center gap-1.5 px-2.5 py-1.5 flex-shrink-0 rounded-tag"
+              style={{
+                background: `linear-gradient(0deg, ${colors.dot}1F, ${colors.dot}1F), var(--card-chip-bg)`,
+                border: `1.5px solid ${colors.dot}59`,
+              }}
             >
-              <CategoryIcon weight="fill" size={11} color="currentColor" />
-              <span className="font-mono font-bold text-[9px] leading-none uppercase tracking-wider">
+              <CategoryIcon weight="fill" size={11} color={colors.dot} />
+              <span
+                className="font-mono font-bold text-[9px] leading-none uppercase tracking-wider"
+                style={{ color: colors.dot }}
+              >
                 {isComingSoon ? "Product" : item.label}
               </span>
             </div>

@@ -42,22 +42,25 @@ sanity/schemas/
 
 ## Icons
 
-Use **Remix Icons** (`@remixicon/react`) for all iconography. Import individual icons to keep bundle size small:
+Use **Phosphor Icons** (`@phosphor-icons/react`) for all iconography. Import individual icons to keep bundle size small:
 
 ```tsx
-import { RiCalendarScheduleFill } from "@remixicon/react";
-<RiCalendarScheduleFill size={96} />
+import { CalendarDots } from "@phosphor-icons/react";
+<CalendarDots weight="fill" size={96} />
 ```
 
-Browse available icons at https://remixicon.com. Prefer filled variants (`*Fill`) for card icons and line variants (`*Line`) for UI chrome.
+Browse available icons at https://phosphoricons.com. Use `weight="fill"` for card/category icons; `weight="regular"` (line) for UI chrome.
 
-Current card icon mappings:
+**Category icons** live in `lib/categoryIcons.tsx` (one Phosphor icon per type, rendered `weight="fill"` on cards, nav filters, and the modal label):
+Everything → `CirclesThree` · Design → `BoundingBox` · Music → `MusicNote` · Art → `Eye` · Writing → `Pen` · Code → `Code` · Downloads → `DownloadSimple` · Shop → `Tag` · Connect → `ChatCircle` · Lab → `Flask`
+
+**Connect card icons** (per-slug, in `components/Card.tsx`):
 | Slug | Icon | Color |
 |------|------|-------|
-| `book-a-call` | `RiCalendarScheduleFill` | `#fbbf24` |
-| `send-message` | `RiChat1Fill` | `#60a5fa` |
-| `support` | `RiHandCoinFill` | `#34d399` |
-| `resume` | `RiFileTextFill` | `#a78bfa` |
+| `book-a-call` | `CalendarDots` | `#fbbf24` |
+| `send-message` | `ChatCircleDots` | `#60a5fa` |
+| `support` | `Heart` | `#34d399` |
+| `resume` | `FileText` | `#a78bfa` |
 
 ## Content Types
 
