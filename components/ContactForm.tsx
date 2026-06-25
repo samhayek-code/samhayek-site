@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { RiCheckLine } from '@remixicon/react'
+import { Check } from '@phosphor-icons/react'
 
 const TOPICS = ['Design', 'Music', 'Other'] as const
 
@@ -100,7 +100,7 @@ export default function ContactForm() {
           className="w-12 h-12 rounded-full shadow-card flex items-center justify-center"
           style={{ background: 'var(--accent-primary-muted)', color: 'var(--accent-primary)' }}
         >
-          <RiCheckLine size={24} />
+          <Check size={24} weight="bold" />
         </div>
         <p className="font-sans text-[18px] text-foreground">Message sent</p>
         <p className="font-sans text-[15px]" style={{ color: 'var(--modal-text-secondary)' }}>

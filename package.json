@@ -15,7 +15,6 @@
     "@mux/mux-player-react": "^3.10.2",
     "@phosphor-icons/react": "^2.1.10",
     "@portabletext/react": "^3.0.0",
-    "@remixicon/react": "^4.9.0",
     "@sanity/client": "^6.12.0",
     "@sanity/image-url": "^1.0.2",
     "@tailwindcss/typography": "^0.5.19",
@@ -28,8 +27,7 @@
     "react-dom": "^18.2.0",
     "resend": "^6.12.4",
     "sanity": "^3.28.0",
-    "sanity-plugin-mux-input": "^2.12.1",
-    "styled-components": "^6.3.6"
+    "sanity-plugin-mux-input": "^2.12.1"
   },
   "devDependencies": {
     "@mux/mux-node": "^12.8.1",

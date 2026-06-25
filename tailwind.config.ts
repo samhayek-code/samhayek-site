@@ -26,7 +26,6 @@ const config: Config = {
         'type-music': '#8B5CF6',
         'type-art': '#EC4899',
         'type-writing': '#3B82F6',
-        'type-tools': '#22C55E',
         'type-downloads': '#F59E0B',
         'type-shop': '#06B6D4',
         'type-connect': '#EF4444',
