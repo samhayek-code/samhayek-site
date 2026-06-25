@@ -111,7 +111,12 @@ function Lightbox({
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-[3000] flex items-center justify-center bg-black/95 cursor-zoom-out p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Image viewer"
+      tabIndex={-1}
+      ref={(el) => el?.focus()}
+      className="fixed inset-0 z-[3000] flex items-center justify-center bg-black/95 cursor-zoom-out p-4 focus:outline-none"
     >
       <img
         src={current.src}
@@ -230,6 +235,7 @@ export default function Modal({ item, onClose }: ModalProps) {
   const colors = typeColors[item.type] || typeColors.Everything
   const CategoryIcon = categoryIcons[item.type] || categoryIcons.Everything
   const closingForCheckoutRef = useRef(false)
+  const modalRef = useRef<HTMLDivElement>(null)
   const [lightboxState, setLightboxState] = useState<{ images: { src: string; alt: string }[]; currentIndex: number } | null>(null)
   const [activeQR, setActiveQR] = useState<{ currency: string; address: string } | null>(null)
   // Collection state: -1 = intro, 0 to n-1 = pieces, n = merch (if exists)
@@ -249,6 +255,35 @@ export default function Modal({ item, onClose }: ModalProps) {
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 20)
     return () => clearTimeout(timer)
+  }, [])
+
+  // Focus management: focus the dialog on open, trap Tab inside, restore on close
+  useEffect(() => {
+    const prevFocused = document.activeElement as HTMLElement | null
+    modalRef.current?.focus()
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return
+      const box = modalRef.current
+      if (!box) return
+      const focusables = box.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), iframe, [tabindex]:not([tabindex="-1"])'
+      )
+      if (!focusables.length) return
+      const first = focusables[0]
+      const last = focusables[focusables.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+    document.addEventListener('keydown', handleTab)
+    return () => {
+      document.removeEventListener('keydown', handleTab)
+      prevFocused?.focus?.()
+    }
   }, [])
 
   // Animated close — fade out, then unmount after transition completes
@@ -451,8 +486,13 @@ export default function Modal({ item, onClose }: ModalProps) {
       }}
     >
       <div
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={item.title}
+        tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
-        className="max-w-[800px] w-full cursor-default rounded-modal overflow-hidden"
+        className="max-w-[800px] w-full cursor-default rounded-modal overflow-hidden focus:outline-none"
         style={{
           background: 'var(--modal-bg)',
           boxShadow: 'var(--shadow-pop)',
@@ -579,6 +619,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 {item.figmaUrl && (
                   <div className="mb-8">
                     <iframe
+                      title={`${item.title} — Figma`}
                       src={`https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(item.figmaUrl)}`}
                       width="100%"
                       height="500"
@@ -1216,7 +1257,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                         <div key={i} className="aspect-square relative overflow-hidden rounded-card img-outline" style={{ background: 'var(--modal-surface)' }}>
                           <Image
                             src={urlFor(image).width(600).height(600).url()}
-                            alt={`Merch ${i + 1}`}
+                            alt={`${item.title} — item ${i + 1}`}
                             fill
                             sizes="(min-width: 832px) 256px, 45vw"
                             className="object-cover"
@@ -1322,6 +1363,7 @@ export default function Modal({ item, onClose }: ModalProps) {
             return (
               <div className="mb-8">
                 <iframe
+                  title={`${item.title} — media`}
                   src={embed.src}
                   width="100%"
                   height={height}
@@ -1356,6 +1398,7 @@ export default function Modal({ item, onClose }: ModalProps) {
           {!isCaseStudy && item.figmaUrl && (
             <div className="mb-8">
               <iframe
+                title={`${item.title} — Figma`}
                 src={`https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(item.figmaUrl)}`}
                 width="100%"
                 height="500"
@@ -1396,6 +1439,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 </button>
               </div>
               <iframe
+                title="Checkout"
                 src={getWhopCheckoutUrl(item.whopPlanId)}
                 style={{
                   width: '100%',
