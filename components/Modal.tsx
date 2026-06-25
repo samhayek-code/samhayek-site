@@ -131,7 +131,7 @@ function Lightbox({
           <button
             onClick={(e) => { e.stopPropagation(); goPrev() }}
             disabled={currentIndex === 0}
-            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 text-white/60 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-all"
+            className="absolute left-1 sm:left-4 top-1/2 -translate-y-1/2 p-3 text-white/60 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-all"
             aria-label="Previous image"
           >
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -141,7 +141,7 @@ function Lightbox({
           <button
             onClick={(e) => { e.stopPropagation(); goNext() }}
             disabled={currentIndex === images.length - 1}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 text-white/60 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-all"
+            className="absolute right-1 sm:right-4 top-1/2 -translate-y-1/2 p-3 text-white/60 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-all"
             aria-label="Next image"
           >
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -1351,7 +1351,7 @@ export default function Modal({ item, onClose }: ModalProps) {
             <div className="mb-8">
               <div
                 id="my-cal-inline-design"
-                style={{ width: '100%', minHeight: '600px' }}
+                style={{ width: '100%', minHeight: 'min(600px, 80vh)' }}
               />
             </div>
           )}
@@ -1464,7 +1464,7 @@ export default function Modal({ item, onClose }: ModalProps) {
               <span />
             )}
 
-            <div className="flex gap-3 items-center">
+            <div className="flex flex-wrap justify-end gap-3 items-center">
               <button
                 onClick={handleClose}
                 className="px-6 py-3 font-sans text-[14px] leading-4 font-medium text-muted border border-border rounded-btn press hover:border-border-hover hover:text-foreground transition-colors"
