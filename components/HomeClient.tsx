@@ -34,10 +34,10 @@ function playClickSound(audioContext: AudioContext | null) {
 
 // localStorage can throw in storage-disabled contexts (Safari private mode, etc.)
 const lsGet = (k: string): string | null => {
-  try { return lsGet(k) } catch { return null }
+  try { return localStorage.getItem(k) } catch { return null }
 }
 const lsSet = (k: string, v: string): void => {
-  try { lsSet(k, v) } catch { /* ignore */ }
+  try { localStorage.setItem(k, v) } catch { /* ignore */ }
 }
 
 interface HomeClientProps {

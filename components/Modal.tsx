@@ -85,6 +85,13 @@ function Lightbox({
 }) {
   const hasMultiple = images.length > 1
   const current = images[currentIndex]
+  const lightboxRef = useRef<HTMLDivElement>(null)
+
+  // Focus the lightbox once on open — NOT via an inline callback ref, which would
+  // re-fire every render and yank focus off the prev/next buttons during navigation.
+  useEffect(() => {
+    lightboxRef.current?.focus()
+  }, [])
 
   const goNext = useCallback(() => {
     if (currentIndex < images.length - 1) {
@@ -115,7 +122,7 @@ function Lightbox({
       aria-modal="true"
       aria-label="Image viewer"
       tabIndex={-1}
-      ref={(el) => el?.focus()}
+      ref={lightboxRef}
       className="fixed inset-0 z-[3000] flex items-center justify-center bg-black/95 cursor-zoom-out p-4 focus:outline-none"
     >
       <img
