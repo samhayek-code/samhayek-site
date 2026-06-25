@@ -3,13 +3,16 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
-import MuxPlayer from '@mux/mux-player-react'
+import dynamic from 'next/dynamic'
 import { ArchiveItem, typeColors } from '@/lib/types'
 import { categoryIcons } from '@/lib/categoryIcons'
 import { urlFor } from '@/lib/sanity'
 import WalletButton from './WalletButton'
 import CaseStudyContent from './CaseStudyContent'
 import ContactForm from './ContactForm'
+
+// Lazy-load the heavy Mux player — only fetched for items that actually have video
+const MuxPlayer = dynamic(() => import('@mux/mux-player-react'), { ssr: false })
 
 // Crypto wallet addresses for Support card
 const WALLET_ADDRESSES = {
@@ -471,6 +474,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                 src={urlFor(item.coverImage).width(1600).height(900).url()}
                 alt={item.title}
                 fill
+                sizes="(min-width: 832px) 800px, 100vw"
                 className="object-cover"
               />
             ) : (
@@ -1214,6 +1218,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                             src={urlFor(image).width(600).height(600).url()}
                             alt={`Merch ${i + 1}`}
                             fill
+                            sizes="(min-width: 832px) 256px, 45vw"
                             className="object-cover"
                           />
                         </div>
@@ -1370,6 +1375,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                     src={urlFor(image).width(400).height(400).url()}
                     alt={`${item.title} gallery ${i + 1}`}
                     fill
+                    sizes="(min-width: 832px) 256px, 30vw"
                     className="object-cover"
                   />
                 </div>

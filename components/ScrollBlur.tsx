@@ -20,14 +20,20 @@ export default function ScrollBlur() {
 
   useEffect(() => {
     const root = document.documentElement
-    const update = () => {
+    let raf = 0
+    const compute = () => {
+      raf = 0
       const scrollable = root.scrollHeight > window.innerHeight + 8
       const atBottom =
         window.innerHeight + window.scrollY >= root.scrollHeight - 24
       setVisible(scrollable && !atBottom)
     }
+    // rAF-throttle: coalesce scroll/resize/observer bursts into one frame
+    const update = () => {
+      if (!raf) raf = requestAnimationFrame(compute)
+    }
 
-    update()
+    compute()
     window.addEventListener('scroll', update, { passive: true })
     window.addEventListener('resize', update)
     // Recompute when content height changes (e.g. switching filter categories)
@@ -38,6 +44,7 @@ export default function ScrollBlur() {
       window.removeEventListener('scroll', update)
       window.removeEventListener('resize', update)
       ro.disconnect()
+      if (raf) cancelAnimationFrame(raf)
     }
   }, [])
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 import Image from "next/image";
 import { animate, JSAnimation } from "animejs";
 import { ArchiveItem, typeColors, extractPlainText } from "@/lib/types";
@@ -13,6 +13,17 @@ import {
   CaretRight,
 } from "@phosphor-icons/react";
 import { categoryIcons } from "@/lib/categoryIcons";
+
+// Animation/style params passed from ArchiveGrid (was `any`)
+export interface CardParams {
+  hover: { liftY: number; scale: number; duration: number };
+  glow: { opacity: number; blur: number; duration: number };
+  image: { restOpacity: number; hoverOpacity: number; restBlur: number; hoverBlur: number };
+  overlay: { restStrength: number; hoverStrength: number };
+  details: { specLineOpacity: number; showAtRest: boolean };
+  press: { scale: number; enabled: boolean };
+  entrance: { distance: number; duration: number; staggerMs: number };
+}
 
 // Solid Phosphor icons for Connect type cards (per-slug accent colors retained)
 const connectIconColors: Record<string, string> = {
@@ -35,10 +46,10 @@ interface CardProps {
   onHoverSound?: () => void;
   index?: number;
   cardCode: string;
-  params: any;
+  params: CardParams;
 }
 
-export default function Card({
+function Card({
   item,
   onClick,
   onHoverSound,
@@ -71,8 +82,9 @@ export default function Card({
     : colors.dot;
   const hasIconDisplay = isConnectType && connectIcon;
 
-  // Stagger delay for entrance animation
-  const entranceDelay = index * params.entrance.staggerMs;
+  // Stagger delay for entrance animation — capped so late cards in a long grid
+  // don't wait seconds to appear (was index*90ms uncapped → ~5s for the 58th).
+  const entranceDelay = Math.min(index, 10) * params.entrance.staggerMs;
 
   // Soft colored glow halo — opacity-only fade in/out (anime.js handles this cleanly).
   // Retunes the old hard-rect border-glow into a soft category-colored bloom.
@@ -149,6 +161,16 @@ export default function Card({
         onMouseDown={() => params.press.enabled && setIsPressed(true)}
         onMouseUp={() => setIsPressed(false)}
         onClick={() => !isComingSoon && onClick(item)}
+        role={isComingSoon ? undefined : "button"}
+        tabIndex={isComingSoon ? -1 : 0}
+        aria-label={isComingSoon ? undefined : item.title}
+        onKeyDown={(e) => {
+          if (isComingSoon) return;
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onClick(item);
+          }
+        }}
         className={`card-hover card-noise relative overflow-hidden flex flex-col h-full rounded-card ${isComingSoon ? "cursor-default" : "cursor-pointer"}`}
         style={{
           background: isHovered ? "var(--card-bg-hover)" : "var(--card-bg)",
@@ -178,6 +200,7 @@ export default function Card({
               src={urlFor(item.coverImage).width(600).height(600).url()}
               alt={item.title}
               fill
+              sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
               className="object-cover"
               style={{
                 opacity: isHovered
@@ -314,8 +337,10 @@ export default function Card({
             </span>
           </div>
 
-          {/* CTA — chip-sized to match the label; caret affordance to the right */}
-          <button
+          {/* CTA affordance — the whole card is the button; this is a non-interactive
+              span (no nested-interactive element / no extra tab stop). */}
+          <span
+            aria-hidden="true"
             className="flex items-center gap-1 px-2.5 py-1.5 rounded-tag font-mono font-bold text-[9px] leading-none uppercase tracking-wider press flex-shrink-0"
             style={{
               background: isComingSoon
@@ -333,9 +358,11 @@ export default function Card({
               {isComingSoon ? "Coming Soon" : item.cta}
             </span>
             <CaretRight weight="bold" size={9} />
-          </button>
+          </span>
         </div>
       </div>
     </div>
   );
 }
+
+export default memo(Card);

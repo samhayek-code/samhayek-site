@@ -1,8 +1,20 @@
 "use client";
 
 import { useMemo } from "react";
-import Card from "./Card";
+import Card, { CardParams } from "./Card";
 import { ArchiveItem, typeInitials } from "@/lib/types";
+
+// Card animation params — calibrated via DialKit, baked in. Module-level constant
+// (stable identity) so memo(Card) isn't defeated by a fresh object each render.
+const CARD_PARAMS: CardParams = {
+  hover: { liftY: -8, scale: 1, duration: 0.56 },
+  glow: { opacity: 0.7, blur: 3, duration: 0.36 },
+  image: { restOpacity: 0.25, hoverOpacity: 1, restBlur: 2.35, hoverBlur: 0 },
+  overlay: { restStrength: 0.5, hoverStrength: 0 },
+  details: { specLineOpacity: 1, showAtRest: false },
+  press: { scale: 0.96, enabled: true },
+  entrance: { distance: 12, duration: 0.46, staggerMs: 90 },
+};
 
 interface ArchiveGridProps {
   items: ArchiveItem[];
@@ -34,17 +46,6 @@ export default function ArchiveGrid({
 }: ArchiveGridProps) {
   const itemsWithCodes = useMemo(() => generateCardCodes(items), [items]);
 
-  // Card animation params — calibrated via DialKit, now baked in
-  const cardParams = {
-    hover: { liftY: -8, scale: 1, duration: 0.56 },
-    glow: { opacity: 0.7, blur: 3, duration: 0.36 },
-    image: { restOpacity: 0.25, hoverOpacity: 1, restBlur: 2.35, hoverBlur: 0 },
-    overlay: { restStrength: 0.5, hoverStrength: 0 },
-    details: { bracketOpacity: 0.6, specLineOpacity: 1, showAtRest: false },
-    press: { scale: 0.96, enabled: true },
-    entrance: { distance: 12, duration: 0.46, staggerMs: 90 },
-  };
-
   return (
     <div className="px-4 lg:px-12 pb-20 pt-6">
       <div className="max-w-[1600px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -56,7 +57,7 @@ export default function ArchiveGrid({
             onHoverSound={onHoverSound}
             index={index}
             cardCode={cardCode}
-            params={cardParams}
+            params={CARD_PARAMS}
           />
         ))}
       </div>
