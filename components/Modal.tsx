@@ -1276,16 +1276,6 @@ export default function Modal({ item, onClose }: ModalProps) {
             {/* Resume */}
             {isResume && (
               <div className="space-y-8 mb-8">
-                {/* Tagline */}
-                <p
-                  className="font-sans text-[15px] italic"
-                  style={{ color: "var(--modal-text-tertiary)" }}
-                >
-                  I help founders make their vision real; and I do it fast. 0 →
-                  1, then 1 → 100 with design engineering, brand systems, and
-                  creative direction.
-                </p>
-
                 {/* Contact Info */}
                 <div
                   className="flex flex-wrap gap-x-4 gap-y-2 text-[14px]"
@@ -1339,9 +1329,8 @@ export default function Modal({ item, onClose }: ModalProps) {
                       className="font-sans text-[14px] leading-relaxed"
                       style={{ color: "var(--modal-text-tertiary)" }}
                     >
-                      Brand identities, websites, and product design for
-                      early-stage companies across Web3, health, and consumer
-                      sectors.
+                      AI, Web3, Music, and more. Brand identities, websites, and
+                      product design for early-stage companies.
                     </p>
                     <ul
                       className="space-y-1.5 text-[14px]"
@@ -1358,17 +1347,34 @@ export default function Modal({ item, onClose }: ModalProps) {
                       <li className="flex gap-2">
                         <span className="text-muted">·</span>
                         <span>
+                          <strong className="text-foreground">
+                            Grow Theory
+                          </strong>{" "}
+                          — Design engineering (landing page) for AI ops
+                          consulting company
+                        </span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-muted">·</span>
+                        <span>
+                          <strong className="text-foreground">Arete</strong> —
+                          Brand identity and landing page for construction
+                          services company
+                        </span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-muted">·</span>
+                        <span>
                           <strong className="text-foreground">Parallel</strong>{" "}
-                          — Full brand identity and product design for an AI
-                          video editing tool
+                          — Brand identity and product design for an AI video
+                          editing tool
                         </span>
                       </li>
                       <li className="flex gap-2">
                         <span className="text-muted">·</span>
                         <span>
                           <strong className="text-foreground">GasHawk</strong> —
-                          Website design (gashawk.io) for an Ethereum gas
-                          optimization platform
+                          Landing page for an Ethereum gas optimization platform
                         </span>
                       </li>
                       <li className="flex gap-2">
@@ -1377,7 +1383,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                           <strong className="text-foreground">
                             ChargedParticles
                           </strong>{" "}
-                          — Websites and product interfaces for Web3 Packs and
+                          — Website and product design for Web3 Packs and
                           Phoenix Guild
                         </span>
                       </li>
@@ -1385,8 +1391,8 @@ export default function Modal({ item, onClose }: ModalProps) {
                         <span className="text-muted">·</span>
                         <span>
                           <strong className="text-foreground">Fanfly</strong> —
-                          Complete UX/UI design and branding for a Web3 music
-                          livestreaming mobile app
+                          Branding and product design for a Web3 music
+                          live-streaming mobile app
                         </span>
                       </li>
                       <li className="flex gap-2">
@@ -1395,18 +1401,18 @@ export default function Modal({ item, onClose }: ModalProps) {
                           <strong className="text-foreground">
                             Project Legacy
                           </strong>{" "}
-                          — Brand identity, landing page, custom icon system,
-                          and sales materials
+                          — Brand identity, landing page, and custom icons for a
+                          health community
                         </span>
                       </li>
                       <li className="flex gap-2">
                         <span className="text-muted">·</span>
                         <span>
                           <strong className="text-foreground">
-                            Additional clients
+                            Additional
                           </strong>{" "}
-                          — Winery brand/label, ops consulting site, plumbing
-                          company print assets, web3 gaming social posts
+                          — Winery (brand/label), Plumbing company (print/web),
+                          Web3 gaming (social posts)
                         </span>
                       </li>
                     </ul>
@@ -1419,15 +1425,15 @@ export default function Modal({ item, onClose }: ModalProps) {
                         Founder · Headphone Homies
                       </h4>
                       <span className="font-mono text-[12px] text-muted shrink-0">
-                        Mar 2022 – Sep 2023
+                        Mar 2022 – Sept 2023
                       </span>
                     </div>
                     <p
                       className="font-sans text-[14px] leading-relaxed"
                       style={{ color: "var(--modal-text-tertiary)" }}
                     >
-                      Built the brand and led creative direction for a Web3
-                      music collective from concept through launch.
+                      Built brand, led creative direction, and product design
+                      from concept to launch.
                     </p>
                     <ul
                       className="space-y-1.5 text-[14px]"
@@ -1436,29 +1442,33 @@ export default function Modal({ item, onClose }: ModalProps) {
                       <li className="flex gap-2">
                         <span className="text-muted">·</span>
                         <span>
-                          Created complete brand system and designed mint site
-                          using React and Polygon blockchain
+                          <strong className="text-foreground">Design</strong> —
+                          Created brand system, led creative direction, designed
+                          mint site (react/polygon)
                         </span>
                       </li>
                       <li className="flex gap-2">
                         <span className="text-muted">·</span>
                         <span>
-                          Grew community to 20K followers on X and 3K members on
-                          Discord
+                          <strong className="text-foreground">Growth</strong> —
+                          Built community to 20k followers on X, and 3K members
+                          on Discord
                         </span>
                       </li>
                       <li className="flex gap-2">
                         <span className="text-muted">·</span>
                         <span>
-                          Secured partnerships with Polygon, Decent, Magic Eden,
+                          <strong className="text-foreground">BD</strong> —
+                          Secured partnerships with Magic Eden, Polygon, Decent,
                           and Unchained Music
                         </span>
                       </li>
                       <li className="flex gap-2">
                         <span className="text-muted">·</span>
                         <span>
-                          Hosted weekly X Spaces with up to 300 live listeners;
-                          generated $3K in NFT sales
+                          <strong className="text-foreground">Other</strong> —
+                          Hosted weekly X spaces with up to 300 listeners,
+                          generated $5k in NFT sales
                         </span>
                       </li>
                     </ul>
@@ -1474,6 +1484,13 @@ export default function Modal({ item, onClose }: ModalProps) {
                         2021 – 2022
                       </span>
                     </div>
+                    <p
+                      className="font-sans text-[14px] leading-relaxed"
+                      style={{ color: "var(--modal-text-tertiary)" }}
+                    >
+                      Created social media content, designed merch, and managed
+                      communities (Discord/Telegram).
+                    </p>
                     <ul
                       className="space-y-1.5 text-[14px]"
                       style={{ color: "var(--modal-text-secondary)" }}
@@ -1481,78 +1498,20 @@ export default function Modal({ item, onClose }: ModalProps) {
                       <li className="flex gap-2">
                         <span className="text-muted">·</span>
                         <span>
-                          <strong className="text-foreground">Audius</strong>{" "}
-                          (2021) — Created social content and managed community
-                          as the platform grew from 3M to 6M monthly users and
-                          announced a TikTok partnership
+                          <strong className="text-foreground">SoundXYZ</strong>{" "}
+                          — Supported growth for a16z-backed music NFT platform
+                          during closed beta
                         </span>
                       </li>
                       <li className="flex gap-2">
                         <span className="text-muted">·</span>
                         <span>
-                          <strong className="text-foreground">Sound.xyz</strong>{" "}
-                          (2022) — Supported community growth for the
-                          a16z-backed music NFT platform during closed beta
+                          <strong className="text-foreground">Audius</strong> —
+                          Platform grew from 3M-6M monthly users and announced
+                          TikTok partnership
                         </span>
                       </li>
                     </ul>
-                  </div>
-
-                  {/* Job: Pro2tect */}
-                  <div className="space-y-3">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
-                      <h4 className="font-sans text-[16px] font-medium text-foreground">
-                        Designer · Pro2tect
-                      </h4>
-                      <span className="font-mono text-[12px] text-muted shrink-0">
-                        2021
-                      </span>
-                    </div>
-                    <p
-                      className="font-sans text-[14px] leading-relaxed"
-                      style={{ color: "var(--modal-text-tertiary)" }}
-                    >
-                      Delivered full brand system including logo, website,
-                      merchandise designs, and social content.
-                    </p>
-                  </div>
-
-                  {/* Job: Enhnvce Labs */}
-                  <div className="space-y-3">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
-                      <h4 className="font-sans text-[16px] font-medium text-foreground">
-                        Designer · Enhnvce Labs
-                      </h4>
-                      <span className="font-mono text-[12px] text-muted shrink-0">
-                        2020
-                      </span>
-                    </div>
-                    <p
-                      className="font-sans text-[14px] leading-relaxed"
-                      style={{ color: "var(--modal-text-tertiary)" }}
-                    >
-                      Designed branding and product labels for full lineup:
-                      protein, nootropics, sleep, immune, and coffee.
-                    </p>
-                  </div>
-
-                  {/* Job: Growtheory */}
-                  <div className="space-y-3">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
-                      <h4 className="font-sans text-[16px] font-medium text-foreground">
-                        Founder · Growtheory
-                      </h4>
-                      <span className="font-mono text-[12px] text-muted shrink-0">
-                        2015 – 2017
-                      </span>
-                    </div>
-                    <p
-                      className="font-sans text-[14px] leading-relaxed"
-                      style={{ color: "var(--modal-text-tertiary)" }}
-                    >
-                      Built brand identity, content strategy, website, and
-                      apparel line.
-                    </p>
                   </div>
                 </div>
 
@@ -1565,55 +1524,57 @@ export default function Modal({ item, onClose }: ModalProps) {
                   <div className="space-y-4">
                     <div className="space-y-1">
                       <h4 className="font-sans text-[15px] font-medium text-foreground">
-                        samhayek.com
+                        Sentience
                       </h4>
                       <p
                         className="font-sans text-[14px]"
                         style={{ color: "var(--modal-text-secondary)" }}
                       >
-                        Personal portfolio built with Next.js and Sanity CMS.
+                        Redesigning an AI product&rsquo;s home surface (Mac OS
+                        app).
                       </p>
                       <a
-                        href="https://samhayek.com"
+                        href="https://sentience-home.vercel.app/portal"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="font-mono text-[12px] text-muted hover:text-foreground transition-colors"
                       >
-                        samhayek.com
+                        sentience-home.vercel.app/portal
                       </a>
                     </div>
 
                     <div className="space-y-1">
                       <h4 className="font-sans text-[15px] font-medium text-foreground">
-                        Audio-Hooks
+                        Arcarae
                       </h4>
                       <p
                         className="font-sans text-[14px]"
                         style={{ color: "var(--modal-text-secondary)" }}
                       >
-                        Your terminal, voiced by the games you grew up on.
+                        Brand expansion case study for AI self-reflection (iOS
+                        app).
                       </p>
                       <a
-                        href="https://www.samhayek.com/code/audio-hooks"
+                        href="https://arcarae-case-study.vercel.app"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="font-mono text-[12px] text-muted hover:text-foreground transition-colors"
                       >
-                        samhayek.com/code/audio-hooks
+                        arcarae-case-study.vercel.app
                       </a>
                     </div>
 
                     <div className="space-y-1">
                       <h4 className="font-sans text-[15px] font-medium text-foreground">
-                        OASIS
+                        Oasis
                       </h4>
                       <p
                         className="font-sans text-[14px]"
                         style={{ color: "var(--modal-text-secondary)" }}
                       >
-                        macOS utility that automatically organizes Downloads
-                        into a clean daily/weekly/monthly hierarchy with file
-                        categorization.
+                        macOS utility that automatically organizes downloads
+                        into a clean (daily, weekly, monthly) hierarchy with
+                        file categorization.
                       </p>
                       <a
                         href="https://github.com/samhayek-code/OASIS"
@@ -1621,21 +1582,20 @@ export default function Modal({ item, onClose }: ModalProps) {
                         rel="noopener noreferrer"
                         className="font-mono text-[12px] text-muted hover:text-foreground transition-colors"
                       >
-                        github.com/samhayek-code/OASIS
+                        github.com/samhayek-code/oasis
                       </a>
                     </div>
 
                     <div className="space-y-1">
                       <h4 className="font-sans text-[15px] font-medium text-foreground">
-                        Baseline Grid Generator
+                        Baseline
                       </h4>
                       <p
                         className="font-sans text-[14px]"
                         style={{ color: "var(--modal-text-secondary)" }}
                       >
                         Design tool for generating customizable grid overlays
-                        with multiple canvas presets, line styles, and PNG/SVG
-                        export.
+                        with canvas presets, line styles, and png / svg export.
                       </p>
                       <a
                         href="https://baseline-beta.vercel.app"
@@ -1662,16 +1622,17 @@ export default function Modal({ item, onClose }: ModalProps) {
                       </span>
                       <span className="text-muted"> — </span>
                       <span style={{ color: "var(--modal-text-secondary)" }}>
-                        Design Engineering, Brand Identity + Systems, Creative
-                        Direction, Visual Design, Product Design
+                        Branding, Design Engineering, Creative Direction, Visual
+                        Design, Product
                       </span>
                     </div>
                     <div>
                       <span className="font-medium text-foreground">Tools</span>
                       <span className="text-muted"> — </span>
                       <span style={{ color: "var(--modal-text-secondary)" }}>
-                        Figma, Cursor, Procreate, Flora, Framer, Adobe, Claude
-                        Code, DaVinci Resolve, Pencil, Jitter, Paper
+                        Figma, Claude Code, Procreate, Cursor, Flora, Adobe,
+                        Framer, Paper, Pencil, DaVinci Resolve, Ableton, and
+                        more…
                       </span>
                     </div>
                     <div>
@@ -1683,20 +1644,11 @@ export default function Modal({ item, onClose }: ModalProps) {
                       </span>
                     </div>
                     <div>
-                      <span className="font-medium text-foreground">
-                        Growth
-                      </span>
-                      <span className="text-muted"> — </span>
-                      <span style={{ color: "var(--modal-text-secondary)" }}>
-                        Content Strategy, Social Media Marketing, Community
-                        Management
-                      </span>
-                    </div>
-                    <div>
                       <span className="font-medium text-foreground">Other</span>
                       <span className="text-muted"> — </span>
                       <span style={{ color: "var(--modal-text-secondary)" }}>
-                        Audio Engineering, Micro-interactions, Video Editing,
+                        Content Strategy, Social Media Marketing, Community
+                        Management, Audio Engineering, Video Editing,
                         Copywriting
                       </span>
                     </div>
