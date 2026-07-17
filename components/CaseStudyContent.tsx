@@ -13,6 +13,23 @@ interface CaseStudyContentProps {
   onImageClick: (images: { src: string; alt: string }[], index: number) => void;
 }
 
+/** Sanity asset refs encode dimensions: image-<hash>-<w>x<h>-<ext>. */
+function aspectOf(img: any): number | null {
+  const dims = img?.asset?.metadata?.dimensions;
+  if (dims?.width && dims?.height) return dims.width / dims.height;
+  const ref: string | undefined = img?.asset?._ref;
+  const m = ref?.match(/-(\d+)x(\d+)-/);
+  if (m) return Number(m[1]) / Number(m[2]);
+  if (img?.width && img?.height) return img.width / img.height;
+  return null;
+}
+
+/** Preview/local images bypass Sanity; everything else goes through urlFor. */
+function srcOf(img: any, width: number, quality: number): string {
+  if (img?.localSrc) return img.localSrc;
+  return urlFor(img).width(width).quality(quality).url();
+}
+
 export default function CaseStudyContent({
   meta,
   sections,
@@ -20,7 +37,7 @@ export default function CaseStudyContent({
   onImageClick,
 }: CaseStudyContentProps) {
   return (
-    <div className="space-y-12 mb-8">
+    <div className="space-y-14 mb-8">
       {/* Metadata grid */}
       {meta && meta.length > 0 && (
         <div
@@ -59,6 +76,53 @@ export default function CaseStudyContent({
   );
 }
 
+/**
+ * A figure "plate" — the light Grow Theory renders read as paper on the dark
+ * modal, so they need a defining ring (invisible edge on the light theme) plus
+ * a lift shadow (separation on the dark theme).
+ */
+function Plate({
+  img,
+  onClick,
+  priority,
+}: {
+  img: { src: string; thumbnail: string; alt: string; caption?: string };
+  onClick: () => void;
+  priority?: boolean;
+}) {
+  return (
+    <figure>
+      <div
+        className="relative overflow-hidden cursor-zoom-in rounded-card transition-transform duration-300 ease-out hover:-translate-y-[2px] group"
+        onClick={onClick}
+        style={{
+          boxShadow:
+            "0 0 0 1px var(--border), 0 2px 6px rgba(0,0,0,0.10), 0 18px 40px -14px rgba(0,0,0,0.45)",
+        }}
+      >
+        <Image
+          src={img.src}
+          alt={img.alt}
+          width={2400}
+          height={1350}
+          priority={priority}
+          className="w-full h-auto block"
+          style={{ objectFit: "contain" }}
+        />
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/[0.03] transition-colors" />
+      </div>
+      {img.caption && (
+        <figcaption
+          className="mt-3 text-[13px] leading-snug"
+          style={{ color: "var(--modal-text-body)" }}
+        >
+          {img.caption}
+        </figcaption>
+      )}
+    </figure>
+  );
+}
+
 function SectionRenderer({
   section,
   portableTextComponents,
@@ -70,15 +134,29 @@ function SectionRenderer({
 }) {
   const layout = section.layout || "text-first";
   const hasBody = section.sectionBody && section.sectionBody.length > 0;
-  const hasGallery = section.sectionGallery && section.sectionGallery.length > 0;
+  const hasGallery =
+    section.sectionGallery && section.sectionGallery.length > 0;
 
-  // Build lightbox-compatible image array from section gallery
-  const galleryImages = (section.sectionGallery || []).map((img, i) => ({
-    src: urlFor(img).width(2400).quality(90).url(),
+  const galleryImages = (section.sectionGallery || []).map((img: any, i) => ({
+    src: srcOf(img, 2400, 90),
     alt: img.alt || `${section.sectionTitle} ${i + 1}`,
     caption: img.caption,
-    thumbnail: urlFor(img).width(800).quality(85).url(),
+    thumbnail: srcOf(img, 1200, 88),
+    aspect: aspectOf(img),
   }));
+
+  // Wide figures (slides, code cards, screenshots) never share a row: at the
+  // modal's 800px they'd land ~380px each and become unreadable. They stack
+  // full-width instead. Narrow/square art keeps the two-up grid.
+  const isWideSet =
+    galleryImages.length > 0 &&
+    galleryImages.every((g) => (g.aspect ?? 1.6) >= 1.5);
+
+  const openLightbox = (i: number) =>
+    onImageClick(
+      galleryImages.map((g) => ({ src: g.src, alt: g.alt })),
+      i
+    );
 
   const bodyBlock = hasBody && (
     <div
@@ -92,24 +170,21 @@ function SectionRenderer({
     </div>
   );
 
-  const galleryBlock = hasGallery && (
-    <div
-      className={
-        layout === "side-by-side"
-          ? "space-y-3"
-          : "grid grid-cols-2 gap-3"
-      }
-    >
+  const stacked = (
+    <div className="space-y-8">
+      {galleryImages.map((img, i) => (
+        <Plate key={i} img={img} onClick={() => openLightbox(i)} />
+      ))}
+    </div>
+  );
+
+  const grid = (
+    <div className="grid grid-cols-2 gap-4">
       {galleryImages.map((img, i) => (
         <div key={i} className="relative group">
           <div
             className="relative overflow-hidden cursor-zoom-in rounded-card img-outline"
-            onClick={() =>
-              onImageClick(
-                galleryImages.map((g) => ({ src: g.src, alt: g.alt })),
-                i
-              )
-            }
+            onClick={() => openLightbox(i)}
           >
             <Image
               src={img.thumbnail}
@@ -122,14 +197,14 @@ function SectionRenderer({
             <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors" />
           </div>
           {img.caption && (
-            <p className="mt-2 text-center text-sm text-muted">
-              {img.caption}
-            </p>
+            <p className="mt-2 text-center text-sm text-muted">{img.caption}</p>
           )}
         </div>
       ))}
     </div>
   );
+
+  const galleryBlock = hasGallery && (isWideSet ? stacked : grid);
 
   return (
     <section className="space-y-6">
@@ -141,51 +216,23 @@ function SectionRenderer({
       {/* Layout variants */}
       {layout === "full-width" && (
         <>
-          {hasGallery && (
-            <div className="space-y-4">
-              {galleryImages.map((img, i) => (
-                <div key={i} className="relative group">
-                  <div
-                    className="relative overflow-hidden cursor-zoom-in rounded-card img-outline"
-                    onClick={() =>
-                      onImageClick(
-                        galleryImages.map((g) => ({
-                          src: g.src,
-                          alt: g.alt,
-                        })),
-                        i
-                      )
-                    }
-                  >
-                    <Image
-                      src={img.src}
-                      alt={img.alt}
-                      width={2400}
-                      height={1350}
-                      className="w-full h-auto"
-                      style={{ objectFit: "contain" }}
-                    />
-                    <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors" />
-                  </div>
-                  {img.caption && (
-                    <p className="mt-2 text-center text-sm text-muted">
-                      {img.caption}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
+          {hasGallery && stacked}
           {bodyBlock}
         </>
       )}
 
-      {layout === "side-by-side" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {bodyBlock}
-          {galleryBlock}
-        </div>
-      )}
+      {layout === "side-by-side" &&
+        (isWideSet ? (
+          <>
+            {bodyBlock}
+            {galleryBlock}
+          </>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {bodyBlock}
+            <div className="space-y-3">{galleryBlock}</div>
+          </div>
+        ))}
 
       {layout === "images-first" && (
         <>
